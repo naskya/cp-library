@@ -1,0 +1,3 @@
+[[languages.cpp.environments]]
+CXX = "g++"
+CXXFLAGS = ["-std=gnu++17", "-O2", "-Wall", "-Wextra", "-Wcast-align", "-Wcast-qual", "-Wconversion", "-Wdisabled-optimization", "-Wdouble-promotion", "-Wfloat-equal", "-Winit-self", "-Wlogical-op", "-Wmultichar", "-Wpedantic", "-Wredundant-decls", "-Wshadow", "-Wsign-promo", "-Wunused-const-variable"]
