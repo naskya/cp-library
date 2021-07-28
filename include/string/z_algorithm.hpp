@@ -1,7 +1,7 @@
 
 //! @file z_algorithm.hpp
 //! @brief Z algorithm
-//! @details Provide functions to calculate the length of the longest common prefix.
+//! @details Provide a function to calculate the length of the longest common prefix.
 
 #ifndef Z_ALGORITHM_HPP
 #define Z_ALGORITHM_HPP
@@ -11,12 +11,12 @@
 
 namespace lib {
 
-//! @tparam Container container type (deduced by parameter). operator[] and size(Container) must be defined.
+//! @tparam Container container type (deduced from parameter). operator[] and size(Container) must be defined.
 //! @param src Source (container)
 //! @return Vector contains the length of the longest common prefix
 //! @note Time complexity: O(size(s))
 template <typename Container>
-std::vector<int> z_algorithm(const Container& src) {
+[[nodiscard]] std::vector<int> z_algorithm(const Container& src) {
   const int size = static_cast<int>(std::size(src));
 
   std::vector<int> res(size);
