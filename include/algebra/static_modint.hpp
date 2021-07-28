@@ -1,6 +1,6 @@
 
 //! @file static_modint.hpp
-//! @brief modint (for compile-time constant modulo)
+//! @brief Modint (for compile-time constant modulo)
 
 #ifndef STATIC_MODINT_HPP
 #define STATIC_MODINT_HPP
@@ -32,7 +32,8 @@ private:
   //! @param n non-zero integer
   //! @return multiplicative inverse of n
   //! @note Time complexity: O(log(n))
-  template <class Tp> static constexpr std::int_least32_t calc_inverse(Tp n) noexcept {
+  template <class Tp>
+  [[nodiscard]] static constexpr std::int_least32_t calc_inverse(Tp n) noexcept {
     Tp b = modulo, u = 1, v = 0, t;
     while (b > 0) {
       t = n / b;
@@ -54,7 +55,8 @@ private:
   //! @param v integer
   //! @return integer within [0, modulo)
   //! @note Time complexity: O(1)
-  template <class Tp> static constexpr std::int_least32_t clamp_ll(Tp v) noexcept {
+  template <class Tp>
+  [[nodiscard]] static constexpr std::int_least32_t clamp_ll(Tp v) noexcept {
     if (modulo <= v || v < -modulo) v %= modulo;
     if (v < 0) v += modulo;
     return static_cast<std::int_least32_t>(v);
@@ -86,7 +88,7 @@ public:
   using type = std::int_least32_t;
 
   //! @return modulo (e.g. 1000000007)
-  static constexpr type mod() noexcept {
+  [[nodiscard]] static constexpr type mod() noexcept {
     return modulo;
   }
 
@@ -97,7 +99,8 @@ public:
   constexpr static_modint(const type v, bool) noexcept : value(v) {}
 
   //! @brief Create a modint
-  template <class ValueType> constexpr static_modint(const ValueType v) noexcept {
+  template <class ValueType>
+  constexpr static_modint(const ValueType v) noexcept {
     if constexpr (std::is_integral_v<ValueType> && (std::numeric_limits<ValueType>::digits <= 32)) {
       value = v;
       clamp_self();
@@ -106,41 +109,41 @@ public:
     }
   }
 
-  constexpr static_modint operator+(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr static_modint operator+(const static_modint rhs) const noexcept {
     return static_modint(value + rhs.value);
   }
-  constexpr static_modint operator-(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr static_modint operator-(const static_modint rhs) const noexcept {
     return static_modint(value - rhs.value);
   }
-  constexpr static_modint operator*(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr static_modint operator*(const static_modint rhs) const noexcept {
     return static_modint(static_cast<std::int_least64_t>(value) * rhs.value);
   }
-  constexpr static_modint operator/(const static_modint rhs) const {
+  [[nodiscard]] constexpr static_modint operator/(const static_modint rhs) const {
     return static_modint(static_cast<std::int_least64_t>(value) * calc_inverse(rhs.value));
   }
 
-  constexpr static_modint operator%(const static_modint rhs) const {
+  [[nodiscard]] constexpr static_modint operator%(const static_modint rhs) const {
     warn("operator% : Are you sure you want to do this?");
     return static_modint(value % rhs.value);
   }
 
-  constexpr static_modint operator&(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr static_modint operator&(const static_modint rhs) const {
     warn("operator& : Are you sure you want to do this?");
     return static_modint(value & rhs.value, true);
   }
-  constexpr static_modint operator|(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr static_modint operator|(const static_modint rhs) const {
     warn("operator| : Are you sure you want to do this?");
     return static_modint(value | rhs.value);
   }
-  constexpr static_modint operator^(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr static_modint operator^(const static_modint rhs) const {
     warn("operator^ : Are you sure you want to do this?");
     return static_modint(value ^ rhs.value);
   }
-  constexpr static_modint operator<<(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr static_modint operator<<(const static_modint rhs) const {
     warn("operator<< : Are you sure you want to do this?");
     return static_modint(static_cast<std::int_least64_t>(value) << rhs.value);
   }
-  constexpr static_modint operator>>(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr static_modint operator>>(const static_modint rhs) const {
     warn("operator>> : Are you sure you want to do this?");
     return static_modint(value >> rhs.value, true);
   }
@@ -199,42 +202,52 @@ public:
     return *this;
   }
 
-  template <class RhsType> constexpr static_modint operator+(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr static_modint operator+(const RhsType rhs) const noexcept {
     return static_modint(value + clamp_ll(rhs));
   }
-  template <class RhsType> constexpr static_modint operator-(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr static_modint operator-(const RhsType rhs) const noexcept {
     return static_modint(value - clamp_ll(rhs));
   }
-  template <class RhsType> constexpr static_modint operator*(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr static_modint operator*(const RhsType rhs) const noexcept {
     return static_modint(static_cast<std::int_least64_t>(value) * clamp_ll(rhs));
   }
-  template <class RhsType> constexpr static_modint operator/(const RhsType rhs) const {
+  template <class RhsType>
+  [[nodiscard]] constexpr static_modint operator/(const RhsType rhs) const {
     std::int_least64_t mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
     return static_modint(value * mul);
   }
 
-  template <class RhsType> constexpr static_modint operator%(const RhsType rhs) const {
+  template <class RhsType>
+  [[nodiscard]] constexpr static_modint operator%(const RhsType rhs) const {
     warn("operator% : Are you sure you want to do this?");
     return static_modint(value % rhs, true);
   }
 
-  template <class RhsType> constexpr static_modint operator&(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr static_modint operator&(const RhsType rhs) const {
     warn("operator& : Are you sure you want to do this?");
     return static_modint(value & rhs, true);
   }
-  template <class RhsType> constexpr static_modint operator|(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr static_modint operator|(const RhsType rhs) const {
     warn("operator| : Are you sure you want to do this?");
     return static_modint(value | rhs);
   }
-  template <class RhsType> constexpr static_modint operator^(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr static_modint operator^(const RhsType rhs) const {
     warn("operator^ : Are you sure you want to do this?");
     return static_modint(value ^ rhs);
   }
-  template <class RhsType> constexpr static_modint operator<<(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr static_modint operator<<(const RhsType rhs) const {
     warn("operator<< : Are you sure you want to do this?");
     return static_modint(static_cast<std::int_least64_t>(value) << rhs);
   }
-  template <class RhsType> constexpr static_modint operator>>(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr static_modint operator>>(const RhsType rhs) const {
     warn("operator>> : Are you sure you want to do this?");
     return static_modint(value >> rhs, true);
   }
@@ -291,18 +304,18 @@ public:
     return *this;
   }
 
-  constexpr bool operator!() const noexcept {
+  [[nodiscard]] constexpr bool operator!() const {
     warn("operator! : Are you sure you want to do this?");
     return value == 0;
   }
-  constexpr static_modint operator~() const noexcept {
+  [[nodiscard]] constexpr static_modint operator~() const {
     warn("operator~ : Are you sure you want to do this?");
     return static_modint(~value);
   }
-  constexpr static_modint operator-() const noexcept {
+  [[nodiscard]] constexpr static_modint operator-() const noexcept {
     return static_modint(value == 0 ? 0 : modulo - value, true);
   }
-  constexpr static_modint& operator+() const noexcept {
+  [[nodiscard]] constexpr static_modint& operator+() const noexcept {
     return *this;
   }
 
@@ -325,53 +338,59 @@ public:
     return static_modint(res, true);
   }
 
-  constexpr bool operator==(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr bool operator==(const static_modint rhs) const noexcept {
     return value == rhs.value;
   }
-  constexpr bool operator!=(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr bool operator!=(const static_modint rhs) const noexcept {
     return value != rhs.value;
   }
-  constexpr bool operator<(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr bool operator<(const static_modint rhs) const {
     warn("operator< : Are you sure you want to do this?");
     return value < rhs.value;
   }
-  constexpr bool operator<=(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr bool operator<=(const static_modint rhs) const {
     warn("operator<= : Are you sure you want to do this?");
     return value <= rhs.value;
   }
-  constexpr bool operator>(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr bool operator>(const static_modint rhs) const {
     warn("operator> : Are you sure you want to do this?");
     return value > rhs.value;
   }
-  constexpr bool operator>=(const static_modint rhs) const noexcept {
+  [[nodiscard]] constexpr bool operator>=(const static_modint rhs) const {
     warn("operator>= : Are you sure you want to do this?");
     return value >= rhs.value;
   }
 
-  template <class RhsType> constexpr bool operator==(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr bool operator==(const RhsType rhs) const noexcept {
     return value == rhs;
   }
-  template <class RhsType> constexpr bool operator!=(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr bool operator!=(const RhsType rhs) const noexcept {
     return value != rhs;
   }
-  template <class RhsType> constexpr bool operator<(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr bool operator<(const RhsType rhs) const {
     warn("operator< : Are you sure you want to do this?");
     return value < rhs;
   }
-  template <class RhsType> constexpr bool operator<=(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr bool operator<=(const RhsType rhs) const {
     warn("operator<= : Are you sure you want to do this?");
     return value <= rhs;
   }
-  template <class RhsType> constexpr bool operator>(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr bool operator>(const RhsType rhs) const {
     warn("operator> : Are you sure you want to do this?");
     return value > rhs;
   }
-  template <class RhsType> constexpr bool operator>=(const RhsType rhs) const noexcept {
+  template <class RhsType>
+  [[nodiscard]] constexpr bool operator>=(const RhsType rhs) const {
     warn("operator>= : Are you sure you want to do this?");
     return value >= rhs;
   }
 
-  constexpr operator std::int_least32_t() const noexcept {
+  [[nodiscard]] constexpr operator std::int_least32_t() const noexcept {
     return value;
   }
 
@@ -393,7 +412,7 @@ public:
 
   //! @return multiplicative inverse of n
   //! @note Time complexity: O(log(n))
-  constexpr static_modint inv() const {
+  [[nodiscard]] constexpr static_modint inv() const {
     return static_modint(calc_inverse(value), true);
   }
   //! @tparam index_positive_guaranteed set true if and only if you can promise that index is positive
@@ -402,7 +421,7 @@ public:
   //! @return index-th power of the value
   //! @note Time complexity: O(log(n))
   template <bool index_positive_guaranteed = true, class Tp = std::int_least32_t>
-  constexpr static_modint pow(Tp index) const noexcept {
+  [[nodiscard]] constexpr static_modint pow(Tp index) const noexcept {
     if constexpr (!index_positive_guaranteed) {
       if (value == 0) return static_modint(0, true);
       if (index == 0) return static_modint(1, true);
@@ -417,7 +436,7 @@ public:
     return res;
   }
   //! @return a pair (a, b) such that b > 0, value is equal to a * (mult inverse of b), and (a + b) is minimal
-  constexpr std::pair<std::int_least32_t, std::int_least32_t> to_frac() const noexcept {
+  [[nodiscard]] constexpr std::pair<std::int_least32_t, std::int_least32_t> to_frac() const noexcept {
     std::int_least32_t x = modulo - value, y = value, u = 1, v = 1;
     std::pair<std::int_least32_t, std::int_least32_t> res {value, 1};
 
@@ -449,35 +468,35 @@ public:
 };
 
 template <class LhsType, std::int_least32_t modulo>
-constexpr static_modint<modulo> operator+(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr static_modint<modulo> operator+(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
   return rhs + lhs;
 }
 template <class LhsType, std::int_least32_t modulo>
-constexpr static_modint<modulo> operator-(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr static_modint<modulo> operator-(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
   return -rhs + lhs;
 }
 template <class LhsType, std::int_least32_t modulo>
-constexpr static_modint<modulo> operator*(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr static_modint<modulo> operator*(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
   return rhs * lhs;
 }
 template <class LhsType, std::int_least32_t modulo>
-constexpr static_modint<modulo> operator/(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr static_modint<modulo> operator/(const LhsType lhs, const static_modint<modulo> rhs) {
   return rhs.inv() * lhs;
 }
 
 template <class LhsType, std::int_least32_t modulo>
-constexpr static_modint<modulo> operator%(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr static_modint<modulo> operator%(const LhsType lhs, const static_modint<modulo> rhs) {
   warn("operator% : Are you sure you want to do this?");
   return static_modint<modulo>(lhs % static_cast<std::int_least32_t>(rhs), true);
 }
 
 template <class LhsType, std::int_least32_t modulo, std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>
-constexpr static_modint<modulo> operator<<(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr static_modint<modulo> operator<<(const LhsType lhs, const static_modint<modulo> rhs) {
   warn("operator<< : Are you sure you want to do this?");
   return static_modint<modulo>(static_cast<std::int_least64_t>(lhs) << static_cast<std::int_least32_t>(rhs));
 }
 template <class LhsType, std::int_least32_t modulo, std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>
-constexpr static_modint<modulo> operator>>(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr static_modint<modulo> operator>>(const LhsType lhs, const static_modint<modulo> rhs) {
   warn("operator>> : Are you sure you want to do this?");
   return static_modint<modulo>(lhs >> static_cast<std::int_least32_t>(rhs));
 }
@@ -532,22 +551,22 @@ constexpr LhsType& operator>>=(LhsType& lhs, const static_modint<modulo> rhs) no
 }
 
 template <class LhsType, std::int_least32_t modulo>
-constexpr bool operator<(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr bool operator<(const LhsType lhs, const static_modint<modulo> rhs) {
   warn("operator< : Are you sure you want to do this?");
   return lhs < static_cast<std::int_least32_t>(rhs);
 }
 template <class LhsType, std::int_least32_t modulo>
-constexpr bool operator<=(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr bool operator<=(const LhsType lhs, const static_modint<modulo> rhs) {
   warn("operator<= : Are you sure you want to do this?");
   return lhs < static_cast<std::int_least32_t>(rhs);
 }
 template <class LhsType, std::int_least32_t modulo>
-constexpr bool operator>(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr bool operator>(const LhsType lhs, const static_modint<modulo> rhs) {
   warn("operator> : Are you sure you want to do this?");
   return lhs < static_cast<std::int_least32_t>(rhs);
 }
 template <class LhsType, std::int_least32_t modulo>
-constexpr bool operator>=(const LhsType lhs, const static_modint<modulo> rhs) noexcept {
+[[nodiscard]] constexpr bool operator>=(const LhsType lhs, const static_modint<modulo> rhs) {
   warn("operator>= : Are you sure you want to do this?");
   return lhs < static_cast<std::int_least32_t>(rhs);
 }
