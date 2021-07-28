@@ -1,4 +1,6 @@
 {
+"test/algebra/pow/1.test.cpp": "2021-07-28 16:50:14 +0900",
+"test/algebra/static_modint/1.test.cpp": "2021-07-28 16:50:03 +0900",
 "test/data_structure/union_find/1.test.cpp": "2021-07-28 14:52:32 +0900",
 "test/data_structure/union_find/2.test.cpp": "2021-07-28 14:52:32 +0900",
 "test/string/z_algorithm/1.test.cpp": "2021-07-28 15:47:40 +0900"
