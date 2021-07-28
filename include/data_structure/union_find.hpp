@@ -1,6 +1,7 @@
 
 //! @file union_find.hpp
-//! @brief Provide a data structure for managing disjoint sets.
+//! @brief Union-find data structure
+//! @details Provide a data structure for managing disjoint sets.
 //! @note This file is based on AtCoder Library (https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp)
 
 #ifndef UNION_FIND_HPP
