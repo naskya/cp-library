@@ -4,6 +4,9 @@ data:
   - name: include/algebra
     pages:
     - icon: ':heavy_check_mark:'
+      path: include/algebra/dynamic_modint.hpp
+      title: Modint (for runtime constant modulo)
+    - icon: ':heavy_check_mark:'
       path: include/algebra/pow.hpp
       title: Binary exponentation
     - icon: ':heavy_check_mark:'
@@ -25,6 +28,11 @@ data:
       path: include/string/z_algorithm.hpp
       title: Z algorithm
   verificationCategories:
+  - name: test/algebra/dynamic_modint
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/algebra/dynamic_modint/1.test.cpp
+      title: test/algebra/dynamic_modint/1.test.cpp
   - name: test/algebra/pow
     pages:
     - icon: ':heavy_check_mark:'
