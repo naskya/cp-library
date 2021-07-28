@@ -14,6 +14,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: include/data_structure/union_find.hpp
       title: Union-find data structure
+  - name: include/search
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: include/search/binary_search.hpp
+      title: Binary search
   - name: include/string
     pages:
     - icon: ':heavy_check_mark:'
@@ -38,6 +43,17 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/union_find/2.test.cpp
       title: test/data_structure/union_find/2.test.cpp
+  - name: test/search/binary_search
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/search/binary_search/1.test.cpp
+      title: test/search/binary_search/1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/search/binary_search/2.test.cpp
+      title: test/search/binary_search/2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/search/binary_search/3.test.cpp
+      title: test/search/binary_search/3.test.cpp
   - name: test/string/z_algorithm
     pages:
     - icon: ':heavy_check_mark:'
