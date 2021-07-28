@@ -14,7 +14,8 @@ namespace lib {
 //! @param id multiplicative identity
 //! @return the index-th power of base
 //! @note Time complexity: O(log(index) * (time needed to calculate (base * base)))
-template <typename ValueType, typename IntType> ValueType pow(ValueType base, IntType index, ValueType id = 1) {
+template <typename ValueType, typename IntType>
+[[nodiscard]] ValueType pow(ValueType base, IntType index, ValueType id = 1) {
   // Use id as result in this function
   while (index != 0) {
     if ((index & 1) == 1)
