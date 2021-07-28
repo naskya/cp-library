@@ -8,7 +8,7 @@ data:
       title: Binary exponentation
     - icon: ':heavy_check_mark:'
       path: include/algebra/static_modint.hpp
-      title: modint (for compile-time constant modulo)
+      title: Modint (for compile-time constant modulo)
   - name: include/data_structure
     pages:
     - icon: ':heavy_check_mark:'
