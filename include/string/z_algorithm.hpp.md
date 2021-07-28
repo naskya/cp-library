@@ -16,9 +16,9 @@ data:
     //! @brief Z algorithm\n//! @details Provide a function to calculate the length\
     \ of the longest common prefix.\n\n#ifndef Z_ALGORITHM_HPP\n#define Z_ALGORITHM_HPP\n\
     \n#include <iterator>\n#include <vector>\n\nnamespace lib {\n\n//! @tparam Container\
-    \ container type (deduced by parameter). operator[] and size(Container) must be\
-    \ defined.\n//! @param src Source (container)\n//! @return Vector contains the\
-    \ length of the longest common prefix\n//! @note Time complexity: O(size(s))\n\
+    \ container type (deduced from parameter). operator[] and size(Container) must\
+    \ be defined.\n//! @param src Source (container)\n//! @return Vector contains\
+    \ the length of the longest common prefix\n//! @note Time complexity: O(size(s))\n\
     template <typename Container>\n[[nodiscard]] std::vector<int> z_algorithm(const\
     \ Container& src) {\n  const int size = static_cast<int>(std::size(src));\n\n\
     \  std::vector<int> res(size);\n  res[0] = size;\n\n  for (int i = 1, l = 0, r\
@@ -30,7 +30,7 @@ data:
   code: "\n//! @file z_algorithm.hpp\n//! @brief Z algorithm\n//! @details Provide\
     \ a function to calculate the length of the longest common prefix.\n\n#ifndef\
     \ Z_ALGORITHM_HPP\n#define Z_ALGORITHM_HPP\n\n#include <iterator>\n#include <vector>\n\
-    \nnamespace lib {\n\n//! @tparam Container container type (deduced by parameter).\
+    \nnamespace lib {\n\n//! @tparam Container container type (deduced from parameter).\
     \ operator[] and size(Container) must be defined.\n//! @param src Source (container)\n\
     //! @return Vector contains the length of the longest common prefix\n//! @note\
     \ Time complexity: O(size(s))\ntemplate <typename Container>\n[[nodiscard]] std::vector<int>\
@@ -45,7 +45,7 @@ data:
   isVerificationFile: false
   path: include/string/z_algorithm.hpp
   requiredBy: []
-  timestamp: '2021-07-28 15:32:18+09:00'
+  timestamp: '2021-07-28 15:47:40+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/z_algorithm/1.test.cpp
