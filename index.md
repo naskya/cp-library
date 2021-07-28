@@ -5,7 +5,7 @@ data:
     pages:
     - icon: ':heavy_check_mark:'
       path: include/data_structure/union_find.hpp
-      title: Provide a data structure for managing disjoint sets.
+      title: Union-find data structure
   verificationCategories:
   - name: test/data_structure/union_find
     pages:

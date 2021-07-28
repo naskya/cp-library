@@ -13,12 +13,12 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    document_title: Provide a data structure for managing disjoint sets.
+    document_title: Union-find data structure
     links:
     - https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp)
   bundledCode: "#line 1 \"include/data_structure/union_find.hpp\"\n\n//! @file union_find.hpp\n\
-    //! @brief Provide a data structure for managing disjoint sets.\n//! @note This\
-    \ file is based on AtCoder Library (https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp)\n\
+    //! @brief Union-find data structure\n//! @details Provide a data structure for\
+    \ managing disjoint sets.\n//! @note This file is based on AtCoder Library (https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp)\n\
     \n#ifndef UNION_FIND_HPP\n#define UNION_FIND_HPP\n\n#include <algorithm>\n#include\
     \ <cassert>\n#include <vector>\n\n#ifndef O_assert\n//! @brief Assert macro\n\
     #  define O_assert(...) assert(__VA_ARGS__)\n#  define O_assert_not_defined\n\
@@ -60,8 +60,9 @@ data:
     \ std::vector<int>& v) { return v.empty(); }),\n      std::end(res));\n    return\
     \ res;\n  }\n};\n\n}  // namespace lib\n\n#ifdef O_assert_not_defined\n#  undef\
     \ O_assert\n#  undef O_assert_not_defined\n#endif\n\n#endif  // UNION_FIND_HPP\n"
-  code: "\n//! @file union_find.hpp\n//! @brief Provide a data structure for managing\
-    \ disjoint sets.\n//! @note This file is based on AtCoder Library (https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp)\n\
+  code: "\n//! @file union_find.hpp\n//! @brief Union-find data structure\n//! @details\
+    \ Provide a data structure for managing disjoint sets.\n//! @note This file is\
+    \ based on AtCoder Library (https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp)\n\
     \n#ifndef UNION_FIND_HPP\n#define UNION_FIND_HPP\n\n#include <algorithm>\n#include\
     \ <cassert>\n#include <vector>\n\n#ifndef O_assert\n//! @brief Assert macro\n\
     #  define O_assert(...) assert(__VA_ARGS__)\n#  define O_assert_not_defined\n\
@@ -107,7 +108,7 @@ data:
   isVerificationFile: false
   path: include/data_structure/union_find.hpp
   requiredBy: []
-  timestamp: '2021-07-28 14:36:40+09:00'
+  timestamp: '2021-07-28 14:52:32+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/union_find/1.test.cpp
@@ -117,5 +118,5 @@ layout: document
 redirect_from:
 - /library/include/data_structure/union_find.hpp
 - /library/include/data_structure/union_find.hpp.html
-title: Provide a data structure for managing disjoint sets.
+title: Union-find data structure
 ---
