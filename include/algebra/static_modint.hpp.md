@@ -607,8 +607,109 @@ data:
   - test/data_structure/binary_indexed_tree/2.test.cpp
 documentation_of: include/algebra/static_modint.hpp
 layout: document
-redirect_from:
-- /library/include/algebra/static_modint.hpp
-- /library/include/algebra/static_modint.hpp.html
-title: Modint (for compile-time constant modulo)
+title: static_modint
 ---
+
+# 内容
+
+`static_modint` 構造体が定義されています。
+
+## `static_modint` 構造体
+
+競技プログラミングで頻出の「1000000007 で割った余りを求めよ」等の問題で使える構造体です。
+
+### 型テンプレート
+
+`static_modint` 構造体は 1 つの `std::int_least32_t` 型のテンプレート引数をとります。以下のように型エイリアスを宣言して使うとよいです。
+
+```C++
+using mint = lib::static_modint<1000000007>;
+```
+
+計算の高速化のために、`static_modint<*>` 型の 2 つの値を足し合わせても(剰余を計算する前の時点で)オーバーフローが起きない事を仮定しています。そのため、`std::int_least32_t` の最大値の半分を超える値をテンプレート引数に取ることはできません。
+
+```C++
+using mint = lib::static_modint<2000000000>;  // error
+```
+
+この仕様でも多くの競技プログラミングの問題では困らないはずです。
+
+$p$ が素数のとき、`lib::static_modint<p>` は $0$ から $p - 1$ までの $p$ 個の元からなる剰余体 $\mathbf{Z}/p\mathbf{Z}$ を表す型として扱えます。
+
+### コンストラクタ
+
+```C++
+using mint = lib::static_modint<1000000007>;
+
+mint a;                    // 1.
+std::vector<mint> A(10);   // 1.
+
+mint b = 100;              // 2.
+mint c = 10000000000LL;    // 2.
+mint d(10000000000LL);     // 2.
+
+static_assert(a == 0);
+assert(std::all_of(std::cbegin(A), std::cend(A), [](auto val) { val == 0; }));
+static_assert(b == 100);
+static_assert(c == (10000000000LL % mint::mod()));
+static_assert(d == (10000000000LL % mint::mod()));
+```
+
+1. 引数無しで初期化すると、値は 0 で初期化されます。
+1. 引数を 1 つ与えて初期化すると、値が代入されます。必要に応じて余りも計算されます。
+
+### 演算子
+
+以下の演算子がオーバーロードされています。
+
+- `++` (前置, 後置)
+- `--` (前置, 後置)
+- `+` (単項, 二項)
+- `-` (単項, 二項)
+- `*`
+- `/`
+- `+=`
+- `-=`
+- `*=`
+- `/=`
+- `==`
+- `!=`
+- `>>` (`std::istream&` からの入力)
+- `<<` (`std::ostream&` への出力)
+
+以下の演算子もオーバーロードされていますが、使用すると標準エラー出力に警告が出ます。この警告は 17 行目のコメントアウトを解除すると抑制できます。
+
+- `%`
+- `|`
+- `^`
+- `&` (ビット演算)
+- `>>` (ビット演算)
+- `<<` (ビット演算)
+- `%=`
+- `|=`
+- `^=`
+- `&=`
+- `<<=`
+- `<<=`
+- `<`
+- `>`
+- `<=`
+- `>=`
+- `!`
+- `~`
+
+### メンバ関数
+
+以下の関数が使用できます。ここで、変数が保持している値を $x$ とします。
+
+#### inv()
+
+$x$ の乗法の逆元 $x^{-1}$ を返します。$x = 0$ である時の動作は未定義です。
+
+#### pow(n)
+
+$x^n$ を返します。
+
+#### to_frac()
+
+$x = a \cdot b^{-1}$ であるような $(a, b)$ の組のうち $a + b$ が最小であるものを返します。例えば $x = 2$ の時 `x.inv().to_frac()` は $(1, 2)$ を返します。

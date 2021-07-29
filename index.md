@@ -11,7 +11,7 @@ data:
       title: Binary exponentation
     - icon: ':heavy_check_mark:'
       path: include/algebra/static_modint.hpp
-      title: Modint (for compile-time constant modulo)
+      title: static_modint
   - name: include/combinatorics
     pages:
     - icon: ':heavy_check_mark:'
