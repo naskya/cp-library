@@ -26,7 +26,7 @@ namespace internal {
 }  // namespace internal
 
 //! @brief data structure to calculate interval products of associative and idempotent operations (for static array)
-//! @tparam Elem element type (NOT deduced from constructor's parameters)
+//! @tparam Elem element type (deduced from constructor's parameters but can be set manually if needed)
 //! @tparam Func functor type (deduced from constructor's parameters)
 template <typename Elem, typename Func>
 class sparse_table {
@@ -77,13 +77,10 @@ public:
   }
 };
 
-//! @brief Function for type deduction
-//! @tparam Container source container type (deduced from parameter)
-//! @tparam Func functor type (deduced from parameter)
+//! @brief Deduction guide
 template <typename Container, typename Func>
-[[nodiscard]] auto make_sparse_table(const Container& src, const Func& binary_op_functor) {
-  return sparse_table<std::decay_t<decltype(*std::begin(std::declval<Container>()))>, Func>(src, binary_op_functor);
-}
+sparse_table(const Container&, const Func&)
+  -> sparse_table<std::decay_t<decltype(*std::begin(std::declval<Container>()))>, Func>;
 
 }  // namespace lib
 

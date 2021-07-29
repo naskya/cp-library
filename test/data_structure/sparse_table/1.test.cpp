@@ -17,7 +17,7 @@ int main() {
   std::copy_n(std::istream_iterator<int>(std::cin), N, std::begin(A));
 
   const auto F  = [](const int x, const int y) constexpr { return std::min(x, y); };
-  const auto st = lib::make_sparse_table(A, F);
+  const auto st = lib::sparse_table(A, F);
 
   while (Q--) {
     int l, r;
