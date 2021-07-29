@@ -12,6 +12,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: include/algebra/static_modint.hpp
       title: Modint (for compile-time constant modulo)
+  - name: include/combinatorics
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: include/combinatorics/factorial.hpp
+      title: Factorial, Permutation, Combination
   - name: include/data_structure
     pages:
     - icon: ':heavy_check_mark:'
@@ -33,6 +38,12 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/algebra/dynamic_modint/1.test.cpp
       title: test/algebra/dynamic_modint/1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/algebra/dynamic_modint/2.test.cpp
+      title: test/algebra/dynamic_modint/2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/algebra/dynamic_modint/3.test.cpp
+      title: test/algebra/dynamic_modint/3.test.cpp
   - name: test/algebra/pow
     pages:
     - icon: ':heavy_check_mark:'
@@ -43,6 +54,17 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/algebra/static_modint/1.test.cpp
       title: test/algebra/static_modint/1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/algebra/static_modint/2.test.cpp
+      title: test/algebra/static_modint/2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/algebra/static_modint/3.test.cpp
+      title: test/algebra/static_modint/3.test.cpp
+  - name: test/combinatorics/factorial
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/combinatorics/factorial/1.test.cpp
+      title: test/combinatorics/factorial/1.test.cpp
   - name: test/data_structure/union_find
     pages:
     - icon: ':heavy_check_mark:'
