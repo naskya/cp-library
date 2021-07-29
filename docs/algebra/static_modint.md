@@ -1,5 +1,4 @@
 ---
-title: static_modint
 documentation_of: //include/algebra/static_modint.hpp
 ---
 
