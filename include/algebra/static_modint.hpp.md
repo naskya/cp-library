@@ -31,28 +31,27 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    document_title: Modint (for compile-time constant modulo)
+    document_title: Print warning message
     links: []
   bundledCode: "#line 1 \"include/algebra/static_modint.hpp\"\n\n//! @file static_modint.hpp\n\
-    //! @brief Modint (for compile-time constant modulo)\n\n#ifndef STATIC_MODINT_HPP\n\
-    #define STATIC_MODINT_HPP\n\n#include <cstdint>\n#include <iostream>\n#include\
-    \ <limits>\n#include <type_traits>\n\n#ifndef warn\n//! @brief Print warning message\n\
-    //! @note You can suppress the warning by uncommenting line 17\n#  define warn(msg)\
-    \ (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
-    #  define warn_not_defined\n#endif\n\nnamespace lib {\n\n//! @brief modint (for\
-    \ compile-time constant modulo)\n//! @tparam modulo modulo (e.g. 1000000007).\n\
-    template <std::int_least32_t modulo,\n          std::enable_if_t<(1 < modulo)\
-    \ && (modulo < std::numeric_limits<std::int_least32_t>::max() / 2),\n        \
-    \                   std::nullptr_t> = nullptr>\nstruct static_modint {\nprivate:\n\
-    \  std::int_least32_t value;\n\n  //! @param n non-zero integer\n  //! @return\
-    \ multiplicative inverse of n\n  template <typename Tp>\n  [[nodiscard]] static\
-    \ constexpr std::int_least32_t calc_inverse(Tp n) noexcept {\n    Tp b = modulo,\
-    \ u = 1, v = 0, t;\n    while (b > 0) {\n      t = n / b;\n      // std::swap\
-    \ is not necessarily constexpr in C++17\n      // std::swap(n -= t * b, b);\n\
-    \      Tp tmp = std::move(n -= t * b);\n      n      = std::move(b);\n      b\
-    \      = std::move(tmp);\n      // std::swap(u -= t * v, v);\n      tmp = std::move(u\
-    \ -= t * v);\n      u   = std::move(v);\n      v   = std::move(tmp);\n    }\n\
-    \    if (u < 0) u += modulo;\n    return static_cast<std::int_least32_t>(u);\n\
+    \n#ifndef STATIC_MODINT_HPP\n#define STATIC_MODINT_HPP\n\n#include <cstdint>\n\
+    #include <iostream>\n#include <limits>\n#include <type_traits>\n\n#ifndef warn\n\
+    //! @brief Print warning message\n//! @note You can suppress the warning by uncommenting\
+    \ line 17\n#  define warn(msg) (std::cerr << (msg) << '\\n')\n// #  define warn(msg)\
+    \ (static_cast<void>(0))\n#  define warn_not_defined\n#endif\n\nnamespace lib\
+    \ {\n\n//! @brief modint (for compile-time constant modulo)\n//! @tparam modulo\
+    \ modulo (e.g. 1000000007).\ntemplate <std::int_least32_t modulo,\n          std::enable_if_t<(1\
+    \ < modulo) && (modulo < std::numeric_limits<std::int_least32_t>::max() / 2),\n\
+    \                           std::nullptr_t> = nullptr>\nstruct static_modint {\n\
+    private:\n  std::int_least32_t value;\n\n  //! @param n non-zero integer\n  //!\
+    \ @return multiplicative inverse of n\n  template <typename Tp>\n  [[nodiscard]]\
+    \ static constexpr std::int_least32_t calc_inverse(Tp n) noexcept {\n    Tp b\
+    \ = modulo, u = 1, v = 0, t;\n    while (b > 0) {\n      t = n / b;\n      //\
+    \ std::swap is not necessarily constexpr in C++17\n      // std::swap(n -= t *\
+    \ b, b);\n      Tp tmp = std::move(n -= t * b);\n      n      = std::move(b);\n\
+    \      b      = std::move(tmp);\n      // std::swap(u -= t * v, v);\n      tmp\
+    \ = std::move(u -= t * v);\n      u   = std::move(v);\n      v   = std::move(tmp);\n\
+    \    }\n    if (u < 0) u += modulo;\n    return static_cast<std::int_least32_t>(u);\n\
     \  }\n\n  //! @brief Calculate modulo and keep the value within [0, modulo)\n\
     \  //! @param v integer\n  //! @return integer within [0, modulo)\n  //! @note\
     \ Time complexity: O(1)\n  template <typename Tp>\n  [[nodiscard]] static constexpr\
@@ -312,10 +311,9 @@ data:
     operator>= : Are you sure you want to do this?\");\n  return lhs < static_cast<std::int_least32_t>(rhs);\n\
     }\n\n}  // namespace lib\n\n#ifdef warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n\
     #endif\n\n#endif  // STATIC_MODINT_HPP\n"
-  code: "\n//! @file static_modint.hpp\n//! @brief Modint (for compile-time constant\
-    \ modulo)\n\n#ifndef STATIC_MODINT_HPP\n#define STATIC_MODINT_HPP\n\n#include\
-    \ <cstdint>\n#include <iostream>\n#include <limits>\n#include <type_traits>\n\n\
-    #ifndef warn\n//! @brief Print warning message\n//! @note You can suppress the\
+  code: "\n//! @file static_modint.hpp\n\n#ifndef STATIC_MODINT_HPP\n#define STATIC_MODINT_HPP\n\
+    \n#include <cstdint>\n#include <iostream>\n#include <limits>\n#include <type_traits>\n\
+    \n#ifndef warn\n//! @brief Print warning message\n//! @note You can suppress the\
     \ warning by uncommenting line 17\n#  define warn(msg) (std::cerr << (msg) <<\
     \ '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n#  define warn_not_defined\n\
     #endif\n\nnamespace lib {\n\n//! @brief modint (for compile-time constant modulo)\n\
@@ -594,7 +592,7 @@ data:
   isVerificationFile: false
   path: include/algebra/static_modint.hpp
   requiredBy: []
-  timestamp: '2021-07-29 12:37:21+09:00'
+  timestamp: '2021-07-30 01:15:53+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp
@@ -607,6 +605,7 @@ data:
   - test/data_structure/binary_indexed_tree/2.test.cpp
 documentation_of: include/algebra/static_modint.hpp
 layout: document
+title: Modint (for compile-time constant modulo)
 ---
 
 `static_modint` 構造体が定義されています。
