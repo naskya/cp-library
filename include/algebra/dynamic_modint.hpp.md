@@ -578,7 +578,7 @@ title: Modint (for runtime constant modulo)
 
 ## `dynamic_modint` 構造体
 
-基本的に `static_modint` と同じように扱えるので、ここに載っていない内容は `static_modint` の説明を参照してください。
+基本的に `static_modint` と同じように扱えるので、ここに載っていない内容は [`static_modint` の説明](https://naskya.github.io/cp-library/include/algebra/static_modint.hpp)を参照してください。
 
 ### 型テンプレート
 

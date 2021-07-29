@@ -37,7 +37,7 @@ data:
     \n#ifndef STATIC_MODINT_HPP\n#define STATIC_MODINT_HPP\n\n#include <cstdint>\n\
     #include <iostream>\n#include <limits>\n#include <type_traits>\n\n#ifndef warn\n\
     //! @brief Print warning message\n//! @note You can suppress the warning by uncommenting\
-    \ line 17\n#  define warn(msg) (std::cerr << (msg) << '\\n')\n// #  define warn(msg)\
+    \ line 16\n#  define warn(msg) (std::cerr << (msg) << '\\n')\n// #  define warn(msg)\
     \ (static_cast<void>(0))\n#  define warn_not_defined\n#endif\n\nnamespace lib\
     \ {\n\n//! @brief modint (for compile-time constant modulo)\n//! @tparam modulo\
     \ modulo (e.g. 1000000007).\ntemplate <std::int_least32_t modulo,\n          std::enable_if_t<(1\
@@ -314,7 +314,7 @@ data:
   code: "\n//! @file static_modint.hpp\n\n#ifndef STATIC_MODINT_HPP\n#define STATIC_MODINT_HPP\n\
     \n#include <cstdint>\n#include <iostream>\n#include <limits>\n#include <type_traits>\n\
     \n#ifndef warn\n//! @brief Print warning message\n//! @note You can suppress the\
-    \ warning by uncommenting line 17\n#  define warn(msg) (std::cerr << (msg) <<\
+    \ warning by uncommenting line 16\n#  define warn(msg) (std::cerr << (msg) <<\
     \ '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n#  define warn_not_defined\n\
     #endif\n\nnamespace lib {\n\n//! @brief modint (for compile-time constant modulo)\n\
     //! @tparam modulo modulo (e.g. 1000000007).\ntemplate <std::int_least32_t modulo,\n\
@@ -592,7 +592,7 @@ data:
   isVerificationFile: false
   path: include/algebra/static_modint.hpp
   requiredBy: []
-  timestamp: '2021-07-30 01:15:53+09:00'
+  timestamp: '2021-07-30 01:20:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp
@@ -673,7 +673,7 @@ static_assert(d == (10000000000LL % mint::mod()));
 - `>>` (`std::istream&` からの入力)
 - `<<` (`std::ostream&` への出力)
 
-以下の演算子もオーバーロードされていますが、使用すると標準エラー出力に警告が出ます。この警告は 17 行目のコメントアウトを解除すると抑制できます。
+以下の演算子もオーバーロードされていますが、使用すると標準エラー出力に警告が出ます。この警告は 16 行目のコメントアウトを解除すると抑制できます。
 
 - `%`
 - `|`
@@ -698,14 +698,14 @@ static_assert(d == (10000000000LL % mint::mod()));
 
 以下の関数が使用できます。ここで、変数が保持している値を $x$ とします。
 
-#### inv()
+#### `inv()`
 
 $x$ の乗法の逆元 $x^{-1}$ を返します。$x = 0$ である時の動作は未定義です。
 
-#### pow(n)
+#### `pow(n)`
 
 $x^n$ を返します。
 
-#### to_frac()
+#### `to_frac()`
 
 $x = a \cdot b^{-1}$ であるような $(a, b)$ の組のうち $a + b$ が最小であるものを返します。例えば $x = 2$ の時 `x.inv().to_frac()` は $(1, 2)$ を返します。
