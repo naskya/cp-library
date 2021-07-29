@@ -103,6 +103,8 @@ namespace internal {
   };
 }  // namespace internal
 
+//! @brief Binary indexed tree with uniform add function.
+//! @tparam Elem Element type. Watch out for overflows.
 template <typename Elem>
 class binary_indexed_tree {
 private:
