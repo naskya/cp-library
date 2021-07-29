@@ -1,6 +1,5 @@
 
 //! @file static_modint.hpp
-//! @brief Modint (for compile-time constant modulo)
 
 #ifndef STATIC_MODINT_HPP
 #define STATIC_MODINT_HPP

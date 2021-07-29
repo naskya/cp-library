@@ -1,4 +1,5 @@
 ---
+title: Modint (for compile-time constant modulo)
 documentation_of: //include/algebra/static_modint.hpp
 ---
 

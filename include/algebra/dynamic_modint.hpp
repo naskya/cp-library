@@ -1,6 +1,5 @@
 
 //! @file dynamic_modint.hpp
-//! @brief Modint (for runtime constant modulo)
 
 #ifndef DYNAMIC_MODINT_HPP
 #define DYNAMIC_MODINT_HPP
