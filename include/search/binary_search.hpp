@@ -1,6 +1,5 @@
 
 //! @file binary_search.hpp
-//! @brief Binary search
 
 #ifndef BINARY_SEARCH_HPP
 #define BINARY_SEARCH_HPP
