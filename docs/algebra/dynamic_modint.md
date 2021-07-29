@@ -15,7 +15,6 @@ documentation_of: //include/algebra/dynamic_modint.hpp
 
 ```C++
 int MOD;
-
 using mint = lib::dynamic_modint<decltype(MOD), &MOD>;
 ```
 
@@ -23,4 +22,4 @@ using mint = lib::dynamic_modint<decltype(MOD), &MOD>;
 
 この型の変数を宣言する前に、必ず `MOD` の値を標準入力から入力するなどして設定するようにしてください。そうでないと、0 での除算が発生します。
 
-`static_modint` とは異なり、変数 `MOD` (`MOD` という名前である必要はありません)は `long long` 型にすることもできます。
+`static_modint` とは異なり、変数 `MOD` (`MOD` という名前である必要はありません)は `long long` 型にすることもできます(ただし、あまりテストされていません)。
