@@ -1,6 +1,5 @@
 
 //! @file z_algorithm.hpp
-//! @brief Z algorithm
 //! @details Provide a function to calculate the length of the longest common prefix.
 
 #ifndef Z_ALGORITHM_HPP
