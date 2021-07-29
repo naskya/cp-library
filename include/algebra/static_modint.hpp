@@ -56,7 +56,11 @@ private:
   //! @note Time complexity: O(1)
   template <typename Tp>
   [[nodiscard]] static constexpr std::int_least32_t clamp_ll(Tp v) noexcept {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
     if (modulo <= v || v < -modulo) v %= modulo;
+#pragma GCC diagnostic pop
+
     if (v < 0) v += modulo;
     return static_cast<std::int_least32_t>(v);
   }
@@ -99,7 +103,7 @@ public:
 
   //! @brief Create a modint
   template <typename ValueType>
-  constexpr static_modint(const ValueType v) noexcept {
+  constexpr static_modint(const ValueType v) noexcept : value() {
     if constexpr (std::is_integral_v<ValueType> && (std::numeric_limits<ValueType>::digits <= 32)) {
       value = v;
       clamp_self();

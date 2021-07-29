@@ -60,7 +60,10 @@ private:
   //! @return integer within [0, *modulo_ptr)
   //! @note Time complexity: O(1)
   template <typename Sp> static constexpr Tp clamp(Sp v) noexcept {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
     if (*modulo_ptr <= v || v < -*modulo_ptr) v %= *modulo_ptr;
+#pragma GCC diagnostic pop
     if (v < 0) v += *modulo_ptr;
     return static_cast<Tp>(v);
   }
@@ -81,9 +84,7 @@ public:
   constexpr dynamic_modint(const Tp v, bool) noexcept : value(v) {}
 
   //! @brief Create a modint
-  template <typename ValueType> constexpr dynamic_modint(const ValueType v) noexcept {
-    value = clamp(v);
-  }
+  template <typename ValueType> constexpr dynamic_modint(const ValueType v) noexcept : value(clamp(v)) {}
 
   [[nodiscard]] constexpr dynamic_modint operator+(const dynamic_modint rhs) const noexcept {
     return dynamic_modint(value + rhs.value);
