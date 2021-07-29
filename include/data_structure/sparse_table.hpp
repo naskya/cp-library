@@ -27,7 +27,7 @@ namespace internal {
 
 //! @brief data structure to calculate interval products of associative and idempotent operations (for static array)
 //! @tparam Elem element type (deduced from constructor's parameters but can be set manually if needed)
-//! @tparam Func functor type (deduced from constructor's parameters)
+//! @tparam Func functor type (deduced from constructor's parameters but has to be specified if you set Elem manually)
 template <typename Elem, typename Func>
 class sparse_table {
 private:
@@ -38,7 +38,7 @@ private:
 public:
   //! @brief Construct a sparse table from source container
   //! @tparam Container container type (deduced from parameter)
-  //! @param src source container (elements don't necesarily need to be of type Elem)
+  //! @param src source container
   //! @param binary_op_functor functor (must be associative & idempotent)
   //! @note Time complexity: O(N log N) where N = size(src)
   template <typename Container>
