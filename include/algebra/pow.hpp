@@ -1,6 +1,5 @@
 
 //! @file pow.hpp
-//! @brief Binary exponentation
 
 #ifndef POW_HPP
 #define POW_HPP
