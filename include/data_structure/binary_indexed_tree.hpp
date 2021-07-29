@@ -151,8 +151,10 @@ public:
   //! @note Time complexity: O(log n) where n is the vector length
   void uniform_add(int left, int right, const Elem& val) {
     O_assert(0 <= left && left <= right && right <= size());
-    bit_0.add(left, val * (-1) * (left - 1));
-    bit_1.add(left, val);
+    if (left != size()) {
+      bit_0.add(left, val * (-1) * (left - 1));
+      bit_1.add(left, val);
+    }
     if (right != size()) {
       bit_0.add(right, val * (right - 1));
       bit_1.add(right, val * (-1));
