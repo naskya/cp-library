@@ -18,6 +18,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/combinatorics/factorial/1.test.cpp
     title: test/combinatorics/factorial/1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/data_structure/binary_indexed_tree/1.test.cpp
+    title: test/data_structure/binary_indexed_tree/1.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -589,6 +592,7 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp
+  - test/data_structure/binary_indexed_tree/1.test.cpp
   - test/algebra/pow/1.test.cpp
   - test/algebra/static_modint/1.test.cpp
   - test/algebra/static_modint/2.test.cpp
