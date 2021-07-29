@@ -12,9 +12,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/algebra/dynamic_modint/3.test.cpp
     title: test/algebra/dynamic_modint/3.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/algebra/dynamic_modint/4.test.cpp
+    title: test/algebra/dynamic_modint/4.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: Modint (for runtime constant modulo)
     links: []
@@ -562,9 +565,10 @@ data:
   path: include/algebra/dynamic_modint.hpp
   requiredBy: []
   timestamp: '2021-07-29 12:37:21+09:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/algebra/dynamic_modint/3.test.cpp
+  - test/algebra/dynamic_modint/4.test.cpp
   - test/algebra/dynamic_modint/1.test.cpp
   - test/algebra/dynamic_modint/2.test.cpp
 documentation_of: include/algebra/dynamic_modint.hpp

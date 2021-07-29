@@ -6,9 +6,12 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/combinatorics/factorial/1.test.cpp
     title: test/combinatorics/factorial/1.test.cpp
-  _isVerificationFailed: false
+  - icon: ':x:'
+    path: test/combinatorics/factorial/2.test.cpp
+    title: test/combinatorics/factorial/2.test.cpp
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: Factorial, Permutation, Combination
     links: []
@@ -120,9 +123,10 @@ data:
   path: include/combinatorics/factorial.hpp
   requiredBy: []
   timestamp: '2021-07-29 12:37:36+09:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp
+  - test/combinatorics/factorial/2.test.cpp
 documentation_of: include/combinatorics/factorial.hpp
 layout: document
 redirect_from:

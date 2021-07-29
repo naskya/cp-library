@@ -3,18 +3,18 @@ data:
   libraryCategories:
   - name: include/algebra
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: include/algebra/dynamic_modint.hpp
       title: Modint (for runtime constant modulo)
     - icon: ':heavy_check_mark:'
       path: include/algebra/pow.hpp
       title: Binary exponentation
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: include/algebra/static_modint.hpp
       title: Modint (for compile-time constant modulo)
   - name: include/combinatorics
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':question:'
       path: include/combinatorics/factorial.hpp
       title: Factorial, Permutation, Combination
   - name: include/data_structure
@@ -35,6 +35,9 @@ data:
       title: Binary search
   - name: include/string
     pages:
+    - icon: ':x:'
+      path: include/string/edit_distance.hpp
+      title: Edit distance
     - icon: ':heavy_check_mark:'
       path: include/string/z_algorithm.hpp
       title: Z algorithm
@@ -50,6 +53,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/algebra/dynamic_modint/3.test.cpp
       title: test/algebra/dynamic_modint/3.test.cpp
+    - icon: ':x:'
+      path: test/algebra/dynamic_modint/4.test.cpp
+      title: test/algebra/dynamic_modint/4.test.cpp
   - name: test/algebra/pow
     pages:
     - icon: ':heavy_check_mark:'
@@ -71,6 +77,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/combinatorics/factorial/1.test.cpp
       title: test/combinatorics/factorial/1.test.cpp
+    - icon: ':x:'
+      path: test/combinatorics/factorial/2.test.cpp
+      title: test/combinatorics/factorial/2.test.cpp
   - name: test/data_structure/binary_indexed_tree
     pages:
     - icon: ':heavy_check_mark:'
@@ -100,6 +109,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/search/binary_search/3.test.cpp
       title: test/search/binary_search/3.test.cpp
+  - name: test/string/edit_distance
+    pages:
+    - icon: ':x:'
+      path: test/string/edit_distance/1.test.cpp
+      title: test/string/edit_distance/1.test.cpp
   - name: test/string/z_algorithm
     pages:
     - icon: ':heavy_check_mark:'

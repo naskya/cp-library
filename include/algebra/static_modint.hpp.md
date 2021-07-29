@@ -18,12 +18,15 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/combinatorics/factorial/1.test.cpp
     title: test/combinatorics/factorial/1.test.cpp
+  - icon: ':x:'
+    path: test/combinatorics/factorial/2.test.cpp
+    title: test/combinatorics/factorial/2.test.cpp
   - icon: ':heavy_check_mark:'
     path: test/data_structure/binary_indexed_tree/1.test.cpp
     title: test/data_structure/binary_indexed_tree/1.test.cpp
-  _isVerificationFailed: false
+  _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':heavy_check_mark:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: Modint (for compile-time constant modulo)
     links: []
@@ -589,9 +592,10 @@ data:
   path: include/algebra/static_modint.hpp
   requiredBy: []
   timestamp: '2021-07-29 12:37:21+09:00'
-  verificationStatus: LIBRARY_ALL_AC
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp
+  - test/combinatorics/factorial/2.test.cpp
   - test/algebra/pow/1.test.cpp
   - test/algebra/static_modint/3.test.cpp
   - test/algebra/static_modint/1.test.cpp
