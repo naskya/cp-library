@@ -11,7 +11,7 @@ data:
       title: Binary exponentation
     - icon: ':heavy_check_mark:'
       path: include/algebra/static_modint.hpp
-      title: static_modint
+      title: include/algebra/static_modint.hpp
   - name: include/combinatorics
     pages:
     - icon: ':heavy_check_mark:'

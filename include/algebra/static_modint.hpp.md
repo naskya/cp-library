@@ -607,7 +607,6 @@ data:
   - test/data_structure/binary_indexed_tree/2.test.cpp
 documentation_of: include/algebra/static_modint.hpp
 layout: document
-title: static_modint
 ---
 
 `static_modint` 構造体が定義されています。
