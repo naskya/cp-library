@@ -3,18 +3,18 @@ data:
   libraryCategories:
   - name: include/algebra
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: include/algebra/dynamic_modint.hpp
       title: Modint (for runtime constant modulo)
     - icon: ':heavy_check_mark:'
       path: include/algebra/pow.hpp
       title: Binary exponentation
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: include/algebra/static_modint.hpp
       title: Modint (for compile-time constant modulo)
   - name: include/combinatorics
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: include/combinatorics/factorial.hpp
       title: Factorial, Permutation, Combination
   - name: include/data_structure
@@ -35,7 +35,7 @@ data:
       title: Binary search
   - name: include/string
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: include/string/edit_distance.hpp
       title: Edit distance
     - icon: ':heavy_check_mark:'
@@ -53,7 +53,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/algebra/dynamic_modint/3.test.cpp
       title: test/algebra/dynamic_modint/3.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/algebra/dynamic_modint/4.test.cpp
       title: test/algebra/dynamic_modint/4.test.cpp
   - name: test/algebra/pow
@@ -77,7 +77,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/combinatorics/factorial/1.test.cpp
       title: test/combinatorics/factorial/1.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/combinatorics/factorial/2.test.cpp
       title: test/combinatorics/factorial/2.test.cpp
   - name: test/data_structure/binary_indexed_tree
@@ -85,6 +85,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/binary_indexed_tree/1.test.cpp
       title: test/data_structure/binary_indexed_tree/1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/binary_indexed_tree/2.test.cpp
+      title: test/data_structure/binary_indexed_tree/2.test.cpp
   - name: test/data_structure/sparse_table
     pages:
     - icon: ':heavy_check_mark:'
@@ -111,7 +114,7 @@ data:
       title: test/search/binary_search/3.test.cpp
   - name: test/string/edit_distance
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/string/edit_distance/1.test.cpp
       title: test/string/edit_distance/1.test.cpp
   - name: test/string/z_algorithm

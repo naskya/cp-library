@@ -6,6 +6,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/data_structure/binary_indexed_tree/1.test.cpp
     title: test/data_structure/binary_indexed_tree/1.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/data_structure/binary_indexed_tree/2.test.cpp
+    title: test/data_structure/binary_indexed_tree/2.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -81,31 +84,31 @@ data:
     \ right upper limit of interval (0-indexed)\n  //! @param val value to be added\n\
     \  //! @note Time complexity: O(log n) where n is the vector length\n  void uniform_add(int\
     \ left, int right, const Elem& val) {\n    O_assert(0 <= left && left <= right\
-    \ && right <= size());\n    bit_0.add(left, val * (-1) * (left - 1));\n    bit_1.add(left,\
-    \ val);\n    if (right != size()) {\n      bit_0.add(right, val * (right - 1));\n\
-    \      bit_1.add(right, val * (-1));\n    }\n  }\n\n  //! @brief Calculate interval\
-    \ sum.\n  //! @param left lower limit of interval (0-indexed)\n  //! @param right\
-    \ upper limit of interval (0-indexed)\n  //! @return Sum of the elements within\
-    \ [left, right) (half-open interval)\n  //! @note Time complexity: O(log n) where\
-    \ n is the vector length\n  [[nodiscard]] Elem sum(int left, int right) const\
-    \ {\n    if (left == 0)\n      return partial_sum(right);\n    else\n      return\
-    \ partial_sum(right) - partial_sum(left - 1);\n  }\n\n  //! @brief Get the value\
-    \ of the index-th element.\n  //! @param index index (0-indexed)\n  //! @note\
-    \ Time complexity: O(log n) where n is the vector length\n  [[nodiscard]] Elem\
-    \ get(int index) const {\n    return partial_sum(index + 1) - partial_sum(index);\n\
-    \  }\n\n  //! @brief Set the value of the index-th element to val.\n  //! @param\
-    \ index index (0-indexed)\n  //! @param val value to be set\n  //! @note Time\
-    \ complexity: O(log n) where n is the vector length\n  void set(const int index,\
-    \ const Elem& val) {\n    bit_0.add(index, val - get(index));\n  }\n\n  //! @brief\
-    \ Print debug information.\n  //! @param name variable name\n  //! @param os output\
-    \ stream\n  void debug_print(const std::string& name = \"\", std::ostream& os\
-    \ = std::cerr) const {\n    if (!name.empty())\n      os << name << \": \";\n\n\
-    \    os << \"val [ \";\n    for (int i = 0; i < size(); ++i)\n      os << get(i)\
-    \ << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n      os << std::string(std::size(name)\
-    \ + 2, ' ');\n\n    os << \"sum [ \";\n    for (int i = 0; i <= size(); ++i)\n\
-    \      os << partial_sum(i) << ' ';\n    os << \"]\\n\";\n  }\n};\n\n}  // namespace\
-    \ lib\n\n#ifdef O_assert_not_defined\n#  undef O_assert\n#  undef O_assert_not_defined\n\
-    #endif\n\n#endif  // BINARY_INDEXED_TREE_HPP\n"
+    \ && right <= size());\n    if (left != size()) {\n      bit_0.add(left, val *\
+    \ (-1) * (left - 1));\n      bit_1.add(left, val);\n    }\n    if (right != size())\
+    \ {\n      bit_0.add(right, val * (right - 1));\n      bit_1.add(right, val *\
+    \ (-1));\n    }\n  }\n\n  //! @brief Calculate interval sum.\n  //! @param left\
+    \ lower limit of interval (0-indexed)\n  //! @param right upper limit of interval\
+    \ (0-indexed)\n  //! @return Sum of the elements within [left, right) (half-open\
+    \ interval)\n  //! @note Time complexity: O(log n) where n is the vector length\n\
+    \  [[nodiscard]] Elem sum(int left, int right) const {\n    if (left == 0)\n \
+    \     return partial_sum(right);\n    else\n      return partial_sum(right) -\
+    \ partial_sum(left - 1);\n  }\n\n  //! @brief Get the value of the index-th element.\n\
+    \  //! @param index index (0-indexed)\n  //! @note Time complexity: O(log n) where\
+    \ n is the vector length\n  [[nodiscard]] Elem get(int index) const {\n    return\
+    \ partial_sum(index + 1) - partial_sum(index);\n  }\n\n  //! @brief Set the value\
+    \ of the index-th element to val.\n  //! @param index index (0-indexed)\n  //!\
+    \ @param val value to be set\n  //! @note Time complexity: O(log n) where n is\
+    \ the vector length\n  void set(const int index, const Elem& val) {\n    bit_0.add(index,\
+    \ val - get(index));\n  }\n\n  //! @brief Print debug information.\n  //! @param\
+    \ name variable name\n  //! @param os output stream\n  void debug_print(const\
+    \ std::string& name = \"\", std::ostream& os = std::cerr) const {\n    if (!name.empty())\n\
+    \      os << name << \": \";\n\n    os << \"val [ \";\n    for (int i = 0; i <\
+    \ size(); ++i)\n      os << get(i) << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n\
+    \      os << std::string(std::size(name) + 2, ' ');\n\n    os << \"sum [ \";\n\
+    \    for (int i = 0; i <= size(); ++i)\n      os << partial_sum(i) << ' ';\n \
+    \   os << \"]\\n\";\n  }\n};\n\n}  // namespace lib\n\n#ifdef O_assert_not_defined\n\
+    #  undef O_assert\n#  undef O_assert_not_defined\n#endif\n\n#endif  // BINARY_INDEXED_TREE_HPP\n"
   code: "\n//! @file binary_indexed_tree.hpp\n//! @brief Binary indexed tree\n\n#ifndef\
     \ BINARY_INDEXED_TREE_HPP\n#define BINARY_INDEXED_TREE_HPP\n\n#include <cassert>\n\
     #include <iostream>\n#include <string>\n#include <vector>\n\n#ifndef O_assert\n\
@@ -174,39 +177,40 @@ data:
     \ right upper limit of interval (0-indexed)\n  //! @param val value to be added\n\
     \  //! @note Time complexity: O(log n) where n is the vector length\n  void uniform_add(int\
     \ left, int right, const Elem& val) {\n    O_assert(0 <= left && left <= right\
-    \ && right <= size());\n    bit_0.add(left, val * (-1) * (left - 1));\n    bit_1.add(left,\
-    \ val);\n    if (right != size()) {\n      bit_0.add(right, val * (right - 1));\n\
-    \      bit_1.add(right, val * (-1));\n    }\n  }\n\n  //! @brief Calculate interval\
-    \ sum.\n  //! @param left lower limit of interval (0-indexed)\n  //! @param right\
-    \ upper limit of interval (0-indexed)\n  //! @return Sum of the elements within\
-    \ [left, right) (half-open interval)\n  //! @note Time complexity: O(log n) where\
-    \ n is the vector length\n  [[nodiscard]] Elem sum(int left, int right) const\
-    \ {\n    if (left == 0)\n      return partial_sum(right);\n    else\n      return\
-    \ partial_sum(right) - partial_sum(left - 1);\n  }\n\n  //! @brief Get the value\
-    \ of the index-th element.\n  //! @param index index (0-indexed)\n  //! @note\
-    \ Time complexity: O(log n) where n is the vector length\n  [[nodiscard]] Elem\
-    \ get(int index) const {\n    return partial_sum(index + 1) - partial_sum(index);\n\
-    \  }\n\n  //! @brief Set the value of the index-th element to val.\n  //! @param\
-    \ index index (0-indexed)\n  //! @param val value to be set\n  //! @note Time\
-    \ complexity: O(log n) where n is the vector length\n  void set(const int index,\
-    \ const Elem& val) {\n    bit_0.add(index, val - get(index));\n  }\n\n  //! @brief\
-    \ Print debug information.\n  //! @param name variable name\n  //! @param os output\
-    \ stream\n  void debug_print(const std::string& name = \"\", std::ostream& os\
-    \ = std::cerr) const {\n    if (!name.empty())\n      os << name << \": \";\n\n\
-    \    os << \"val [ \";\n    for (int i = 0; i < size(); ++i)\n      os << get(i)\
-    \ << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n      os << std::string(std::size(name)\
-    \ + 2, ' ');\n\n    os << \"sum [ \";\n    for (int i = 0; i <= size(); ++i)\n\
-    \      os << partial_sum(i) << ' ';\n    os << \"]\\n\";\n  }\n};\n\n}  // namespace\
-    \ lib\n\n#ifdef O_assert_not_defined\n#  undef O_assert\n#  undef O_assert_not_defined\n\
-    #endif\n\n#endif  // BINARY_INDEXED_TREE_HPP\n"
+    \ && right <= size());\n    if (left != size()) {\n      bit_0.add(left, val *\
+    \ (-1) * (left - 1));\n      bit_1.add(left, val);\n    }\n    if (right != size())\
+    \ {\n      bit_0.add(right, val * (right - 1));\n      bit_1.add(right, val *\
+    \ (-1));\n    }\n  }\n\n  //! @brief Calculate interval sum.\n  //! @param left\
+    \ lower limit of interval (0-indexed)\n  //! @param right upper limit of interval\
+    \ (0-indexed)\n  //! @return Sum of the elements within [left, right) (half-open\
+    \ interval)\n  //! @note Time complexity: O(log n) where n is the vector length\n\
+    \  [[nodiscard]] Elem sum(int left, int right) const {\n    if (left == 0)\n \
+    \     return partial_sum(right);\n    else\n      return partial_sum(right) -\
+    \ partial_sum(left - 1);\n  }\n\n  //! @brief Get the value of the index-th element.\n\
+    \  //! @param index index (0-indexed)\n  //! @note Time complexity: O(log n) where\
+    \ n is the vector length\n  [[nodiscard]] Elem get(int index) const {\n    return\
+    \ partial_sum(index + 1) - partial_sum(index);\n  }\n\n  //! @brief Set the value\
+    \ of the index-th element to val.\n  //! @param index index (0-indexed)\n  //!\
+    \ @param val value to be set\n  //! @note Time complexity: O(log n) where n is\
+    \ the vector length\n  void set(const int index, const Elem& val) {\n    bit_0.add(index,\
+    \ val - get(index));\n  }\n\n  //! @brief Print debug information.\n  //! @param\
+    \ name variable name\n  //! @param os output stream\n  void debug_print(const\
+    \ std::string& name = \"\", std::ostream& os = std::cerr) const {\n    if (!name.empty())\n\
+    \      os << name << \": \";\n\n    os << \"val [ \";\n    for (int i = 0; i <\
+    \ size(); ++i)\n      os << get(i) << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n\
+    \      os << std::string(std::size(name) + 2, ' ');\n\n    os << \"sum [ \";\n\
+    \    for (int i = 0; i <= size(); ++i)\n      os << partial_sum(i) << ' ';\n \
+    \   os << \"]\\n\";\n  }\n};\n\n}  // namespace lib\n\n#ifdef O_assert_not_defined\n\
+    #  undef O_assert\n#  undef O_assert_not_defined\n#endif\n\n#endif  // BINARY_INDEXED_TREE_HPP\n"
   dependsOn: []
   isVerificationFile: false
   path: include/data_structure/binary_indexed_tree.hpp
   requiredBy: []
-  timestamp: '2021-07-29 15:45:00+09:00'
+  timestamp: '2021-07-29 23:03:48+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/binary_indexed_tree/1.test.cpp
+  - test/data_structure/binary_indexed_tree/2.test.cpp
 documentation_of: include/data_structure/binary_indexed_tree.hpp
 layout: document
 redirect_from:
