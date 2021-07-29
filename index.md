@@ -23,6 +23,9 @@ data:
       path: include/data_structure/binary_indexed_tree.hpp
       title: Binary indexed tree
     - icon: ':heavy_check_mark:'
+      path: include/data_structure/sparse_table.hpp
+      title: Sparse table
+    - icon: ':heavy_check_mark:'
       path: include/data_structure/union_find.hpp
       title: Union-find data structure
   - name: include/search
@@ -73,6 +76,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/binary_indexed_tree/1.test.cpp
       title: test/data_structure/binary_indexed_tree/1.test.cpp
+  - name: test/data_structure/sparse_table
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/sparse_table/1.test.cpp
+      title: test/data_structure/sparse_table/1.test.cpp
   - name: test/data_structure/union_find
     pages:
     - icon: ':heavy_check_mark:'

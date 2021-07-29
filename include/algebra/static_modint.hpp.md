@@ -592,11 +592,11 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp
-  - test/data_structure/binary_indexed_tree/1.test.cpp
   - test/algebra/pow/1.test.cpp
+  - test/algebra/static_modint/3.test.cpp
   - test/algebra/static_modint/1.test.cpp
   - test/algebra/static_modint/2.test.cpp
-  - test/algebra/static_modint/3.test.cpp
+  - test/data_structure/binary_indexed_tree/1.test.cpp
 documentation_of: include/algebra/static_modint.hpp
 layout: document
 redirect_from:
