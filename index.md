@@ -27,7 +27,7 @@ data:
       title: Sparse table
     - icon: ':heavy_check_mark:'
       path: include/data_structure/union_find.hpp
-      title: Union-find data structure
+      title: Union-find
   - name: include/search
     pages:
     - icon: ':heavy_check_mark:'

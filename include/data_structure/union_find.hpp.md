@@ -13,12 +13,12 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    document_title: Union-find data structure
+    document_title: Assert macro
     links:
-    - https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp)
+    - https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp
   bundledCode: "#line 1 \"include/data_structure/union_find.hpp\"\n\n//! @file union_find.hpp\n\
-    //! @brief Union-find data structure\n//! @details Provide a data structure for\
-    \ managing disjoint sets.\n//! @note This file is based on AtCoder Library (https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp)\n\
+    //! @details Provide a data structure for managing disjoint sets.\n//! @note This\
+    \ file is based on AtCoder Library https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp\n\
     \n#ifndef UNION_FIND_HPP\n#define UNION_FIND_HPP\n\n#include <algorithm>\n#include\
     \ <cassert>\n#include <vector>\n\n#ifndef O_assert\n//! @brief Assert macro\n\
     #  define O_assert(...) assert(__VA_ARGS__)\n#  define O_assert_not_defined\n\
@@ -60,9 +60,8 @@ data:
     \ std::vector<int>& v) { return v.empty(); }),\n      std::end(res));\n    return\
     \ res;\n  }\n};\n\n}  // namespace lib\n\n#ifdef O_assert_not_defined\n#  undef\
     \ O_assert\n#  undef O_assert_not_defined\n#endif\n\n#endif  // UNION_FIND_HPP\n"
-  code: "\n//! @file union_find.hpp\n//! @brief Union-find data structure\n//! @details\
-    \ Provide a data structure for managing disjoint sets.\n//! @note This file is\
-    \ based on AtCoder Library (https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp)\n\
+  code: "\n//! @file union_find.hpp\n//! @details Provide a data structure for managing\
+    \ disjoint sets.\n//! @note This file is based on AtCoder Library https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp\n\
     \n#ifndef UNION_FIND_HPP\n#define UNION_FIND_HPP\n\n#include <algorithm>\n#include\
     \ <cassert>\n#include <vector>\n\n#ifndef O_assert\n//! @brief Assert macro\n\
     #  define O_assert(...) assert(__VA_ARGS__)\n#  define O_assert_not_defined\n\
@@ -108,15 +107,52 @@ data:
   isVerificationFile: false
   path: include/data_structure/union_find.hpp
   requiredBy: []
-  timestamp: '2021-07-28 14:52:32+09:00'
+  timestamp: '2021-07-30 03:43:26+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/union_find/1.test.cpp
   - test/data_structure/union_find/2.test.cpp
 documentation_of: include/data_structure/union_find.hpp
 layout: document
-redirect_from:
-- /library/include/data_structure/union_find.hpp
-- /library/include/data_structure/union_find.hpp.html
-title: Union-find data structure
+title: Union-find
 ---
+
+AtCoder Library の [dsu.hpp](https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp) を元にしています。`union_find` クラスが定義されています。
+
+## `union_find` クラス
+
+[素集合を管理するデータ構造](https://ja.wikipedia.org/wiki/%E7%B4%A0%E9%9B%86%E5%90%88%E3%83%87%E3%83%BC%E3%82%BF%E6%A7%8B%E9%80%A0)です。
+
+### コンストラクタ
+
+```C++
+lib::union_find uf(N);
+```
+
+で、$N$ 頂点 $0$ 辺の無向グラフを構築します。
+
+### メンバ関数
+
+#### `size()`
+
+頂点の数を返します。
+
+#### `parent(i)`
+
+$i$ 番目 (0-indexed) の頂点が属する集合(連結成分)の代表元の番号を返します。
+
+#### `same(i, j)`
+
+$i$ 番目 (0-indexed) の頂点と $j$ 番目 (0-indexed) の頂点が同じ集合に属している(連結である)かを返します。
+
+#### `group_size(i)`
+
+$i$ 番目 (0-indexed) の頂点が属する集合(連結成分)に属する頂点の数を返します。
+
+#### `merge(i, j)`
+
+$i$ 番目 (0-indexed) の頂点と $j$ 番目 (0-indexed) の頂点が属する集合をマージします。頂点間に辺を張るとも言えます。この操作によってグラフに変更が起きた場合は `true` を、元々 $i$ 番目の頂点と $j$ 番目 の頂点が連結であった場合には `false` を返します。
+
+#### `groups()`
+
+グラフを連結成分に分け、その情報を返します(AtCoder Library の dsu.hpp と同じ内容です)。
