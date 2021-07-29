@@ -221,7 +221,7 @@ title: Binary indexed tree
 
 区間一様加算の機能がついた [Binary indexed tree](https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A7%E3%83%8B%E3%83%83%E3%82%AF%E6%9C%A8) です。
 
-### 型テンプレート
+### クラステンプレート
 
 `binary_indexed_tree` クラスは要素の型を表す 1 つのテンプレート引数をとります。
 

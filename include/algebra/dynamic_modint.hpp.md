@@ -580,7 +580,7 @@ title: Modint (for runtime constant modulo)
 
 基本的に `static_modint` と同じように扱えるので、ここに載っていない内容は [`static_modint` の説明](https://naskya.github.io/cp-library/include/algebra/static_modint.hpp)を参照してください。
 
-### 型テンプレート
+### クラステンプレート
 
 `dynamic_modint` 構造体は 2 つのテンプレート引数を取ります。**グローバルに**整数型の変数を宣言して、以下のようにして使います。
 
