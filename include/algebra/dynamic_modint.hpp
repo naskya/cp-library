@@ -11,7 +11,7 @@
 
 #ifndef warn
 //! @brief Print warning message
-//! @note You can suppress the warning by uncommenting line 17
+//! @note You can suppress the warning by uncommenting line 16
 #  define warn(msg) (std::cerr << (msg) << '\n')
 // #  define warn(msg) (static_cast<void>(0))
 #  define warn_not_defined
