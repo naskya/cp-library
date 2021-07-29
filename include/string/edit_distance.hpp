@@ -1,6 +1,5 @@
 
 //! @file edit_distance.hpp
-//! @brief Edit distance
 
 #ifndef EDIT_DISTANCE_HPP
 #define EDIT_DISTANCE_HPP
