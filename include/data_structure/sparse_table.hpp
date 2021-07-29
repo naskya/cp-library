@@ -1,6 +1,5 @@
 
 //! @file sparse_table.hpp
-//! @brief Sparse table
 //! @details Provide a data structure to calculate interval products of associative and idempotent operations.
 
 #ifndef SPARSE_TABLE_HPP
@@ -71,7 +70,7 @@ public:
   //! @return product of the elements of an interval [left, right) (half-open interval)
   //! @note Time complexity: O(1)
   [[nodiscard]] Elem query(const int left, const int right) const {
-    O_assert(0 <= left && left <= right && right <= length);
+    O_assert(0 <= left && left < right && right <= length);
     const int j = internal::int_log2(right - left);
     return binary_op(table[left][j], table[right - (1 << j)][j]);
   }
