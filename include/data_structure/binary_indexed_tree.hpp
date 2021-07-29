@@ -1,6 +1,5 @@
 
 //! @file binary_indexed_tree.hpp
-//! @brief Binary indexed tree
 
 #ifndef BINARY_INDEXED_TREE_HPP
 #define BINARY_INDEXED_TREE_HPP
