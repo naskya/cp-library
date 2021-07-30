@@ -6,3 +6,5 @@ plugins:
 - jekyll-github-metadata
 - jekyll-remote-theme
 remote-theme: marella/jekyll-theme-documentation
+title: cp-library
+owner_name: naskya
