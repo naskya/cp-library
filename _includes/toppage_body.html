@@ -5,7 +5,7 @@
     <ul>
         {% for item in category.pages %}
         <li><a href="{{ item.path | absolute_url }}">{{ item.icon }} {{ item.title }}
-            {% if item.title != item.path %}<small>({{ item.path }})</small>{% endif %}
+            <!-- {% if item.title != item.path %}<small>({{ item.path }})</small>{% endif %} -->
         </a></li>
         {% endfor %}
     </ul>
