@@ -40,7 +40,7 @@ namespace internal {
     explicit binary_indexed_tree_impl(const int n) : length(n), data(n + 1, (Elem) 0) {}
 
     //! @brief Construct a vector from an existing container.
-    //! @tparam Container Container container type (deduced from parameter).
+    //! @tparam Container container type (deduced from parameter).
     //! @param src Source (container)
     template <typename Container>
     explicit binary_indexed_tree_impl(const Container& src)
@@ -120,7 +120,7 @@ public:
   explicit binary_indexed_tree(const int n) : bit_0(n), bit_1(n) {}
 
   //! @brief Construct a vector from an existing container.
-  //! @tparam Container Container container type (deduced from parameter).
+  //! @tparam Container container type (deduced from parameter).
   //! @param src Source (container)
   template <typename Container>
   explicit binary_indexed_tree(const Container& src) : bit_0(src), bit_1(static_cast<int>(std::size(src))) {}
