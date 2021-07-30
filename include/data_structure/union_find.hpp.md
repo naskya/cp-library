@@ -125,7 +125,7 @@ AtCoder Library の [dsu.hpp](https://github.com/atcoder/ac-library/blob/master/
 
 ### コンストラクタ
 
-```C++
+```cpp
 lib::union_find uf(N);
 ```
 

@@ -108,7 +108,7 @@ title: Sparse table
 
 ### コンストラクタ
 
-```C++
+```cpp
 std::vector<int> v {1, 2, 3, 4, 5, 6};
 const auto lcm = [](const int x, const int y) constexpr -> int { return std::lcm(x, y); };
 

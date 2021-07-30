@@ -584,7 +584,7 @@ title: Modint (for runtime constant modulo)
 
 `dynamic_modint` 構造体は 2 つのテンプレート引数を取ります。**グローバルに**整数型の変数を宣言して、以下のようにして使います。
 
-```C++
+```cpp
 int MOD;
 using mint = lib::dynamic_modint<decltype(MOD), &MOD>;
 ```
