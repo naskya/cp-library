@@ -19,13 +19,15 @@ $n$ 個の区別できるものの中から $r$ 個を選んで任意の順番�
 
 $n$ 個の区別できるものの中から $r$ 個を選ぶとき、考えられる選び方の数 (${}_nC_r$) を返します。
 
-## `factorial_array<N, type>()`
+### `factorial_array<N, type>()`
 
 $0$ から $N$ までの階乗が入った長さ $N + 1$ の `type` 型の配列 (`std::array`) を返します。
 
-## `factorial_modinv_array<N, modint_type>(x)`
+### `factorial_modinv_array<N, modint_type>(x)`
 
 `modint_type` には [`static_modint`](https://naskya.github.io/cp-library/include/algebra/static_modint.hpp) または [`dynamic_modint`](https://naskya.github.io/cp-library/include/algebra/dynamic_modint.hpp) または類似の型が指定できます。$x$ として $N$ の階乗 ($N!$) を与えると、$0$ から $N$ までの階乗の `modint_type` 型における乗法の逆元が入った長さ $N + 1$ の `modint_type` 型の配列 (`std::array`) を返します。
+
+---
 
 `factorial_array` と `factorial_modinv_array` を用いると、時間計算量 $\Theta(N)$ の前計算を行うことで ${}_nC_r$ や ${}_nP_r$ の値を $\Theta(1)$ の時間計算量で求めることができるようになります。
 
