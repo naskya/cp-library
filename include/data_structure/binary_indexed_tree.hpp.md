@@ -29,9 +29,9 @@ data:
     \    }\n\n  public:\n    //! @brief Construct a vector of n zeroes.\n    //! @param\
     \ n vector length\n    explicit binary_indexed_tree_impl(const int n) : length(n),\
     \ data(n + 1, (Elem) 0) {}\n\n    //! @brief Construct a vector from an existing\
-    \ container.\n    //! @tparam Container Container container type (deduced from\
-    \ parameter).\n    //! @param src Source (container)\n    template <typename Container>\n\
-    \    explicit binary_indexed_tree_impl(const Container& src)\n        : length(static_cast<int>(std::size(src))),\
+    \ container.\n    //! @tparam Container container type (deduced from parameter).\n\
+    \    //! @param src Source (container)\n    template <typename Container>\n  \
+    \  explicit binary_indexed_tree_impl(const Container& src)\n        : length(static_cast<int>(std::size(src))),\
     \ data(length + 1, (Elem) 0) {\n      for (int i = 0; i < length; ++i)\n     \
     \   add(i, src[i]);\n    }\n\n    //! @brief Construct a vector of length n filled\
     \ with init_vals.\n    //! @param n vector length\n    //! @param init_val initial\
@@ -67,7 +67,7 @@ data:
     \ index) + bit_1.sum(0, index) * (index - 1);\n  }\n\npublic:\n  //! @brief Construct\
     \ a vector of n zeroes.\n  //! @param n vector length\n  explicit binary_indexed_tree(const\
     \ int n) : bit_0(n), bit_1(n) {}\n\n  //! @brief Construct a vector from an existing\
-    \ container.\n  //! @tparam Container Container container type (deduced from parameter).\n\
+    \ container.\n  //! @tparam Container container type (deduced from parameter).\n\
     \  //! @param src Source (container)\n  template <typename Container>\n  explicit\
     \ binary_indexed_tree(const Container& src) : bit_0(src), bit_1(static_cast<int>(std::size(src)))\
     \ {}\n\n  //! @brief Construct a vector of length n filled with init_vals.\n \
@@ -122,45 +122,45 @@ data:
     \    //! @brief Construct a vector of n zeroes.\n    //! @param n vector length\n\
     \    explicit binary_indexed_tree_impl(const int n) : length(n), data(n + 1, (Elem)\
     \ 0) {}\n\n    //! @brief Construct a vector from an existing container.\n   \
-    \ //! @tparam Container Container container type (deduced from parameter).\n \
-    \   //! @param src Source (container)\n    template <typename Container>\n   \
-    \ explicit binary_indexed_tree_impl(const Container& src)\n        : length(static_cast<int>(std::size(src))),\
-    \ data(length + 1, (Elem) 0) {\n      for (int i = 0; i < length; ++i)\n     \
-    \   add(i, src[i]);\n    }\n\n    //! @brief Construct a vector of length n filled\
-    \ with init_vals.\n    //! @param n vector length\n    //! @param init_val initial\
-    \ value for all elements\n    binary_indexed_tree_impl(const int n, const Elem&\
-    \ init_val) : length(n), data(n + 1, (Elem) 0) {\n      for (int i = 0; i < length;\
-    \ ++i)\n        add(i, init_val);\n    }\n\n    //! @return Vector length\n  \
-    \  [[nodiscard]] int size() const noexcept {\n      return length;\n    }\n\n\
-    \    //! @brief Add val to the index-th element.\n    //! @param index index of\
-    \ the element to be added (0-indexed)\n    //! @param val value to be added\n\
-    \    //! @note Time complexity: O(log n) where n is the vector length\n    void\
-    \ add(int index, const Elem& val) {\n      O_assert(0 <= index && index < length);\n\
-    \      for (++index; index <= length; index += (index & -index))\n        data[index]\
-    \ += val;\n    }\n\n    //! @brief Calculate interval sum.\n    //! @param left\
-    \ lower limit of interval (0-indexed)\n    //! @param right upper limit of interval\
-    \ (0-indexed)\n    //! @return Sum of the elements within [left, right) (half-open\
-    \ interval)\n    //! @note Time complexity: O(log n) where n is the vector length\n\
-    \    [[nodiscard]] Elem sum(int left, int right) const {\n      O_assert(0 <=\
-    \ left && left <= right && right <= length);\n      if (left == 0)\n        return\
-    \ partial_sum(right);\n      else\n        return partial_sum(right) - partial_sum(left\
-    \ - 1);\n    }\n\n    //! @brief Get the value of the index-th element.\n    //!\
-    \ @param index index (0-indexed)\n    //! @note Time complexity: O(log n) where\
-    \ n is the vector length\n    [[nodiscard]] Elem get(int index) const {\n    \
-    \  return partial_sum(index + 1) - partial_sum(index);\n    }\n\n    //! @brief\
-    \ Set the value of the index-th element to val.\n    //! @param index index (0-indexed)\n\
-    \    //! @param val value to be set\n    //! @note Time complexity: O(log n) where\
-    \ n is the vector length\n    void set(const int index, const Elem& val) {\n \
-    \     add(index, val - get(index));\n    }\n  };\n}  // namespace internal\n\n\
-    //! @brief Binary indexed tree with uniform add function.\n//! @tparam Elem Element\
-    \ type. Watch out for overflows.\ntemplate <typename Elem>\nclass binary_indexed_tree\
-    \ {\nprivate:\n  internal::binary_indexed_tree_impl<Elem> bit_0, bit_1;\n\n  //!\
-    \ @return Sum of the elements within [0, index) (0-indexed, half-open interval)\n\
-    \  [[nodiscard]] Elem partial_sum(int index) const {\n    return bit_0.sum(0,\
-    \ index) + bit_1.sum(0, index) * (index - 1);\n  }\n\npublic:\n  //! @brief Construct\
-    \ a vector of n zeroes.\n  //! @param n vector length\n  explicit binary_indexed_tree(const\
+    \ //! @tparam Container container type (deduced from parameter).\n    //! @param\
+    \ src Source (container)\n    template <typename Container>\n    explicit binary_indexed_tree_impl(const\
+    \ Container& src)\n        : length(static_cast<int>(std::size(src))), data(length\
+    \ + 1, (Elem) 0) {\n      for (int i = 0; i < length; ++i)\n        add(i, src[i]);\n\
+    \    }\n\n    //! @brief Construct a vector of length n filled with init_vals.\n\
+    \    //! @param n vector length\n    //! @param init_val initial value for all\
+    \ elements\n    binary_indexed_tree_impl(const int n, const Elem& init_val) :\
+    \ length(n), data(n + 1, (Elem) 0) {\n      for (int i = 0; i < length; ++i)\n\
+    \        add(i, init_val);\n    }\n\n    //! @return Vector length\n    [[nodiscard]]\
+    \ int size() const noexcept {\n      return length;\n    }\n\n    //! @brief Add\
+    \ val to the index-th element.\n    //! @param index index of the element to be\
+    \ added (0-indexed)\n    //! @param val value to be added\n    //! @note Time\
+    \ complexity: O(log n) where n is the vector length\n    void add(int index, const\
+    \ Elem& val) {\n      O_assert(0 <= index && index < length);\n      for (++index;\
+    \ index <= length; index += (index & -index))\n        data[index] += val;\n \
+    \   }\n\n    //! @brief Calculate interval sum.\n    //! @param left lower limit\
+    \ of interval (0-indexed)\n    //! @param right upper limit of interval (0-indexed)\n\
+    \    //! @return Sum of the elements within [left, right) (half-open interval)\n\
+    \    //! @note Time complexity: O(log n) where n is the vector length\n    [[nodiscard]]\
+    \ Elem sum(int left, int right) const {\n      O_assert(0 <= left && left <= right\
+    \ && right <= length);\n      if (left == 0)\n        return partial_sum(right);\n\
+    \      else\n        return partial_sum(right) - partial_sum(left - 1);\n    }\n\
+    \n    //! @brief Get the value of the index-th element.\n    //! @param index\
+    \ index (0-indexed)\n    //! @note Time complexity: O(log n) where n is the vector\
+    \ length\n    [[nodiscard]] Elem get(int index) const {\n      return partial_sum(index\
+    \ + 1) - partial_sum(index);\n    }\n\n    //! @brief Set the value of the index-th\
+    \ element to val.\n    //! @param index index (0-indexed)\n    //! @param val\
+    \ value to be set\n    //! @note Time complexity: O(log n) where n is the vector\
+    \ length\n    void set(const int index, const Elem& val) {\n      add(index, val\
+    \ - get(index));\n    }\n  };\n}  // namespace internal\n\n//! @brief Binary indexed\
+    \ tree with uniform add function.\n//! @tparam Elem Element type. Watch out for\
+    \ overflows.\ntemplate <typename Elem>\nclass binary_indexed_tree {\nprivate:\n\
+    \  internal::binary_indexed_tree_impl<Elem> bit_0, bit_1;\n\n  //! @return Sum\
+    \ of the elements within [0, index) (0-indexed, half-open interval)\n  [[nodiscard]]\
+    \ Elem partial_sum(int index) const {\n    return bit_0.sum(0, index) + bit_1.sum(0,\
+    \ index) * (index - 1);\n  }\n\npublic:\n  //! @brief Construct a vector of n\
+    \ zeroes.\n  //! @param n vector length\n  explicit binary_indexed_tree(const\
     \ int n) : bit_0(n), bit_1(n) {}\n\n  //! @brief Construct a vector from an existing\
-    \ container.\n  //! @tparam Container Container container type (deduced from parameter).\n\
+    \ container.\n  //! @tparam Container container type (deduced from parameter).\n\
     \  //! @param src Source (container)\n  template <typename Container>\n  explicit\
     \ binary_indexed_tree(const Container& src) : bit_0(src), bit_1(static_cast<int>(std::size(src)))\
     \ {}\n\n  //! @brief Construct a vector of length n filled with init_vals.\n \
@@ -205,7 +205,7 @@ data:
   isVerificationFile: false
   path: include/data_structure/binary_indexed_tree.hpp
   requiredBy: []
-  timestamp: '2021-07-30 02:08:11+09:00'
+  timestamp: '2021-07-30 19:31:27+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/binary_indexed_tree/1.test.cpp
