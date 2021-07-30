@@ -156,7 +156,7 @@ $0$ から $N$ までの階乗が入った長さ $N + 1$ の `type` 型の配列
 
 `factorial_array` と `factorial_modinv_array` を用いると、時間計算量 $\Theta(N)$ の前計算を行うことで ${}_nC_r$ や ${}_nP_r$ の値を $\Theta(1)$ の時間計算量で求めることができるようになります。
 
-```C++
+```cpp
 using mint = lib::static_modint<1000000007>;
 constexpr int N = 100000;
 
