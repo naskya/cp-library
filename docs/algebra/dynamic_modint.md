@@ -3,11 +3,9 @@ title: Modint (for runtime constant modulo)
 documentation_of: //include/algebra/dynamic_modint.hpp
 ---
 
-`dynamic_modint` 構造体が定義されています。
+`dynamic_modint` 構造体が定義されています。基本的に `static_modint` と同じように扱えるので、ここに載っていない内容は [`static_modint` の説明](https://naskya.github.io/cp-library/include/algebra/static_modint.hpp)を参照してください。
 
-## `dynamic_modint` 構造体
-
-基本的に `static_modint` と同じように扱えるので、ここに載っていない内容は [`static_modint` の説明](https://naskya.github.io/cp-library/include/algebra/static_modint.hpp)を参照してください。
+---
 
 ### クラステンプレート
 

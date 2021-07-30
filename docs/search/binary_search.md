@@ -5,7 +5,9 @@ documentation_of: //include/search/binary_search.hpp
 
 二分探索をする関数が定義されています。
 
-## `binary_search(ok, ng, f, diff)`
+---
+
+### `binary_search(ok, ng, f, diff)`
 
 引数が 4 つあります。
 

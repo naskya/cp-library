@@ -3,11 +3,9 @@ title: Union-find
 documentation_of: //include/data_structure/union_find.hpp
 ---
 
-AtCoder Library の [dsu.hpp](https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp) を元にしています。`union_find` クラスが定義されています。
+AtCoder Library の [dsu.hpp](https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp) を元にしています。[素集合を管理するデータ構造](https://ja.wikipedia.org/wiki/%E7%B4%A0%E9%9B%86%E5%90%88%E3%83%87%E3%83%BC%E3%82%BF%E6%A7%8B%E9%80%A0)である `union_find` クラスが定義されています。
 
-## `union_find` クラス
-
-[素集合を管理するデータ構造](https://ja.wikipedia.org/wiki/%E7%B4%A0%E9%9B%86%E5%90%88%E3%83%87%E3%83%BC%E3%82%BF%E6%A7%8B%E9%80%A0)です。
+---
 
 ### コンストラクタ
 

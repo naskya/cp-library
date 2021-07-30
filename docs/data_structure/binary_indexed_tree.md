@@ -3,11 +3,14 @@ title: Binary indexed tree
 documentation_of: //include/data_structure/binary_indexed_tree.hpp
 ---
 
-`binary_indexed_tree` クラスが定義されています。
+数の配列に対して以下のクエリが対数時間で行えるデータ構造である `binary_indexed_tree` クラスが定義されています。
 
-## `binary_indexed_tree` クラス
+- 配列の一つの要素の値を更新する
+- 配列の一つの要素の値を取得する
+- 配列の区間内に含まれる全ての要素に同じ値を加算する
+- 配列の区間内に含まれる要素の和を取得する
 
-区間一様加算の機能がついた [Binary indexed tree](https://ja.wikipedia.org/wiki/%E3%83%95%E3%82%A7%E3%83%8B%E3%83%83%E3%82%AF%E6%9C%A8) です。
+---
 
 ### クラステンプレート
 

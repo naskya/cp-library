@@ -3,11 +3,9 @@ title: Modint (for compile-time constant modulo)
 documentation_of: //include/algebra/static_modint.hpp
 ---
 
-`static_modint` 構造体が定義されています。
+「1000000007 で割った余りを求めよ」等の要求がある問題で使える `static_modint` 構造体が定義されています。演算子オーバーロードによって四則演算を行った時に割った余りが自動的に計算されます。
 
-## `static_modint` 構造体
-
-「1000000007 で割った余りを求めよ」等の要求がある問題で使える構造体です。演算子オーバーロードによって四則演算を行った時に割った余りが自動的に計算されます。
+---
 
 ### クラステンプレート
 

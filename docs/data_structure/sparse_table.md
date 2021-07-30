@@ -3,11 +3,9 @@ title: Sparse table
 documentation_of: //include/data_structure/sparse_table.hpp
 ---
 
-`sparse_table` クラスが定義されています。
+要素が変化しない配列の情報を格納し、結合法則と冪等性を満たす演算(最小値, 最大値, 最小公倍数, 最大公約数等を求める演算)の区間積を高速に求めることができるデータ構造である `sparse_table` クラスが定義されています。
 
-## `sparse_table` クラス
-
-要素が変化しない配列を格納し、結合法則と冪等性を満たす演算(最小値, 最大値, 最小公倍数, 最大公約数 等)の区間積を高速に求めることができるデータ構造 (sparse table) です。
+---
 
 ### コンストラクタ
 
