@@ -608,7 +608,7 @@ layout: document
 title: Modint (for compile-time constant modulo)
 ---
 
-「1000000007 で割った余りを求めよ」等の要求がある問題で使える `static_modint` 構造体が定義されています。演算子オーバーロードによって四則演算を行った時に割った余りが自動的に計算されます。
+「1000000007 で割った余りを求めよ」等の要求がある問題で使える `static_modint` 構造体が定義されています。演算子オーバーロードによって四則演算を行った時に指定された数で割った余りが自動的に計算されます。何で割った余りを求めるかがコンパイル時に確定しない場合(標準入力から与えられる等)には [`dynamic_modint`](https://naskya.github.io/cp-library/include/algebra/dynamic_modint.hpp) を使用してください。
 
 ---
 
@@ -707,3 +707,5 @@ $x^n$ を返します。
 #### `to_frac()`
 
 $x = a \cdot b^{-1}$ であるような $(a, b)$ の組のうち $a + b$ が最小であるものを返します。例えば $x = 2$ の時 `x.inv().to_frac()` は $(1, 2)$ を返します。
+
+---

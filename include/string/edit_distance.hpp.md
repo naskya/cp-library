@@ -57,3 +57,5 @@ title: Edit distance
 ### `edit_distance(A, B)`
 
 `A` と `B` の編集距離を返します。`A`, `B` として文字列だけではなく `std::vector<int>` 等のコンテナを渡すこともできます。`A`, `B` の長さをそれぞれ $\lvert A \rvert, \lvert B \rvert$ とすると時間計算量は $\Theta(\lvert A \rvert \, \lvert B \rvert)$ です(ただし、要素の参照や整数の四則演算・コピー等の操作に掛かる時間が $\Theta(1)$ であることを仮定しています)。
+
+---
