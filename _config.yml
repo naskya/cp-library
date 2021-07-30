@@ -4,4 +4,5 @@ plugins:
 - jekyll-redirect-from
 - jekyll-seo-tag
 - jekyll-github-metadata
-theme: jekyll-theme-documentation
+- jekyll-remote-theme
+remote-theme: marella/jekyll-theme-documentation
