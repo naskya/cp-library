@@ -112,8 +112,8 @@ title: Sparse table
 std::vector<int> v {1, 2, 3, 4, 5, 6};
 const auto lcm = [](const int x, const int y) constexpr -> int { return std::lcm(x, y); };
 
-lib::sparse_table(v, lcm);  // 1.
-lib::sparse_table<long long, decltype(lcm)>(v, lcm);  // 2.
+lib::sparse_table t1(v, lcm);  // 1.
+lib::sparse_table<long long, decltype(lcm)> t2(v, lcm);  // 2.
 ```
 
 1. 配列と関数オブジェクトを受け取って sparse table を構築します。
