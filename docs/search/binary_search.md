@@ -20,3 +20,5 @@ documentation_of: //include/search/binary_search.hpp
 これらの引数でこの関数を呼ぶと、`ok` と `ng` の間の値で、`f(x)` が真となるギリギリの値を探索して返します。
 
 より厳密に言うと `ok` と `ng` の中間の値 `mid` で `f(mid)` を呼び出し、結果が真なら `ok = mid` と、偽なら `ng = mid` とすることを繰り返して探索範囲を狭めていき、`ok` と `ng` の差が `diff` 以下になった時の `ok` の値を返します。
+
+---
