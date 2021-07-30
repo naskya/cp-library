@@ -13,7 +13,7 @@ documentation_of: //include/data_structure/binary_indexed_tree.hpp
 
 `binary_indexed_tree` クラスは要素の型を表す 1 つのテンプレート引数をとります。
 
-```C++
+```cpp
 lib::binary_indexed_tree<int>  // int 型の要素を持つ binary indexed tree
 ```
 
@@ -21,7 +21,7 @@ lib::binary_indexed_tree<int>  // int 型の要素を持つ binary indexed tree
 
 ### コンストラクタ
 
-```C++
+```cpp
 lib::binary_indexed_tree<int> tree_1(N);     // 1.
 lib::binary_indexed_tree<int> tree_2(N, x);  // 2.
 

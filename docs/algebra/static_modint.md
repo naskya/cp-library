@@ -13,13 +13,13 @@ documentation_of: //include/algebra/static_modint.hpp
 
 `static_modint` 構造体は 1 つの `std::int_least32_t` 型のテンプレート引数をとります。以下のように型エイリアスを宣言して使うとよいです。
 
-```C++
+```cpp
 using mint = lib::static_modint<1000000007>;
 ```
 
 計算の高速化のために、`static_modint<*>` 型の 2 つの値を足し合わせても(剰余を計算する前の時点で)オーバーフローが起きない事を仮定しています。そのため、`std::int_least32_t` の最大値の半分を超える値をテンプレート引数に取ることはできません。
 
-```C++
+```cpp
 using mint = lib::static_modint<2000000000>;  // error
 ```
 
@@ -29,7 +29,7 @@ $p$ が素数のとき、`lib::static_modint<p>` は $0$ から $p - 1$ まで�
 
 ### コンストラクタ
 
-```C++
+```cpp
 using mint = lib::static_modint<1000000007>;
 
 mint a;                   // 1.
