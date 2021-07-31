@@ -23,7 +23,8 @@ namespace lib {
 //! @param n non-negative integer (doesn't have to be primitive)
 //! @return factorial of n (n!), or number of ways to arrange n distinguishable objects in any order
 //! @note Time complexity: O(n)
-template <typename Tp, typename ReturnType = Tp> ReturnType factorial(const Tp n) {
+template <typename Tp, typename ReturnType = Tp>
+[[nodiscard]] ReturnType factorial(const Tp n) {
   if (n < 0)
     warn("n is negative.");
 

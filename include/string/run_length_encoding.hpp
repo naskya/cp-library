@@ -24,7 +24,7 @@ namespace lib {
 //! @return A std::vector<std::pair<element type of src, int>> which contains the RLE result.
 //! @note Time complexity: O(size(src))
 template <typename Container>
-auto run_length_encoding(const Container& src) {
+[[nodiscard]] auto run_length_encoding(const Container& src) {
   using Elem = std::decay_t<decltype(*std::cbegin(std::declval<Container>()))>;
   if (src.empty()) {
     warn("An empty container is provided.");

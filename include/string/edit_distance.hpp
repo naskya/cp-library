@@ -12,7 +12,8 @@ namespace lib {
 //! @param list_1 container 1
 //! @param list_2 container 2
 //! @return edit distance between container 1 and container 2
-template <typename Container> int edit_distance(const Container& list_1, const Container& list_2) {
+template <typename Container>
+[[nodiscard]] int edit_distance(const Container& list_1, const Container& list_2) {
   const int n = static_cast<int>(std::size(list_1));
   const int m = static_cast<int>(std::size(list_2));
 
