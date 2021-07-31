@@ -129,6 +129,10 @@ template <unsigned Max, typename Modint>
 #ifdef warn_not_defined
 #  undef warn
 #  undef warn_not_defined
+// warn may be defined 2 times (by uncommenting line 15)
+#  ifdef warn
+#    undef warn
+#  endif
 #endif
 
 #endif

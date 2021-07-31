@@ -577,6 +577,10 @@ template <typename LhsType, std::int_least32_t modulo>
 #ifdef warn_not_defined
 #  undef warn
 #  undef warn_not_defined
+// warn may be defined 2 times (by uncommenting line 16)
+#  ifdef warn
+#    undef warn
+#  endif
 #endif
 
 #endif  // STATIC_MODINT_HPP

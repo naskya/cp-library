@@ -552,6 +552,10 @@ template <typename LhsType, typename Tp, Tp* modulo_ptr>
 #ifdef warn_not_defined
 #  undef warn
 #  undef warn_not_defined
+// warn may be defined 2 times (by uncommenting line 16)
+#  ifdef warn
+#    undef warn
+#  endif
 #endif
 
 #endif  // DYNAMIC_MODINT_HPP
