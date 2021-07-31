@@ -15,9 +15,9 @@ data:
     \n#ifndef EDIT_DISTANCE_HPP\n#define EDIT_DISTANCE_HPP\n\n#include <vector>\n\n\
     namespace lib {\n\n//! @tparam Container container type (deduced from parameters)\n\
     //! @param list_1 container 1\n//! @param list_2 container 2\n//! @return edit\
-    \ distance between container 1 and container 2\ntemplate <typename Container>\
-    \ int edit_distance(const Container& list_1, const Container& list_2) {\n  const\
-    \ int n = static_cast<int>(std::size(list_1));\n  const int m = static_cast<int>(std::size(list_2));\n\
+    \ distance between container 1 and container 2\ntemplate <typename Container>\n\
+    [[nodiscard]] int edit_distance(const Container& list_1, const Container& list_2)\
+    \ {\n  const int n = static_cast<int>(std::size(list_1));\n  const int m = static_cast<int>(std::size(list_2));\n\
     \n  std::vector dp(n + 1, std::vector<int>(m + 1));\n\n  for (int i = 0; i <=\
     \ n; ++i)\n    dp[i][0] = i;\n  for (int j = 0; j <= m; ++j)\n    dp[0][j] = j;\n\
     \n  for (int i = 1; i <= n; i++) {\n    for (int j = 1; j <= m; j++) {\n     \
@@ -28,8 +28,8 @@ data:
     \n#include <vector>\n\nnamespace lib {\n\n//! @tparam Container container type\
     \ (deduced from parameters)\n//! @param list_1 container 1\n//! @param list_2\
     \ container 2\n//! @return edit distance between container 1 and container 2\n\
-    template <typename Container> int edit_distance(const Container& list_1, const\
-    \ Container& list_2) {\n  const int n = static_cast<int>(std::size(list_1));\n\
+    template <typename Container>\n[[nodiscard]] int edit_distance(const Container&\
+    \ list_1, const Container& list_2) {\n  const int n = static_cast<int>(std::size(list_1));\n\
     \  const int m = static_cast<int>(std::size(list_2));\n\n  std::vector dp(n +\
     \ 1, std::vector<int>(m + 1));\n\n  for (int i = 0; i <= n; ++i)\n    dp[i][0]\
     \ = i;\n  for (int j = 0; j <= m; ++j)\n    dp[0][j] = j;\n\n  for (int i = 1;\
@@ -41,7 +41,7 @@ data:
   isVerificationFile: false
   path: include/string/edit_distance.hpp
   requiredBy: []
-  timestamp: '2021-07-30 01:48:18+09:00'
+  timestamp: '2021-08-01 00:44:15+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/edit_distance/1.test.cpp

@@ -39,6 +39,9 @@ data:
       path: include/string/edit_distance.hpp
       title: Edit distance
     - icon: ':heavy_check_mark:'
+      path: include/string/run_length_encoding.hpp
+      title: Run length encoding
+    - icon: ':heavy_check_mark:'
       path: include/string/z_algorithm.hpp
       title: Z algorithm
   verificationCategories:
@@ -117,6 +120,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/string/edit_distance/1.test.cpp
       title: test/string/edit_distance/1.test.cpp
+  - name: test/string/run_length_encoding
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/string/run_length_encoding/1.test.cpp
+      title: test/string/run_length_encoding/1.test.cpp
   - name: test/string/z_algorithm
     pages:
     - icon: ':heavy_check_mark:'
