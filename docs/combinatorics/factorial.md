@@ -36,7 +36,7 @@ using mint = lib::static_modint<1000000007>;
 constexpr int N = 100000;
 
 const auto fact     = lib::factorial_array<N, mint>();
-const auto fact_inv = lib::factorial_modinv_array<N, mint>(fact.back());
+const auto fact_inv = lib::factorial_modinv_array<N, mint>(fact[N]);
 
 assert(lib::permutation(n, r) == fact[n] * fact_inv[n - r]);
 assert(lib::combination(n, r) == fact[n] * fact_inv[n - r] * fact_inv[r]);
