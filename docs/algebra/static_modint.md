@@ -15,7 +15,7 @@ documentation_of: //include/algebra/static_modint.hpp
 using mint = lib::static_modint<1000000007>;
 ```
 
-計算の高速化のために、`static_modint<*>` 型の 2 つの値を足し合わせても(剰余を計算する前の時点で)オーバーフローが起きない事を仮定しています。そのため、`std::int_least32_t` の最大値の半分を超える値をテンプレート引数に取ることはできません。
+計算の高速化のために、`static_modint<M>` 型の 2 つの値を足し合わせても(剰余を計算する前の時点で)オーバーフローが起きない事を仮定しています。そのため、`std::int_least32_t` の最大値の半分を超える値をテンプレート引数に取ることはできません。
 
 ```cpp
 using mint = lib::static_modint<2000000000>;  // error
@@ -23,7 +23,7 @@ using mint = lib::static_modint<2000000000>;  // error
 
 この仕様でも多くの競技プログラミングの問題では困らないはずです。
 
-$p$ が素数のとき、`lib::static_modint<p>` は $0$ から $p - 1$ までの $p$ 個の元からなる剰余体 $\mathbf{Z}/p\mathbf{Z}$ を表す型として扱えます。
+$p$ が素数のとき、`static_modint<p>` は $0$ から $p - 1$ までの $p$ 個の元からなる剰余体 $\mathbf{Z}/p\mathbf{Z}$ を表す型として扱えます。
 
 ### コンストラクタ
 
