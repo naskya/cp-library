@@ -66,7 +66,9 @@ data:
     \ Max + 1> factorial_modinv_array(const Modint fact) {\n  std::array<Modint, Max\
     \ + 1> res;\n  res[Max] = fact.inv();\n\n  for (unsigned i = Max; i > 0; --i)\n\
     \    res[i - 1] = res[i] * i;\n\n  return res;\n}\n\n}  // namespace lib\n\n#ifdef\
-    \ warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n#endif\n\n#endif\n"
+    \ warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n// warn may be defined\
+    \ 2 times (by uncommenting line 15)\n#  ifdef warn\n#    undef warn\n#  endif\n\
+    #endif\n\n#endif\n"
   code: "\n//! @file factorial.hpp\n//! @brief Factorial, Permutation, Combination\n\
     \n#ifndef FACTORIAL_HPP\n#define FACTORIAL_HPP\n\n#include <array>\n#include <iostream>\n\
     \n#ifndef warn\n//! @brief Print warning message\n//! @note You can suppress the\
@@ -117,12 +119,14 @@ data:
     \ Max + 1> factorial_modinv_array(const Modint fact) {\n  std::array<Modint, Max\
     \ + 1> res;\n  res[Max] = fact.inv();\n\n  for (unsigned i = Max; i > 0; --i)\n\
     \    res[i - 1] = res[i] * i;\n\n  return res;\n}\n\n}  // namespace lib\n\n#ifdef\
-    \ warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n#endif\n\n#endif\n"
+    \ warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n// warn may be defined\
+    \ 2 times (by uncommenting line 15)\n#  ifdef warn\n#    undef warn\n#  endif\n\
+    #endif\n\n#endif\n"
   dependsOn: []
   isVerificationFile: false
   path: include/combinatorics/factorial.hpp
   requiredBy: []
-  timestamp: '2021-07-29 12:37:36+09:00'
+  timestamp: '2021-07-31 12:08:22+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp
