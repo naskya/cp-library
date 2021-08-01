@@ -3,6 +3,8 @@
 "test/algebra/dynamic_modint/2.test.cpp": "2021-07-31 12:08:22 +0900",
 "test/algebra/dynamic_modint/3.test.cpp": "2021-07-31 12:08:22 +0900",
 "test/algebra/dynamic_modint/4.test.cpp": "2021-07-31 12:08:22 +0900",
+"test/algebra/eulers_totient_function/1.test.cpp": "2021-08-01 13:58:19 +0900",
+"test/algebra/eulers_totient_function/2.test.cpp": "2021-08-01 13:58:19 +0900",
 "test/algebra/pow/1.test.cpp": "2021-07-31 12:08:22 +0900",
 "test/algebra/static_modint/1.test.cpp": "2021-07-31 12:08:22 +0900",
 "test/algebra/static_modint/2.test.cpp": "2021-07-31 12:08:22 +0900",
@@ -18,6 +20,6 @@
 "test/search/binary_search/2.test.cpp": "2021-07-30 01:41:29 +0900",
 "test/search/binary_search/3.test.cpp": "2021-07-30 01:41:29 +0900",
 "test/string/edit_distance/1.test.cpp": "2021-08-01 00:44:15 +0900",
-"test/string/run_length_encoding/1.test.cpp": "2021-08-01 00:44:15 +0900",
+"test/string/run_length_encoding/1.test.cpp": "2021-08-01 13:12:25 +0900",
 "test/string/z_algorithm/1.test.cpp": "2021-07-30 02:15:50 +0900"
 }
