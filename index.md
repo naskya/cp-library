@@ -8,7 +8,7 @@ data:
       title: Modint (for runtime constant modulo)
     - icon: ':heavy_check_mark:'
       path: include/algebra/eulers_totient_function.hpp
-      title: Binary exponentation
+      title: Euler's totient function
     - icon: ':heavy_check_mark:'
       path: include/algebra/pow.hpp
       title: Binary exponentation

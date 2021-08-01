@@ -67,7 +67,7 @@ data:
   - test/algebra/eulers_totient_function/2.test.cpp
 documentation_of: include/algebra/eulers_totient_function.hpp
 layout: document
-title: Binary exponentation
+title: Euler's totient function
 ---
 
 [Euler の $\varphi$ 関数]("https://ja.wikipedia.org/wiki/%E3%82%AA%E3%82%A4%E3%83%A9%E3%83%BC%E3%81%AE%CF%86%E9%96%A2%E6%95%B0")が定義されています。
