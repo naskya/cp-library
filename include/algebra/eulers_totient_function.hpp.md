@@ -70,7 +70,7 @@ layout: document
 title: Euler's totient function
 ---
 
-[Euler の $\varphi$ 関数]("https://ja.wikipedia.org/wiki/%E3%82%AA%E3%82%A4%E3%83%A9%E3%83%BC%E3%81%AE%CF%86%E9%96%A2%E6%95%B0")が定義されています。
+[Euler の $\varphi$ 関数](https://ja.wikipedia.org/wiki/%E3%82%AA%E3%82%A4%E3%83%A9%E3%83%BC%E3%81%AE%CF%86%E9%96%A2%E6%95%B0)が定義されています。
 
 ---
 
