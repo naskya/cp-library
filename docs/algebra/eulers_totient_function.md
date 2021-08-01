@@ -1,5 +1,5 @@
 ---
-title: Binary exponentation
+title: Euler's totient function
 documentation_of: //include/algebra/eulers_totient_function.hpp
 ---
 
