@@ -27,11 +27,12 @@ data:
     \  if (src.empty()) {\n    warn(\"An empty container is provided.\");\n    return\
     \ std::vector<std::pair<Elem, int>> {};\n  }\n  std::vector<std::pair<Elem, int>>\
     \ res {{*std::cbegin(src), 1}};\n  for (auto iter1 = std::cbegin(src), iter2 =\
-    \ iter1 + 1; iter2 != std::cend(src); ++iter2) {\n    if (*iter1 == *iter2)\n\
+    \ iter1 + 1; iter2 != std::cend(src); iter2 += 2) {\n    if (*iter1 == *iter2)\n\
     \      ++res.back().second;\n    else\n      res.emplace_back(*iter2, 1);\n  \
-    \  iter1 = iter2;\n  }\n  return res;\n}\n\n}  // namespace lib\n\n#ifdef warn_not_defined\n\
-    #  undef warn\n#  undef warn_not_defined\n// warn may be defined 2 times (by uncommenting\
-    \ line 16)\n#  ifdef warn\n#    undef warn\n#  endif\n#endif\n\n#endif  // RUN_LENGTH_ENCODING_HPP\n"
+    \  std::swap(iter1, iter2);\n  }\n  return res;\n}\n\n}  // namespace lib\n\n\
+    #ifdef warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n// warn may\
+    \ be defined 2 times (by uncommenting line 16)\n#  ifdef warn\n#    undef warn\n\
+    #  endif\n#endif\n\n#endif  // RUN_LENGTH_ENCODING_HPP\n"
   code: "\n//! @file run_length_encoding.hpp\n\n#ifndef RUN_LENGTH_ENCODING_HPP\n\
     #define RUN_LENGTH_ENCODING_HPP\n\n#include <iostream>\n#include <type_traits>\n\
     #include <utility>\n#include <vector>\n\n#ifndef warn\n//! @brief Print warning\
@@ -46,16 +47,17 @@ data:
     \  if (src.empty()) {\n    warn(\"An empty container is provided.\");\n    return\
     \ std::vector<std::pair<Elem, int>> {};\n  }\n  std::vector<std::pair<Elem, int>>\
     \ res {{*std::cbegin(src), 1}};\n  for (auto iter1 = std::cbegin(src), iter2 =\
-    \ iter1 + 1; iter2 != std::cend(src); ++iter2) {\n    if (*iter1 == *iter2)\n\
+    \ iter1 + 1; iter2 != std::cend(src); iter2 += 2) {\n    if (*iter1 == *iter2)\n\
     \      ++res.back().second;\n    else\n      res.emplace_back(*iter2, 1);\n  \
-    \  iter1 = iter2;\n  }\n  return res;\n}\n\n}  // namespace lib\n\n#ifdef warn_not_defined\n\
-    #  undef warn\n#  undef warn_not_defined\n// warn may be defined 2 times (by uncommenting\
-    \ line 16)\n#  ifdef warn\n#    undef warn\n#  endif\n#endif\n\n#endif  // RUN_LENGTH_ENCODING_HPP\n"
+    \  std::swap(iter1, iter2);\n  }\n  return res;\n}\n\n}  // namespace lib\n\n\
+    #ifdef warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n// warn may\
+    \ be defined 2 times (by uncommenting line 16)\n#  ifdef warn\n#    undef warn\n\
+    #  endif\n#endif\n\n#endif  // RUN_LENGTH_ENCODING_HPP\n"
   dependsOn: []
   isVerificationFile: false
   path: include/string/run_length_encoding.hpp
   requiredBy: []
-  timestamp: '2021-08-01 00:44:15+09:00'
+  timestamp: '2021-08-01 13:12:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/run_length_encoding/1.test.cpp

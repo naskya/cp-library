@@ -7,6 +7,9 @@ data:
       path: include/algebra/dynamic_modint.hpp
       title: Modint (for runtime constant modulo)
     - icon: ':heavy_check_mark:'
+      path: include/algebra/eulers_totient_function.hpp
+      title: Binary exponentation
+    - icon: ':heavy_check_mark:'
       path: include/algebra/pow.hpp
       title: Binary exponentation
     - icon: ':heavy_check_mark:'
@@ -59,6 +62,14 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/algebra/dynamic_modint/4.test.cpp
       title: test/algebra/dynamic_modint/4.test.cpp
+  - name: test/algebra/eulers_totient_function
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/algebra/eulers_totient_function/1.test.cpp
+      title: test/algebra/eulers_totient_function/1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/algebra/eulers_totient_function/2.test.cpp
+      title: test/algebra/eulers_totient_function/2.test.cpp
   - name: test/algebra/pow
     pages:
     - icon: ':heavy_check_mark:'
