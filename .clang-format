@@ -2,10 +2,12 @@ AccessModifierOffset: -2
 AlignAfterOpenBracket: true
 AlignConsecutiveAssignments: true
 AlignTrailingComments: true
-AllowShortCaseLabelsOnASingleLine: true
-AllowShortLoopsOnASingleLine: true
+AllowShortBlocksOnASingleLine: Never
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakTemplateDeclarations: Yes
 AlwaysBreakBeforeMultilineStrings: false
-AlwaysBreakTemplateDeclarations: No
 BasedOnStyle: Google
 ColumnLimit: 0
 ContinuationIndentWidth: 2
