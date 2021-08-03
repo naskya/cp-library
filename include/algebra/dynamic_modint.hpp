@@ -11,9 +11,13 @@
 
 #ifndef warn
 //! @brief Print warning message
-//! @note You can suppress the warning by uncommenting line 16
-#  define warn(msg) (std::cerr << (msg) << '\n')
+//! @note You can suppress the warning by uncommenting line 17
+#  ifndef ONLINE_JUDGE
+#    define warn(msg) (std::cerr << (msg) << '\n')
 // #  define warn(msg) (static_cast<void>(0))
+#  else
+#    define warn(msg) (static_cast<void>(0))
+#  endif
 #  define warn_not_defined
 #endif
 
@@ -552,7 +556,7 @@ template <typename LhsType, typename Tp, Tp* modulo_ptr>
 #ifdef warn_not_defined
 #  undef warn
 #  undef warn_not_defined
-// warn may be defined 2 times (by uncommenting line 16)
+// warn may be defined 2 times (by uncommenting line 17)
 #  ifdef warn
 #    undef warn
 #  endif

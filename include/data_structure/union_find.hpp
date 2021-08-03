@@ -106,7 +106,8 @@ public:
   //! @brief Print debug information.
   //! @param name variable name
   //! @param os output stream
-  void debug_print(std::string name = "", std::ostream& os = std::cerr) const {
+  void debug_print([[maybe_unused]] std::string name = "", [[maybe_unused]] std::ostream& os = std::cerr) const {
+#ifndef ONLINE_JUDGE
     name += (name.empty() ? "" : ".");
     name += "groups(): ";
 
@@ -126,6 +127,7 @@ public:
       os << "]\n";
       is_first_group = false;
     }
+#endif
   }
 };
 

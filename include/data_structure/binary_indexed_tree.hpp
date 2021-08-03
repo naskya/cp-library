@@ -190,7 +190,8 @@ public:
   //! @brief Print debug information.
   //! @param name variable name
   //! @param os output stream
-  void debug_print(const std::string& name = "", std::ostream& os = std::cerr) const {
+  void debug_print([[maybe_unused]] const std::string& name = "", [[maybe_unused]] std::ostream& os = std::cerr) const {
+#ifndef ONLINE_JUDGE
     if (!name.empty())
       os << name << ": ";
 
@@ -206,6 +207,7 @@ public:
     for (int i = 0; i <= size(); ++i)
       os << partial_sum(i) << ' ';
     os << "]\n";
+#endif
   }
 };
 

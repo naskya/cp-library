@@ -11,9 +11,13 @@
 
 #ifndef warn
 //! @brief Print warning message
-//! @note You can suppress the warning by uncommenting line 16
-#  define warn(msg) (std::cerr << (msg) << '\n')
+//! @note You can suppress the warning by uncommenting line 17
+#  ifndef ONLINE_JUDGE
+#    define warn(msg) (std::cerr << (msg) << '\n')
 // #  define warn(msg) (static_cast<void>(0))
+#  else
+#    define warn(msg) (static_cast<void>(0))
+#  endif
 #  define warn_not_defined
 #endif
 
@@ -45,7 +49,8 @@ private:
       u   = std::move(v);
       v   = std::move(tmp);
     }
-    if (u < 0) u += modulo;
+    if (u < 0)
+      u += modulo;
     return static_cast<std::int_least32_t>(u);
   }
 
@@ -57,10 +62,12 @@ private:
   [[nodiscard]] static constexpr std::int_least32_t clamp_ll(Tp v) noexcept {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
-    if (modulo <= v || v < -modulo) v %= modulo;
+    if (modulo <= v || v < -modulo)
+      v %= modulo;
 #pragma GCC diagnostic pop
 
-    if (v < 0) v += modulo;
+    if (v < 0)
+      v += modulo;
     return static_cast<std::int_least32_t>(v);
   }
 
@@ -68,7 +75,8 @@ private:
   //! @note Time complexity: O(1)
   constexpr void clamp_self() noexcept {
     if (0 <= value) {
-      if (value < modulo) return;
+      if (value < modulo)
+        return;
       if (value < modulo * 2)
         value -= modulo;
       else
@@ -152,12 +160,14 @@ public:
 
   constexpr static_modint& operator+=(const static_modint rhs) noexcept {
     value += rhs.value;
-    if (value >= modulo) value -= modulo;
+    if (value >= modulo)
+      value -= modulo;
     return *this;
   }
   constexpr static_modint& operator-=(const static_modint rhs) noexcept {
     value -= rhs.value;
-    if (value < 0) value += modulo;
+    if (value < 0)
+      value += modulo;
     return *this;
   }
   constexpr static_modint& operator*=(const static_modint rhs) noexcept {
@@ -172,7 +182,8 @@ public:
   constexpr static_modint& operator%=(const static_modint rhs) {
     warn("operator%= : Are you sure you want to do this?");
     value %= rhs.value;
-    if (value < 0) value += modulo;
+    if (value < 0)
+      value += modulo;
     return *this;
   }
 
@@ -254,53 +265,63 @@ public:
     return static_modint(value >> rhs, true);
   }
 
-  template <typename RhsType> constexpr static_modint& operator+=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr static_modint& operator+=(const RhsType rhs) noexcept {
     value = clamp_ll(static_cast<std::int_least64_t>(value) + rhs);
     return *this;
   }
-  template <typename RhsType> constexpr static_modint& operator-=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr static_modint& operator-=(const RhsType rhs) noexcept {
     value = clamp_ll(static_cast<std::int_least64_t>(value) - rhs);
     return *this;
   }
-  template <typename RhsType> constexpr static_modint& operator*=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr static_modint& operator*=(const RhsType rhs) noexcept {
     value = clamp_ll(static_cast<std::int_least64_t>(value) * clamp_ll(rhs));
     return *this;
   }
-  template <typename RhsType> constexpr static_modint& operator/=(const RhsType rhs) {
+  template <typename RhsType>
+  constexpr static_modint& operator/=(const RhsType rhs) {
     std::int_least64_t mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
     value                  = clamp_ll(value * mul);
     return *this;
   }
 
-  template <typename RhsType> constexpr static_modint& operator%=(const RhsType rhs) {
+  template <typename RhsType>
+  constexpr static_modint& operator%=(const RhsType rhs) {
     warn("operator%= : Are you sure you want to do this?");
     value %= rhs;
     return *this;
   }
 
-  template <typename RhsType> constexpr static_modint& operator&=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr static_modint& operator&=(const RhsType rhs) noexcept {
     warn("operator&= : Are you sure you want to do this?");
     value &= rhs;
     return *this;
   }
-  template <typename RhsType> constexpr static_modint& operator|=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr static_modint& operator|=(const RhsType rhs) noexcept {
     warn("operator|= : Are you sure you want to do this?");
     value |= rhs;
     clamp_self();
     return *this;
   }
-  template <typename RhsType> constexpr static_modint& operator^=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr static_modint& operator^=(const RhsType rhs) noexcept {
     warn("operator^= : Are you sure you want to do this?");
     value ^= rhs;
     clamp_self();
     return *this;
   }
-  template <typename RhsType> constexpr static_modint& operator<<=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr static_modint& operator<<=(const RhsType rhs) noexcept {
     warn("operator<<= : Are you sure you want to do this?");
     value = clamp_ll(static_cast<std::int_least64_t>(value) << rhs);
     return *this;
   }
-  template <typename RhsType> constexpr static_modint& operator>>=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr static_modint& operator>>=(const RhsType rhs) noexcept {
     warn("operator>>= : Are you sure you want to do this?");
     value >>= rhs;
     return *this;
@@ -401,8 +422,10 @@ public:
   friend std::istream& operator>>(std::istream& is, static_modint& rhs) {
     std::int_least64_t tmp;
     is >> tmp;
-    if (tmp < -modulo || modulo <= tmp) tmp %= modulo;
-    if (tmp < 0) tmp += modulo;
+    if (tmp < -modulo || modulo <= tmp)
+      tmp %= modulo;
+    if (tmp < 0)
+      tmp += modulo;
     rhs.value = static_cast<std::int_least32_t>(tmp);
     return is;
   }
@@ -424,13 +447,17 @@ public:
   template <bool index_positive_guaranteed = true, typename Tp = std::int_least32_t>
   [[nodiscard]] constexpr static_modint pow(Tp index) const noexcept {
     if constexpr (!index_positive_guaranteed) {
-      if (value == 0) return static_modint(0, true);
-      if (index == 0) return static_modint(1, true);
-      if (index < 0) return static_modint(value, true).inv().pow<true>(-index);
+      if (value == 0)
+        return static_modint(0, true);
+      if (index == 0)
+        return static_modint(1, true);
+      if (index < 0)
+        return static_modint(value, true).inv().pow<true>(-index);
     }
     static_modint res(1, true), base(value, true);
     while (index > 0) {
-      if ((index & 1) == 1) res *= base;
+      if ((index & 1) == 1)
+        res *= base;
       base *= base;
       index >>= 1;
     }
@@ -449,7 +476,8 @@ public:
         std::int_least32_t q = num / x;
         num                  = num % x;
         den += q * u;
-        if (num == 0) break;
+        if (num == 0)
+          break;
         if (num + den < cost) {
           cost       = num + den;
           res.first  = num;
@@ -577,7 +605,7 @@ template <typename LhsType, std::int_least32_t modulo>
 #ifdef warn_not_defined
 #  undef warn
 #  undef warn_not_defined
-// warn may be defined 2 times (by uncommenting line 16)
+// warn may be defined 2 times (by uncommenting line 17)
 #  ifdef warn
 #    undef warn
 #  endif
