@@ -27,9 +27,18 @@ data:
     //! @param id multiplicative identity\n//! @return the index-th power of base\n\
     //! @note Time complexity: O(log(index) * (time needed to calculate (base * base)))\n\
     template <typename ValueType, typename IntType>\n[[nodiscard]] ValueType pow(ValueType\
-    \ base, IntType index, ValueType id) {\n  while (index != 0) {\n    if ((index\
-    \ & 1) == 1)\n      id *= base;\n    base *= base;\n    index >>= 1;\n  }\n  return\
-    \ id;\n}\n\n}  // namespace lib\n\n#endif  // POW_HPP\n"
+    \ base, IntType index, const ValueType& id) {\n  ValueType res = id;\n  while\
+    \ (index != 0) {\n    if ((index & 1) == 1)\n      res *= base;\n    base *= base;\n\
+    \    index >>= 1;\n  }\n  return res;\n}\n\n//! @tparam ValueType base type (deduced\
+    \ from parameter).\n//! @tparam IntType index type (deduced from parameter).\n\
+    //! @param base base. This doesn't have to be an integer.\n//! @param index index.\
+    \ This must be an integer, but doesn't have to be primitive.\n//! @param id multiplicative\
+    \ identity\n//! @return the index-th power of base\n//! @note Time complexity:\
+    \ O(log(index) * (time needed to calculate (base * base)))\ntemplate <typename\
+    \ ValueType, typename IntType>\n[[nodiscard]] ValueType pow(ValueType base, IntType\
+    \ index, ValueType&& id) {\n  while (index != 0) {\n    if ((index & 1) == 1)\n\
+    \      id *= base;\n    base *= base;\n    index >>= 1;\n  }\n  return id;\n}\n\
+    \n}  // namespace lib\n\n#endif  // POW_HPP\n"
   code: "\n//! @file pow.hpp\n\n#ifndef POW_HPP\n#define POW_HPP\n\nnamespace lib\
     \ {\n\n//! @tparam ValueType base type (deduced from parameter).\n//! @tparam\
     \ IntType index type (deduced from parameter).\n//! @param base base. This doesn't\
@@ -45,15 +54,24 @@ data:
     \ integer, but doesn't have to be primitive.\n//! @param id multiplicative identity\n\
     //! @return the index-th power of base\n//! @note Time complexity: O(log(index)\
     \ * (time needed to calculate (base * base)))\ntemplate <typename ValueType, typename\
-    \ IntType>\n[[nodiscard]] ValueType pow(ValueType base, IntType index, ValueType\
-    \ id) {\n  while (index != 0) {\n    if ((index & 1) == 1)\n      id *= base;\n\
-    \    base *= base;\n    index >>= 1;\n  }\n  return id;\n}\n\n}  // namespace\
-    \ lib\n\n#endif  // POW_HPP\n"
+    \ IntType>\n[[nodiscard]] ValueType pow(ValueType base, IntType index, const ValueType&\
+    \ id) {\n  ValueType res = id;\n  while (index != 0) {\n    if ((index & 1) ==\
+    \ 1)\n      res *= base;\n    base *= base;\n    index >>= 1;\n  }\n  return res;\n\
+    }\n\n//! @tparam ValueType base type (deduced from parameter).\n//! @tparam IntType\
+    \ index type (deduced from parameter).\n//! @param base base. This doesn't have\
+    \ to be an integer.\n//! @param index index. This must be an integer, but doesn't\
+    \ have to be primitive.\n//! @param id multiplicative identity\n//! @return the\
+    \ index-th power of base\n//! @note Time complexity: O(log(index) * (time needed\
+    \ to calculate (base * base)))\ntemplate <typename ValueType, typename IntType>\n\
+    [[nodiscard]] ValueType pow(ValueType base, IntType index, ValueType&& id) {\n\
+    \  while (index != 0) {\n    if ((index & 1) == 1)\n      id *= base;\n    base\
+    \ *= base;\n    index >>= 1;\n  }\n  return id;\n}\n\n}  // namespace lib\n\n\
+    #endif  // POW_HPP\n"
   dependsOn: []
   isVerificationFile: false
   path: include/algebra/pow.hpp
   requiredBy: []
-  timestamp: '2021-07-30 14:26:37+09:00'
+  timestamp: '2021-08-03 11:22:18+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/algebra/pow/1.test.cpp
