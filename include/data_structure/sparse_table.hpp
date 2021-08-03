@@ -19,7 +19,7 @@
 namespace lib {
 
 namespace internal {
-  int int_log2(const int n) {
+  [[nodiscard]] int int_log2(const int n) {
     return std::numeric_limits<int>::digits - __builtin_clz(n);
   }
 }  // namespace internal
