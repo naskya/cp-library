@@ -3,7 +3,7 @@ title: Binary search
 documentation_of: //include/search/binary_search.hpp
 ---
 
-二分探索をする関数が定義されています。
+[二分探索](https://ja.wikipedia.org/wiki/%E4%BA%8C%E5%88%86%E6%8E%A2%E7%B4%A2)をする関数が定義されています。
 
 ---
 
