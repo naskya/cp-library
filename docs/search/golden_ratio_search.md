@@ -1,5 +1,5 @@
 ---
-title: Binary search
+title: Golden ratio search
 documentation_of: //include/search/golden_ratio_search.hpp
 ---
 
@@ -18,3 +18,5 @@ documentation_of: //include/search/golden_ratio_search.hpp
 区間 $I = [a, b]$ で定義される凸関数 $f: I \to \mathbf{R}$ に対して $\displaystyle\argmax_{x \in I} f(x)$ と $\displaystyle\max_{x \in I} f(x)$ をこの順番で持つ `std::pair` 型の値を返します。
 
 `diff` は $\argmax$ に対する許容誤差です。
+
+---
