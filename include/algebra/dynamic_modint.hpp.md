@@ -25,9 +25,10 @@ data:
     \n#ifndef DYNAMIC_MODINT_HPP\n#define DYNAMIC_MODINT_HPP\n\n#include <cstdint>\n\
     #include <iostream>\n#include <limits>\n#include <type_traits>\n\n#ifndef warn\n\
     //! @brief Print warning message\n//! @note You can suppress the warning by uncommenting\
-    \ line 16\n#  define warn(msg) (std::cerr << (msg) << '\\n')\n// #  define warn(msg)\
-    \ (static_cast<void>(0))\n#  define warn_not_defined\n#endif\n\nnamespace lib\
-    \ {\n\nnamespace internal {\n  template <typename Tp, std::enable_if_t<std::is_integral_v<Tp>,\
+    \ line 17\n#  ifndef ONLINE_JUDGE\n#    define warn(msg) (std::cerr << (msg) <<\
+    \ '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n#  else\n#    define\
+    \ warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n#endif\n\
+    \nnamespace lib {\n\nnamespace internal {\n  template <typename Tp, std::enable_if_t<std::is_integral_v<Tp>,\
     \ std::nullptr_t> = nullptr>\n  using LongInt = std::conditional_t<(64 <= std::numeric_limits<Tp>::digits),\
     \ __int128_t, std::int_least64_t>;\n}\n\n//! @brief modint (for runtime constant\
     \ modulo)\n//! @tparam Tp underlying integer type (e.g. int)\n//! @tparam modulo_ptr\
@@ -290,12 +291,13 @@ data:
     \ rhs) {\n  warn(\"operator>= : Are you sure you want to do this?\");\n  return\
     \ lhs < (Tp) rhs;\n}\n\n}  // namespace lib\n\n#ifdef warn_not_defined\n#  undef\
     \ warn\n#  undef warn_not_defined\n// warn may be defined 2 times (by uncommenting\
-    \ line 16)\n#  ifdef warn\n#    undef warn\n#  endif\n#endif\n\n#endif  // DYNAMIC_MODINT_HPP\n"
+    \ line 17)\n#  ifdef warn\n#    undef warn\n#  endif\n#endif\n\n#endif  // DYNAMIC_MODINT_HPP\n"
   code: "\n//! @file dynamic_modint.hpp\n\n#ifndef DYNAMIC_MODINT_HPP\n#define DYNAMIC_MODINT_HPP\n\
     \n#include <cstdint>\n#include <iostream>\n#include <limits>\n#include <type_traits>\n\
     \n#ifndef warn\n//! @brief Print warning message\n//! @note You can suppress the\
-    \ warning by uncommenting line 16\n#  define warn(msg) (std::cerr << (msg) <<\
-    \ '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n#  define warn_not_defined\n\
+    \ warning by uncommenting line 17\n#  ifndef ONLINE_JUDGE\n#    define warn(msg)\
+    \ (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
+    #  else\n#    define warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n\
     #endif\n\nnamespace lib {\n\nnamespace internal {\n  template <typename Tp, std::enable_if_t<std::is_integral_v<Tp>,\
     \ std::nullptr_t> = nullptr>\n  using LongInt = std::conditional_t<(64 <= std::numeric_limits<Tp>::digits),\
     \ __int128_t, std::int_least64_t>;\n}\n\n//! @brief modint (for runtime constant\
@@ -559,12 +561,12 @@ data:
     \ rhs) {\n  warn(\"operator>= : Are you sure you want to do this?\");\n  return\
     \ lhs < (Tp) rhs;\n}\n\n}  // namespace lib\n\n#ifdef warn_not_defined\n#  undef\
     \ warn\n#  undef warn_not_defined\n// warn may be defined 2 times (by uncommenting\
-    \ line 16)\n#  ifdef warn\n#    undef warn\n#  endif\n#endif\n\n#endif  // DYNAMIC_MODINT_HPP\n"
+    \ line 17)\n#  ifdef warn\n#    undef warn\n#  endif\n#endif\n\n#endif  // DYNAMIC_MODINT_HPP\n"
   dependsOn: []
   isVerificationFile: false
   path: include/algebra/dynamic_modint.hpp
   requiredBy: []
-  timestamp: '2021-07-31 12:08:22+09:00'
+  timestamp: '2021-08-03 15:46:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/algebra/dynamic_modint/3.test.cpp

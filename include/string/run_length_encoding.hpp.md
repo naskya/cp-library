@@ -16,8 +16,9 @@ data:
     \n#ifndef RUN_LENGTH_ENCODING_HPP\n#define RUN_LENGTH_ENCODING_HPP\n\n#include\
     \ <iostream>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\n\
     #ifndef warn\n//! @brief Print warning message\n//! @note You can suppress the\
-    \ warning by uncommenting line 16\n#  define warn(msg) (std::cerr << (msg) <<\
-    \ '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n#  define warn_not_defined\n\
+    \ warning by uncommenting line 17\n#  ifndef ONLINE_JUDGE\n#    define warn(msg)\
+    \ (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
+    #  else\n#    define warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n\
     #endif\n\nnamespace lib {\n\n//! @tparam Container container type (deduced from\
     \ parameters)\n//! @param src source container (std::string, std::vector, std::deque,\
     \ ...)\n//! @return A std::vector<std::pair<element type of src, int>> which contains\
@@ -31,19 +32,20 @@ data:
     \      ++res.back().second;\n    else\n      res.emplace_back(*iter2, 1);\n  \
     \  std::swap(iter1, iter2);\n  }\n  return res;\n}\n\n}  // namespace lib\n\n\
     #ifdef warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n// warn may\
-    \ be defined 2 times (by uncommenting line 16)\n#  ifdef warn\n#    undef warn\n\
+    \ be defined 2 times (by uncommenting line 17)\n#  ifdef warn\n#    undef warn\n\
     #  endif\n#endif\n\n#endif  // RUN_LENGTH_ENCODING_HPP\n"
   code: "\n//! @file run_length_encoding.hpp\n\n#ifndef RUN_LENGTH_ENCODING_HPP\n\
     #define RUN_LENGTH_ENCODING_HPP\n\n#include <iostream>\n#include <type_traits>\n\
     #include <utility>\n#include <vector>\n\n#ifndef warn\n//! @brief Print warning\
-    \ message\n//! @note You can suppress the warning by uncommenting line 16\n# \
-    \ define warn(msg) (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
-    #  define warn_not_defined\n#endif\n\nnamespace lib {\n\n//! @tparam Container\
-    \ container type (deduced from parameters)\n//! @param src source container (std::string,\
-    \ std::vector, std::deque, ...)\n//! @return A std::vector<std::pair<element type\
-    \ of src, int>> which contains the RLE result.\n//! @note Time complexity: O(size(src))\n\
-    template <typename Container>\n[[nodiscard]] auto run_length_encoding(const Container&\
-    \ src) {\n  using Elem = std::decay_t<decltype(*std::cbegin(std::declval<Container>()))>;\n\
+    \ message\n//! @note You can suppress the warning by uncommenting line 17\n# \
+    \ ifndef ONLINE_JUDGE\n#    define warn(msg) (std::cerr << (msg) << '\\n')\n//\
+    \ #  define warn(msg) (static_cast<void>(0))\n#  else\n#    define warn(msg) (static_cast<void>(0))\n\
+    #  endif\n#  define warn_not_defined\n#endif\n\nnamespace lib {\n\n//! @tparam\
+    \ Container container type (deduced from parameters)\n//! @param src source container\
+    \ (std::string, std::vector, std::deque, ...)\n//! @return A std::vector<std::pair<element\
+    \ type of src, int>> which contains the RLE result.\n//! @note Time complexity:\
+    \ O(size(src))\ntemplate <typename Container>\n[[nodiscard]] auto run_length_encoding(const\
+    \ Container& src) {\n  using Elem = std::decay_t<decltype(*std::cbegin(std::declval<Container>()))>;\n\
     \  if (src.empty()) {\n    warn(\"An empty container is provided.\");\n    return\
     \ std::vector<std::pair<Elem, int>> {};\n  }\n  std::vector<std::pair<Elem, int>>\
     \ res {{*std::cbegin(src), 1}};\n  for (auto iter1 = std::cbegin(src), iter2 =\
@@ -51,13 +53,13 @@ data:
     \      ++res.back().second;\n    else\n      res.emplace_back(*iter2, 1);\n  \
     \  std::swap(iter1, iter2);\n  }\n  return res;\n}\n\n}  // namespace lib\n\n\
     #ifdef warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n// warn may\
-    \ be defined 2 times (by uncommenting line 16)\n#  ifdef warn\n#    undef warn\n\
+    \ be defined 2 times (by uncommenting line 17)\n#  ifdef warn\n#    undef warn\n\
     #  endif\n#endif\n\n#endif  // RUN_LENGTH_ENCODING_HPP\n"
   dependsOn: []
   isVerificationFile: false
   path: include/string/run_length_encoding.hpp
   requiredBy: []
-  timestamp: '2021-08-01 13:12:25+09:00'
+  timestamp: '2021-08-03 15:46:25+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/run_length_encoding/1.test.cpp
