@@ -24,9 +24,9 @@ data:
   bundledCode: "#line 1 \"include/algebra/dynamic_modint.hpp\"\n\n//! @file dynamic_modint.hpp\n\
     \n#ifndef DYNAMIC_MODINT_HPP\n#define DYNAMIC_MODINT_HPP\n\n#include <cstdint>\n\
     #include <iostream>\n#include <limits>\n#include <type_traits>\n\n#ifndef warn\n\
-    //! @brief Print warning message\n//! @note You can suppress the warning by uncommenting\
-    \ line 17\n#  ifndef ONLINE_JUDGE\n#    define warn(msg) (std::cerr << (msg) <<\
-    \ '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n#  else\n#    define\
+    #  ifndef ONLINE_JUDGE\n//! @brief Print warning message\n//! @note You can suppress\
+    \ the warning by uncommenting line 17\n#    define warn(msg) (std::cerr << (msg)\
+    \ << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n#  else\n#    define\
     \ warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n#endif\n\
     \nnamespace lib {\n\nnamespace internal {\n  template <typename Tp, std::enable_if_t<std::is_integral_v<Tp>,\
     \ std::nullptr_t> = nullptr>\n  using LongInt = std::conditional_t<(64 <= std::numeric_limits<Tp>::digits),\
@@ -294,8 +294,8 @@ data:
     \ line 17)\n#  ifdef warn\n#    undef warn\n#  endif\n#endif\n\n#endif  // DYNAMIC_MODINT_HPP\n"
   code: "\n//! @file dynamic_modint.hpp\n\n#ifndef DYNAMIC_MODINT_HPP\n#define DYNAMIC_MODINT_HPP\n\
     \n#include <cstdint>\n#include <iostream>\n#include <limits>\n#include <type_traits>\n\
-    \n#ifndef warn\n//! @brief Print warning message\n//! @note You can suppress the\
-    \ warning by uncommenting line 17\n#  ifndef ONLINE_JUDGE\n#    define warn(msg)\
+    \n#ifndef warn\n#  ifndef ONLINE_JUDGE\n//! @brief Print warning message\n//!\
+    \ @note You can suppress the warning by uncommenting line 17\n#    define warn(msg)\
     \ (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
     #  else\n#    define warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n\
     #endif\n\nnamespace lib {\n\nnamespace internal {\n  template <typename Tp, std::enable_if_t<std::is_integral_v<Tp>,\
@@ -566,7 +566,7 @@ data:
   isVerificationFile: false
   path: include/algebra/dynamic_modint.hpp
   requiredBy: []
-  timestamp: '2021-08-03 15:46:25+09:00'
+  timestamp: '2021-08-03 15:55:56+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/algebra/dynamic_modint/3.test.cpp

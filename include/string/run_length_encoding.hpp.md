@@ -15,8 +15,8 @@ data:
   bundledCode: "#line 1 \"include/string/run_length_encoding.hpp\"\n\n//! @file run_length_encoding.hpp\n\
     \n#ifndef RUN_LENGTH_ENCODING_HPP\n#define RUN_LENGTH_ENCODING_HPP\n\n#include\
     \ <iostream>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\n\
-    #ifndef warn\n//! @brief Print warning message\n//! @note You can suppress the\
-    \ warning by uncommenting line 17\n#  ifndef ONLINE_JUDGE\n#    define warn(msg)\
+    #ifndef warn\n#  ifndef ONLINE_JUDGE\n//! @brief Print warning message\n//! @note\
+    \ You can suppress the warning by uncommenting line 17\n#    define warn(msg)\
     \ (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
     #  else\n#    define warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n\
     #endif\n\nnamespace lib {\n\n//! @tparam Container container type (deduced from\
@@ -36,10 +36,10 @@ data:
     #  endif\n#endif\n\n#endif  // RUN_LENGTH_ENCODING_HPP\n"
   code: "\n//! @file run_length_encoding.hpp\n\n#ifndef RUN_LENGTH_ENCODING_HPP\n\
     #define RUN_LENGTH_ENCODING_HPP\n\n#include <iostream>\n#include <type_traits>\n\
-    #include <utility>\n#include <vector>\n\n#ifndef warn\n//! @brief Print warning\
-    \ message\n//! @note You can suppress the warning by uncommenting line 17\n# \
-    \ ifndef ONLINE_JUDGE\n#    define warn(msg) (std::cerr << (msg) << '\\n')\n//\
-    \ #  define warn(msg) (static_cast<void>(0))\n#  else\n#    define warn(msg) (static_cast<void>(0))\n\
+    #include <utility>\n#include <vector>\n\n#ifndef warn\n#  ifndef ONLINE_JUDGE\n\
+    //! @brief Print warning message\n//! @note You can suppress the warning by uncommenting\
+    \ line 17\n#    define warn(msg) (std::cerr << (msg) << '\\n')\n// #  define warn(msg)\
+    \ (static_cast<void>(0))\n#  else\n#    define warn(msg) (static_cast<void>(0))\n\
     #  endif\n#  define warn_not_defined\n#endif\n\nnamespace lib {\n\n//! @tparam\
     \ Container container type (deduced from parameters)\n//! @param src source container\
     \ (std::string, std::vector, std::deque, ...)\n//! @return A std::vector<std::pair<element\
@@ -59,7 +59,7 @@ data:
   isVerificationFile: false
   path: include/string/run_length_encoding.hpp
   requiredBy: []
-  timestamp: '2021-08-03 15:46:25+09:00'
+  timestamp: '2021-08-03 15:55:56+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/run_length_encoding/1.test.cpp

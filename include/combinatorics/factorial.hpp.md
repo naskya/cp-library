@@ -17,9 +17,9 @@ data:
     links: []
   bundledCode: "#line 1 \"include/combinatorics/factorial.hpp\"\n\n//! @file factorial.hpp\n\
     //! @brief Factorial, Permutation, Combination\n\n#ifndef FACTORIAL_HPP\n#define\
-    \ FACTORIAL_HPP\n\n#include <array>\n#include <iostream>\n\n#ifndef warn\n//!\
-    \ @brief Print warning message\n//! @note You can suppress the warning by uncommenting\
-    \ line 19\n#  ifndef ONLINE_JUDGE\n#    define warn(msg) (std::cerr << (msg) <<\
+    \ FACTORIAL_HPP\n\n#include <array>\n#include <iostream>\n\n#ifndef warn\n#  ifndef\
+    \ ONLINE_JUDGE\n//! @brief Print warning message\n//! @note You can suppress the\
+    \ warning by uncommenting line 19\n#    define warn(msg) (std::cerr << (msg) <<\
     \ '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n#  else\n#    define\
     \ warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n#endif\n\
     \nnamespace lib {\n\n//! @tparam Tp deduced from parameter\n//! @tparam ReturnType\
@@ -72,8 +72,8 @@ data:
     #endif\n\n#endif\n"
   code: "\n//! @file factorial.hpp\n//! @brief Factorial, Permutation, Combination\n\
     \n#ifndef FACTORIAL_HPP\n#define FACTORIAL_HPP\n\n#include <array>\n#include <iostream>\n\
-    \n#ifndef warn\n//! @brief Print warning message\n//! @note You can suppress the\
-    \ warning by uncommenting line 19\n#  ifndef ONLINE_JUDGE\n#    define warn(msg)\
+    \n#ifndef warn\n#  ifndef ONLINE_JUDGE\n//! @brief Print warning message\n//!\
+    \ @note You can suppress the warning by uncommenting line 19\n#    define warn(msg)\
     \ (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
     #  else\n#    define warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n\
     #endif\n\nnamespace lib {\n\n//! @tparam Tp deduced from parameter\n//! @tparam\
@@ -128,7 +128,7 @@ data:
   isVerificationFile: false
   path: include/combinatorics/factorial.hpp
   requiredBy: []
-  timestamp: '2021-08-03 15:46:25+09:00'
+  timestamp: '2021-08-03 15:55:56+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp
