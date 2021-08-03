@@ -8,6 +8,8 @@
 
 #include <algorithm>
 #include <cassert>
+#include <iostream>
+#include <string>
 #include <vector>
 
 #ifndef O_assert
@@ -99,6 +101,31 @@ public:
                      [&](const std::vector<int>& v) { return v.empty(); }),
       std::end(res));
     return res;
+  }
+
+  //! @brief Print debug information.
+  //! @param name variable name
+  //! @param os output stream
+  void debug_print(std::string name = "", std::ostream& os = std::cerr) const {
+    name += (name.empty() ? "" : ".");
+    name += "groups(): ";
+
+    os << name;
+
+    const std::string pad(std::size(name), ' ');
+    bool is_first_group = true;
+
+    for (auto&& group : groups()) {
+      if (!is_first_group) {
+        os << pad;
+      }
+      os << "[ ";
+      for (auto&& node : group) {
+        os << node << ' ';
+      }
+      os << "]\n";
+      is_first_group = false;
+    }
   }
 };
 
