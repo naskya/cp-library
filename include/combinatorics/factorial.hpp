@@ -9,9 +9,9 @@
 #include <iostream>
 
 #ifndef warn
+#  ifndef ONLINE_JUDGE
 //! @brief Print warning message
 //! @note You can suppress the warning by uncommenting line 19
-#  ifndef ONLINE_JUDGE
 #    define warn(msg) (std::cerr << (msg) << '\n')
 // #  define warn(msg) (static_cast<void>(0))
 #  else
