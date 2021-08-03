@@ -38,7 +38,7 @@ data:
       title: Binary search
     - icon: ':heavy_check_mark:'
       path: include/search/golden_ratio_search.hpp
-      title: Binary search
+      title: Golden ratio search
   - name: include/string
     pages:
     - icon: ':heavy_check_mark:'

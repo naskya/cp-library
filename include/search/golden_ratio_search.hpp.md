@@ -82,7 +82,7 @@ data:
   - test/search/golden_ratio_search/2.test.cpp
 documentation_of: include/search/golden_ratio_search.hpp
 layout: document
-title: Binary search
+title: Golden ratio search
 ---
 
 [黄金分割探索](https://ja.wikipedia.org/wiki/%E9%BB%84%E9%87%91%E5%88%86%E5%89%B2%E6%8E%A2%E7%B4%A2)によって凸関数の区間内の最小値(または最大値)とそれを達成する引数を求める関数が定義されています。
