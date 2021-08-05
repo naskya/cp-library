@@ -1,5 +1,5 @@
 ---
-title: Minimun spanning tree
+title: Minimum spanning tree
 documentation_of: //include/graph/minimum_spanning_tree.hpp
 ---
 
