@@ -23,7 +23,7 @@
 
 namespace lib {
 
-//! @tparam Container container type (deduced from parameters)
+//! @tparam Container container type (deduced from parameter)
 //! @param src source container (std::string, std::vector, std::deque, ...)
 //! @return A std::vector<std::pair<element type of src, int>> which contains the RLE result.
 //! @note Time complexity: O(size(src))
