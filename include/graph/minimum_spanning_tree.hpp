@@ -1,8 +1,8 @@
 
 //! @file minimum_spanning_tree.hpp
 
-#ifndef MINIMUM_SPANNING_TREE
-#define MINIMUM_SPANNING_TREE
+#ifndef MINIMUM_SPANNING_TREE_HPP
+#define MINIMUM_SPANNING_TREE_HPP
 
 #include <algorithm>
 #include <cassert>
@@ -251,4 +251,4 @@ template <typename TotalCostType, typename CostType, template <typename...> type
 #  undef O_assert_not_defined
 #endif
 
-#endif
+#endif  // MINIMUM_SPANNING_TREE_HPP

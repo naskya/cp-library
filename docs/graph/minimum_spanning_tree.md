@@ -9,7 +9,7 @@ documentation_of: //include/graph/minimum_spanning_tree.hpp
 
 ### `minimum_spanning_tree<TotalCostType>(N, edge_list)`
 
-$N$ 頂点の、`edge_list` に含まれる辺を持つグラフの最小全域木を[Kruskal 法](https://ja.wikipedia.org/wiki/%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%AB%E3%83%AB%E6%B3%95)によって求めます。
+$N$ 頂点の、`edge_list` に含まれる辺を持つグラフの最小全域木を [Kruskal 法](https://ja.wikipedia.org/wiki/%E3%82%AF%E3%83%A9%E3%82%B9%E3%82%AB%E3%83%AB%E6%B3%95)によって求めます。
 
 #### テンプレート引数
 
@@ -26,9 +26,11 @@ $N$ 頂点の、`edge_list` に含まれる辺を持つグラフの最小全域�
 
 最小全域木の辺のリスト(`edge_list` と同じ形式)と辺のコストの総和(`TotalCostType` 型)をこの順に保持した `std::pair` 型の値
 
+---
+
 ### `minimum_spanning_tree<TotalCostType>(adjacency_list)`
 
-隣接リスト `adjacency_list` で表されるグラフの最小全域木を[Prim 法](https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AA%E3%83%A0%E6%B3%95)によって求めます。
+隣接リスト `adjacency_list` で表されるグラフの最小全域木を [Prim 法](https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AA%E3%83%A0%E6%B3%95)によって求めます。
 
 #### テンプレート引数
 
@@ -45,9 +47,11 @@ $N$ 頂点の、`edge_list` に含まれる辺を持つグラフの最小全域�
 
 最小全域木の隣接リスト(`adjacency_list` と同じ形式)と辺のコストの総和(`TotalCostType` 型)をこの順に保持した `std::pair` 型の値
 
+---
+
 ### `minimum_spanning_tree<TotalCostType>(adjacency_matrix, infinity)`
 
-隣接行列 `adjacency_matrix` で表されるグラフの最小全域木を[Prim 法](https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AA%E3%83%A0%E6%B3%95)によって求めます。
+隣接行列 `adjacency_matrix` で表されるグラフの最小全域木を [Prim 法](https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%AA%E3%83%A0%E6%B3%95)によって求めます。
 
 #### テンプレート引数
 
