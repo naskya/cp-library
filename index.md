@@ -31,6 +31,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: include/data_structure/union_find.hpp
       title: Union-find
+  - name: include/graph
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: include/graph/minimum_spanning_tree.hpp
+      title: Minimun spanning tree
   - name: include/search
     pages:
     - icon: ':heavy_check_mark:'
@@ -118,6 +123,20 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/union_find/2.test.cpp
       title: test/data_structure/union_find/2.test.cpp
+  - name: test/graph/minimum_spanning_tree
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/graph/minimum_spanning_tree/1.test.cpp
+      title: test/graph/minimum_spanning_tree/1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/graph/minimum_spanning_tree/2.test.cpp
+      title: test/graph/minimum_spanning_tree/2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/graph/minimum_spanning_tree/3.test.cpp
+      title: test/graph/minimum_spanning_tree/3.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/graph/minimum_spanning_tree/4.test.cpp
+      title: test/graph/minimum_spanning_tree/4.test.cpp
   - name: test/search/binary_search
     pages:
     - icon: ':heavy_check_mark:'
