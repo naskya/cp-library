@@ -35,7 +35,7 @@ data:
     pages:
     - icon: ':heavy_check_mark:'
       path: include/graph/minimum_spanning_tree.hpp
-      title: Minimun spanning tree
+      title: Minimum spanning tree
   - name: include/search
     pages:
     - icon: ':heavy_check_mark:'

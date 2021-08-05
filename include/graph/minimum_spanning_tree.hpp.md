@@ -265,7 +265,7 @@ data:
   - test/graph/minimum_spanning_tree/2.test.cpp
 documentation_of: include/graph/minimum_spanning_tree.hpp
 layout: document
-title: Minimun spanning tree
+title: Minimum spanning tree
 ---
 
 グラフの[最小全域木](https://ja.wikipedia.org/wiki/%E5%85%A8%E5%9F%9F%E6%9C%A8#%E6%9C%80%E5%B0%8F%E5%85%A8%E5%9F%9F%E6%9C%A8)を求める関数が定義されています。
