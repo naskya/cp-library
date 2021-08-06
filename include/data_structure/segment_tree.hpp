@@ -302,7 +302,7 @@ public:
   }
 
   //! @warning You can call this function only if this segment tree is locked.
-  //! @warning Calling this function will not perform propagation. You need to call propagate()/propagate_all() manually.
+  //! @warning This function will not perform propagation. You need to call propagate()/propagate_all() manually.
   //! @brief Resume automatic propagation on element changes.
   //! @note Time complexity: O(1)
   void unlock() {
