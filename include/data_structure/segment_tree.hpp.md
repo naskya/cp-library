@@ -398,7 +398,7 @@ layout: document
 title: Segment tree
 ---
 
-配列に対して以下のクエリが対数時間で行えるデータ構造である `segment_tree` クラスと、その制御に用いる `no_range_query_in_this_scope` クラスが定義されています。[`binary_indexed_tree`](https://naskya.github.io/cp-library/include/data_structure/binary_indexed_tree.hpp) や [`sparce_table`](https://naskya.github.io/cp-library/include/data_structure/sparse_table.hpp) が利用できる場合、そちらを利用した方が高速に動作することが期待できます。
+配列に対して以下のクエリが対数時間で行えるデータ構造である `segment_tree` クラスと、その制御に用いる `no_range_query_in_this_scope` クラスが定義されています。[`binary_indexed_tree`](https://naskya.github.io/cp-library/include/data_structure/binary_indexed_tree.hpp) や [`sparse_table`](https://naskya.github.io/cp-library/include/data_structure/sparse_table.hpp) が利用できる場合、そちらを利用した方が高速に動作することが期待できます。
 
 - 配列の一つの要素の値を更新する
 - 配列の一つの要素の値を取得する
