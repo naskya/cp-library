@@ -129,7 +129,7 @@ data:
     \        locked(false) {\n    std::fill(std::begin(data) + length, std::begin(data)\
     \ + length + length, init_val);\n    for (int i = length - 1; i > 0; --i)\n  \
     \    data[i] = binary_op(data[i << 1], data[i << 1 | 1]);\n  }\n\n  ~segment_tree()\
-    \ {\n    if (locked)\n      warn(\"Segment tree is destructed with a locked state.\"\
+    \ {\n    if (locked)\n      warn(\"Segment tree is destructed in a locked state.\"\
     );\n  }\n\n  //! @return Vector size (length)\n  [[nodiscard]] int size() const\
     \ noexcept {\n    return length;\n  }\n\n  //! @brief Add value to the index-th\
     \ element.\n  //! @param index index of the element to be added (0-indexed)\n\
@@ -304,7 +304,7 @@ data:
     \        locked(false) {\n    std::fill(std::begin(data) + length, std::begin(data)\
     \ + length + length, init_val);\n    for (int i = length - 1; i > 0; --i)\n  \
     \    data[i] = binary_op(data[i << 1], data[i << 1 | 1]);\n  }\n\n  ~segment_tree()\
-    \ {\n    if (locked)\n      warn(\"Segment tree is destructed with a locked state.\"\
+    \ {\n    if (locked)\n      warn(\"Segment tree is destructed in a locked state.\"\
     );\n  }\n\n  //! @return Vector size (length)\n  [[nodiscard]] int size() const\
     \ noexcept {\n    return length;\n  }\n\n  //! @brief Add value to the index-th\
     \ element.\n  //! @param index index of the element to be added (0-indexed)\n\
@@ -388,7 +388,7 @@ data:
   isVerificationFile: false
   path: include/data_structure/segment_tree.hpp
   requiredBy: []
-  timestamp: '2021-08-06 22:08:44+09:00'
+  timestamp: '2021-08-06 22:13:12+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/segment_tree/3.test.cpp
