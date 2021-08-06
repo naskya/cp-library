@@ -128,70 +128,73 @@ data:
     \        data(length << 1, id),\n        binary_op(std::move(binary_operation)),\n\
     \        locked(false) {\n    std::fill(std::begin(data) + length, std::begin(data)\
     \ + length + length, init_val);\n    for (int i = length - 1; i > 0; --i)\n  \
-    \    data[i] = binary_op(data[i << 1], data[i << 1 | 1]);\n  }\n\n  //! @return\
-    \ Vector size (length)\n  [[nodiscard]] int size() const noexcept {\n    return\
-    \ length;\n  }\n\n  //! @brief Add value to the index-th element.\n  //! @param\
-    \ index index of the element to be added (0-indexed)\n  //! @param value value\
-    \ to be added\n  //! @note Time complexity: O(log size) if unlocked\n  //! @note\
-    \ Time complexity: O(1)        if locked\n  void add(const int index, const Elem\
-    \ value) {\n    O_assert(0 <= index && index < length);\n    data[index + length]\
-    \ = data[index + length] + value;\n    if (!locked)\n      propagate_impl(index);\n\
-    \  }\n\n  //! @brief Set the value of the index-th element to value.\n  //! @param\
-    \ index index (0-indexed)\n  //! @param value value to be set\n  //! @note Time\
-    \ complexity: O(log size) if unlocked\n  //! @note Time complexity: O(1)     \
-    \   if locked\n  void set(const int index, const Elem value) {\n    O_assert(0\
-    \ <= index && index < length);\n    data[index + length] = value;\n    if (!locked)\n\
-    \      propagate_impl(index);\n  }\n\n  //! @brief Get the value of the index-th\
-    \ element.\n  //! @param index index (0-indexed)\n  //! @note Time complexity:\
-    \ O(1)\n  [[nodiscard]] Elem get(const int index) const {\n    O_assert(0 <= index\
-    \ && index < length);\n    return data[index + length];\n  }\n\n  //! @brief Calculate\
-    \ interval product.\n  //! @param left lower limit of interval (0-indexed)\n \
-    \ //! @param right upper limit of interval (0-indexed)\n  //! @return product\
-    \ (result of the specified binary operation) of the elements within [left, right)\
-    \ (half-open interval)\n  //! @note Time complexity: O(log size)\n  [[nodiscard]]\
-    \ Elem prod(int L, int R) const {\n    O_assert(!locked);\n    O_assert(0 <= L\
-    \ && L <= R && R <= length);\n    L += length;\n    R += length;\n\n    Elem res_l\
-    \ = id, res_r = id;\n\n    while (L < R) {\n      if (L & 1) {\n        res_l\
-    \ = binary_op(res_l, data[L]);\n        ++L;\n      }\n      if (R & 1)\n    \
-    \    res_r = binary_op(data[--R], res_r);\n      L >>= 1;\n      R >>= 1;\n  \
-    \  }\n\n    return binary_op(res_l, res_r);\n  }\n\n  //! @brief Calculate product\
-    \ of all elements.\n  //! @param left lower limit of interval (0-indexed)\n  //!\
-    \ @param right upper limit of interval (0-indexed)\n  //! @return product (result\
-    \ of the specified binary operation) of all elements\n  //! @note Time complexity:\
-    \ O(1)\n  [[nodiscard]] Elem all_prod() const {\n    O_assert(!locked);\n    return\
-    \ data[1];\n  }\n\n  //! @warning You need to call this function ONLY IF you use\
-    \ lock()/unlock() function.\n  //! @brief Propagate changes in the index-th element\
-    \ to its ancestors.\n  //! @note Time complexity: O(log size)\n  void propagate(int\
-    \ index) {\n    O_assert(locked);\n    O_assert(0 <= index && index < length);\n\
-    \    propagate_impl(index);\n  }\n\n  //! @warning You need to call this function\
+    \    data[i] = binary_op(data[i << 1], data[i << 1 | 1]);\n  }\n\n  ~segment_tree()\
+    \ {\n    if (locked)\n      warn(\"Segment tree is destructed with a locked state.\"\
+    );\n  }\n\n  //! @return Vector size (length)\n  [[nodiscard]] int size() const\
+    \ noexcept {\n    return length;\n  }\n\n  //! @brief Add value to the index-th\
+    \ element.\n  //! @param index index of the element to be added (0-indexed)\n\
+    \  //! @param value value to be added\n  //! @note Time complexity: O(log size)\
+    \ if unlocked\n  //! @note Time complexity: O(1)        if locked\n  void add(const\
+    \ int index, const Elem value) {\n    O_assert(0 <= index && index < length);\n\
+    \    data[index + length] = data[index + length] + value;\n    if (!locked)\n\
+    \      propagate_impl(index);\n  }\n\n  //! @brief Set the value of the index-th\
+    \ element to value.\n  //! @param index index (0-indexed)\n  //! @param value\
+    \ value to be set\n  //! @note Time complexity: O(log size) if unlocked\n  //!\
+    \ @note Time complexity: O(1)        if locked\n  void set(const int index, const\
+    \ Elem value) {\n    O_assert(0 <= index && index < length);\n    data[index +\
+    \ length] = value;\n    if (!locked)\n      propagate_impl(index);\n  }\n\n  //!\
+    \ @brief Get the value of the index-th element.\n  //! @param index index (0-indexed)\n\
+    \  //! @note Time complexity: O(1)\n  [[nodiscard]] Elem get(const int index)\
+    \ const {\n    O_assert(0 <= index && index < length);\n    return data[index\
+    \ + length];\n  }\n\n  //! @brief Calculate interval product.\n  //! @param left\
+    \ lower limit of interval (0-indexed)\n  //! @param right upper limit of interval\
+    \ (0-indexed)\n  //! @return product (result of the specified binary operation)\
+    \ of the elements within [left, right) (half-open interval)\n  //! @note Time\
+    \ complexity: O(log size)\n  [[nodiscard]] Elem prod(int L, int R) const {\n \
+    \   O_assert(!locked);\n    O_assert(0 <= L && L <= R && R <= length);\n    L\
+    \ += length;\n    R += length;\n\n    Elem res_l = id, res_r = id;\n\n    while\
+    \ (L < R) {\n      if (L & 1) {\n        res_l = binary_op(res_l, data[L]);\n\
+    \        ++L;\n      }\n      if (R & 1)\n        res_r = binary_op(data[--R],\
+    \ res_r);\n      L >>= 1;\n      R >>= 1;\n    }\n\n    return binary_op(res_l,\
+    \ res_r);\n  }\n\n  //! @brief Calculate product of all elements.\n  //! @param\
+    \ left lower limit of interval (0-indexed)\n  //! @param right upper limit of\
+    \ interval (0-indexed)\n  //! @return product (result of the specified binary\
+    \ operation) of all elements\n  //! @note Time complexity: O(1)\n  [[nodiscard]]\
+    \ Elem all_prod() const {\n    O_assert(!locked);\n    return data[1];\n  }\n\n\
+    \  //! @warning You need to call this function ONLY IF you use lock()/unlock()\
+    \ function.\n  //! @brief Propagate changes in the index-th element to its ancestors.\n\
+    \  //! @note Time complexity: O(log size)\n  void propagate(int index) {\n   \
+    \ O_assert(locked);\n    O_assert(0 <= index && index < length);\n    propagate_impl(index);\n\
+    \  }\n\n  //! @warning You need to call this function ONLY IF you use lock()/unlock()\
+    \ function.\n  //! @brief Propagate changes of all elements to the ancestors.\n\
+    \  //! @note Time complexity: O(size)\n  void propagate_all() {\n    O_assert(locked);\n\
+    \    for (int i = length - 1; i > 0; --i)\n      data[i] = binary_op(data[i <<\
+    \ 1], data[i << 1 | 1]);\n  }\n\n  //! @warning You need to call this function\
     \ ONLY IF you use lock()/unlock() function.\n  //! @brief Propagate changes of\
-    \ all elements to the ancestors.\n  //! @note Time complexity: O(size)\n  void\
-    \ propagate_all() {\n    O_assert(locked);\n    for (int i = length - 1; i > 0;\
-    \ --i)\n      data[i] = binary_op(data[i << 1], data[i << 1 | 1]);\n  }\n\n  //!\
-    \ @warning You need to call this function ONLY IF you use lock()/unlock() function.\n\
-    \  //! @brief Propagate changes of all elements to the ancestors and resume automatic\
-    \ propagation.\n  //! @note Time complexity: O(size)\n  void propagate_all_and_unlock()\
-    \ {\n    propagate_all();\n    unlock();\n  }\n\n  //! @warning You can call this\
-    \ function only if you can promise not to call prod()/all_prod() until you call\
-    \ unlock().\n  //! @brief Stop automatic propagation on element changes.\n  //!\
-    \ @note Time complexity: O(1)\n  void lock() {\n    O_assert(!locked);\n    locked\
-    \ = true;\n  }\n\n  //! @warning You can call this function only if this segment\
-    \ tree is locked.\n  //! @warning This function will not perform propagation.\
-    \ You need to call propagate()/propagate_all() manually.\n  //! @brief Resume\
-    \ automatic propagation on element changes.\n  //! @note Time complexity: O(1)\n\
-    \  void unlock() {\n    O_assert(locked);\n    locked = false;\n  }\n\n  //! @warning\
-    \ You need to call this function ONLY IF you use lock()/unlock() function.\n \
-    \ //! @return Whether the automatic propagation is stopped.\n  //! @note Time\
-    \ complexity: O(1)\n  [[nodiscard]] bool is_locked() const {\n    return locked;\n\
-    \  }\n\n  void debug_print([[maybe_unused]] const std::string& name = \"\", [[maybe_unused]]\
-    \ std::ostream& os = std::cerr) const {\n#ifndef ONLINE_JUDGE\n    if (!name.empty())\n\
-    \      os << name << \": \";\n\n    os << \"val  [ \";\n    for (int i = 0; i\
-    \ < size(); ++i)\n      os << get(i) << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n\
-    \      os << std::string(std::size(name) + 2, ' ');\n\n    os << \"prod [ \";\n\
-    \    for (int i = 0; i <= size(); ++i)\n      os << prod(0, i) << ' ';\n    os\
-    \ << \"]\\n\";\n#endif\n  }\n};\n\nnamespace internal {\n  template <typename\
-    \ Tp>\n  [[maybe_unused]] constexpr bool is_segment_tree_v = false;\n  template\
-    \ <typename Elem, typename Func>\n  [[maybe_unused]] constexpr bool is_segment_tree_v<segment_tree<Elem,\
+    \ all elements to the ancestors and resume automatic propagation.\n  //! @note\
+    \ Time complexity: O(size)\n  void propagate_all_and_unlock() {\n    propagate_all();\n\
+    \    unlock();\n  }\n\n  //! @warning You can call this function only if you can\
+    \ promise not to call prod()/all_prod() until you call unlock().\n  //! @brief\
+    \ Stop automatic propagation on element changes.\n  //! @note Time complexity:\
+    \ O(1)\n  void lock() {\n    O_assert(!locked);\n    locked = true;\n  }\n\n \
+    \ //! @warning You can call this function only if this segment tree is locked.\n\
+    \  //! @warning This function will not perform propagation. You need to call propagate()/propagate_all()\
+    \ manually.\n  //! @brief Resume automatic propagation on element changes.\n \
+    \ //! @note Time complexity: O(1)\n  void unlock() {\n    O_assert(locked);\n\
+    \    locked = false;\n  }\n\n  //! @warning You need to call this function ONLY\
+    \ IF you use lock()/unlock() function.\n  //! @return Whether the automatic propagation\
+    \ is stopped.\n  //! @note Time complexity: O(1)\n  [[nodiscard]] bool is_locked()\
+    \ const {\n    return locked;\n  }\n\n  void debug_print([[maybe_unused]] const\
+    \ std::string& name = \"\", [[maybe_unused]] std::ostream& os = std::cerr) const\
+    \ {\n#ifndef ONLINE_JUDGE\n    if (!name.empty())\n      os << name << \": \"\
+    ;\n\n    os << \"val  [ \";\n    for (int i = 0; i < size(); ++i)\n      os <<\
+    \ get(i) << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n      os << std::string(std::size(name)\
+    \ + 2, ' ');\n\n    os << \"prod [ \";\n\n    if (locked)\n      os << \"cannot\
+    \ display since range product query is locked \";\n    else\n      for (int i\
+    \ = 0; i <= size(); ++i)\n        os << prod(0, i) << ' ';\n\n    os << \"]\\\
+    n\";\n#endif\n  }\n};\n\nnamespace internal {\n  template <typename Tp>\n  [[maybe_unused]]\
+    \ constexpr bool is_segment_tree_v = false;\n  template <typename Elem, typename\
+    \ Func>\n  [[maybe_unused]] constexpr bool is_segment_tree_v<segment_tree<Elem,\
     \ Func>> = true;\n}  // namespace internal\n\n//! @brief Utility class to automatically\
     \ call lock() in constructor and propagate_all_and_unlock() in destructor.\ntemplate\
     \ <typename Tp, std::enable_if_t<internal::is_segment_tree_v<Tp>, std::nullptr_t>\
@@ -300,70 +303,73 @@ data:
     \        data(length << 1, id),\n        binary_op(std::move(binary_operation)),\n\
     \        locked(false) {\n    std::fill(std::begin(data) + length, std::begin(data)\
     \ + length + length, init_val);\n    for (int i = length - 1; i > 0; --i)\n  \
-    \    data[i] = binary_op(data[i << 1], data[i << 1 | 1]);\n  }\n\n  //! @return\
-    \ Vector size (length)\n  [[nodiscard]] int size() const noexcept {\n    return\
-    \ length;\n  }\n\n  //! @brief Add value to the index-th element.\n  //! @param\
-    \ index index of the element to be added (0-indexed)\n  //! @param value value\
-    \ to be added\n  //! @note Time complexity: O(log size) if unlocked\n  //! @note\
-    \ Time complexity: O(1)        if locked\n  void add(const int index, const Elem\
-    \ value) {\n    O_assert(0 <= index && index < length);\n    data[index + length]\
-    \ = data[index + length] + value;\n    if (!locked)\n      propagate_impl(index);\n\
-    \  }\n\n  //! @brief Set the value of the index-th element to value.\n  //! @param\
-    \ index index (0-indexed)\n  //! @param value value to be set\n  //! @note Time\
-    \ complexity: O(log size) if unlocked\n  //! @note Time complexity: O(1)     \
-    \   if locked\n  void set(const int index, const Elem value) {\n    O_assert(0\
-    \ <= index && index < length);\n    data[index + length] = value;\n    if (!locked)\n\
-    \      propagate_impl(index);\n  }\n\n  //! @brief Get the value of the index-th\
-    \ element.\n  //! @param index index (0-indexed)\n  //! @note Time complexity:\
-    \ O(1)\n  [[nodiscard]] Elem get(const int index) const {\n    O_assert(0 <= index\
-    \ && index < length);\n    return data[index + length];\n  }\n\n  //! @brief Calculate\
-    \ interval product.\n  //! @param left lower limit of interval (0-indexed)\n \
-    \ //! @param right upper limit of interval (0-indexed)\n  //! @return product\
-    \ (result of the specified binary operation) of the elements within [left, right)\
-    \ (half-open interval)\n  //! @note Time complexity: O(log size)\n  [[nodiscard]]\
-    \ Elem prod(int L, int R) const {\n    O_assert(!locked);\n    O_assert(0 <= L\
-    \ && L <= R && R <= length);\n    L += length;\n    R += length;\n\n    Elem res_l\
-    \ = id, res_r = id;\n\n    while (L < R) {\n      if (L & 1) {\n        res_l\
-    \ = binary_op(res_l, data[L]);\n        ++L;\n      }\n      if (R & 1)\n    \
-    \    res_r = binary_op(data[--R], res_r);\n      L >>= 1;\n      R >>= 1;\n  \
-    \  }\n\n    return binary_op(res_l, res_r);\n  }\n\n  //! @brief Calculate product\
-    \ of all elements.\n  //! @param left lower limit of interval (0-indexed)\n  //!\
-    \ @param right upper limit of interval (0-indexed)\n  //! @return product (result\
-    \ of the specified binary operation) of all elements\n  //! @note Time complexity:\
-    \ O(1)\n  [[nodiscard]] Elem all_prod() const {\n    O_assert(!locked);\n    return\
-    \ data[1];\n  }\n\n  //! @warning You need to call this function ONLY IF you use\
-    \ lock()/unlock() function.\n  //! @brief Propagate changes in the index-th element\
-    \ to its ancestors.\n  //! @note Time complexity: O(log size)\n  void propagate(int\
-    \ index) {\n    O_assert(locked);\n    O_assert(0 <= index && index < length);\n\
-    \    propagate_impl(index);\n  }\n\n  //! @warning You need to call this function\
+    \    data[i] = binary_op(data[i << 1], data[i << 1 | 1]);\n  }\n\n  ~segment_tree()\
+    \ {\n    if (locked)\n      warn(\"Segment tree is destructed with a locked state.\"\
+    );\n  }\n\n  //! @return Vector size (length)\n  [[nodiscard]] int size() const\
+    \ noexcept {\n    return length;\n  }\n\n  //! @brief Add value to the index-th\
+    \ element.\n  //! @param index index of the element to be added (0-indexed)\n\
+    \  //! @param value value to be added\n  //! @note Time complexity: O(log size)\
+    \ if unlocked\n  //! @note Time complexity: O(1)        if locked\n  void add(const\
+    \ int index, const Elem value) {\n    O_assert(0 <= index && index < length);\n\
+    \    data[index + length] = data[index + length] + value;\n    if (!locked)\n\
+    \      propagate_impl(index);\n  }\n\n  //! @brief Set the value of the index-th\
+    \ element to value.\n  //! @param index index (0-indexed)\n  //! @param value\
+    \ value to be set\n  //! @note Time complexity: O(log size) if unlocked\n  //!\
+    \ @note Time complexity: O(1)        if locked\n  void set(const int index, const\
+    \ Elem value) {\n    O_assert(0 <= index && index < length);\n    data[index +\
+    \ length] = value;\n    if (!locked)\n      propagate_impl(index);\n  }\n\n  //!\
+    \ @brief Get the value of the index-th element.\n  //! @param index index (0-indexed)\n\
+    \  //! @note Time complexity: O(1)\n  [[nodiscard]] Elem get(const int index)\
+    \ const {\n    O_assert(0 <= index && index < length);\n    return data[index\
+    \ + length];\n  }\n\n  //! @brief Calculate interval product.\n  //! @param left\
+    \ lower limit of interval (0-indexed)\n  //! @param right upper limit of interval\
+    \ (0-indexed)\n  //! @return product (result of the specified binary operation)\
+    \ of the elements within [left, right) (half-open interval)\n  //! @note Time\
+    \ complexity: O(log size)\n  [[nodiscard]] Elem prod(int L, int R) const {\n \
+    \   O_assert(!locked);\n    O_assert(0 <= L && L <= R && R <= length);\n    L\
+    \ += length;\n    R += length;\n\n    Elem res_l = id, res_r = id;\n\n    while\
+    \ (L < R) {\n      if (L & 1) {\n        res_l = binary_op(res_l, data[L]);\n\
+    \        ++L;\n      }\n      if (R & 1)\n        res_r = binary_op(data[--R],\
+    \ res_r);\n      L >>= 1;\n      R >>= 1;\n    }\n\n    return binary_op(res_l,\
+    \ res_r);\n  }\n\n  //! @brief Calculate product of all elements.\n  //! @param\
+    \ left lower limit of interval (0-indexed)\n  //! @param right upper limit of\
+    \ interval (0-indexed)\n  //! @return product (result of the specified binary\
+    \ operation) of all elements\n  //! @note Time complexity: O(1)\n  [[nodiscard]]\
+    \ Elem all_prod() const {\n    O_assert(!locked);\n    return data[1];\n  }\n\n\
+    \  //! @warning You need to call this function ONLY IF you use lock()/unlock()\
+    \ function.\n  //! @brief Propagate changes in the index-th element to its ancestors.\n\
+    \  //! @note Time complexity: O(log size)\n  void propagate(int index) {\n   \
+    \ O_assert(locked);\n    O_assert(0 <= index && index < length);\n    propagate_impl(index);\n\
+    \  }\n\n  //! @warning You need to call this function ONLY IF you use lock()/unlock()\
+    \ function.\n  //! @brief Propagate changes of all elements to the ancestors.\n\
+    \  //! @note Time complexity: O(size)\n  void propagate_all() {\n    O_assert(locked);\n\
+    \    for (int i = length - 1; i > 0; --i)\n      data[i] = binary_op(data[i <<\
+    \ 1], data[i << 1 | 1]);\n  }\n\n  //! @warning You need to call this function\
     \ ONLY IF you use lock()/unlock() function.\n  //! @brief Propagate changes of\
-    \ all elements to the ancestors.\n  //! @note Time complexity: O(size)\n  void\
-    \ propagate_all() {\n    O_assert(locked);\n    for (int i = length - 1; i > 0;\
-    \ --i)\n      data[i] = binary_op(data[i << 1], data[i << 1 | 1]);\n  }\n\n  //!\
-    \ @warning You need to call this function ONLY IF you use lock()/unlock() function.\n\
-    \  //! @brief Propagate changes of all elements to the ancestors and resume automatic\
-    \ propagation.\n  //! @note Time complexity: O(size)\n  void propagate_all_and_unlock()\
-    \ {\n    propagate_all();\n    unlock();\n  }\n\n  //! @warning You can call this\
-    \ function only if you can promise not to call prod()/all_prod() until you call\
-    \ unlock().\n  //! @brief Stop automatic propagation on element changes.\n  //!\
-    \ @note Time complexity: O(1)\n  void lock() {\n    O_assert(!locked);\n    locked\
-    \ = true;\n  }\n\n  //! @warning You can call this function only if this segment\
-    \ tree is locked.\n  //! @warning This function will not perform propagation.\
-    \ You need to call propagate()/propagate_all() manually.\n  //! @brief Resume\
-    \ automatic propagation on element changes.\n  //! @note Time complexity: O(1)\n\
-    \  void unlock() {\n    O_assert(locked);\n    locked = false;\n  }\n\n  //! @warning\
-    \ You need to call this function ONLY IF you use lock()/unlock() function.\n \
-    \ //! @return Whether the automatic propagation is stopped.\n  //! @note Time\
-    \ complexity: O(1)\n  [[nodiscard]] bool is_locked() const {\n    return locked;\n\
-    \  }\n\n  void debug_print([[maybe_unused]] const std::string& name = \"\", [[maybe_unused]]\
-    \ std::ostream& os = std::cerr) const {\n#ifndef ONLINE_JUDGE\n    if (!name.empty())\n\
-    \      os << name << \": \";\n\n    os << \"val  [ \";\n    for (int i = 0; i\
-    \ < size(); ++i)\n      os << get(i) << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n\
-    \      os << std::string(std::size(name) + 2, ' ');\n\n    os << \"prod [ \";\n\
-    \    for (int i = 0; i <= size(); ++i)\n      os << prod(0, i) << ' ';\n    os\
-    \ << \"]\\n\";\n#endif\n  }\n};\n\nnamespace internal {\n  template <typename\
-    \ Tp>\n  [[maybe_unused]] constexpr bool is_segment_tree_v = false;\n  template\
-    \ <typename Elem, typename Func>\n  [[maybe_unused]] constexpr bool is_segment_tree_v<segment_tree<Elem,\
+    \ all elements to the ancestors and resume automatic propagation.\n  //! @note\
+    \ Time complexity: O(size)\n  void propagate_all_and_unlock() {\n    propagate_all();\n\
+    \    unlock();\n  }\n\n  //! @warning You can call this function only if you can\
+    \ promise not to call prod()/all_prod() until you call unlock().\n  //! @brief\
+    \ Stop automatic propagation on element changes.\n  //! @note Time complexity:\
+    \ O(1)\n  void lock() {\n    O_assert(!locked);\n    locked = true;\n  }\n\n \
+    \ //! @warning You can call this function only if this segment tree is locked.\n\
+    \  //! @warning This function will not perform propagation. You need to call propagate()/propagate_all()\
+    \ manually.\n  //! @brief Resume automatic propagation on element changes.\n \
+    \ //! @note Time complexity: O(1)\n  void unlock() {\n    O_assert(locked);\n\
+    \    locked = false;\n  }\n\n  //! @warning You need to call this function ONLY\
+    \ IF you use lock()/unlock() function.\n  //! @return Whether the automatic propagation\
+    \ is stopped.\n  //! @note Time complexity: O(1)\n  [[nodiscard]] bool is_locked()\
+    \ const {\n    return locked;\n  }\n\n  void debug_print([[maybe_unused]] const\
+    \ std::string& name = \"\", [[maybe_unused]] std::ostream& os = std::cerr) const\
+    \ {\n#ifndef ONLINE_JUDGE\n    if (!name.empty())\n      os << name << \": \"\
+    ;\n\n    os << \"val  [ \";\n    for (int i = 0; i < size(); ++i)\n      os <<\
+    \ get(i) << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n      os << std::string(std::size(name)\
+    \ + 2, ' ');\n\n    os << \"prod [ \";\n\n    if (locked)\n      os << \"cannot\
+    \ display since range product query is locked \";\n    else\n      for (int i\
+    \ = 0; i <= size(); ++i)\n        os << prod(0, i) << ' ';\n\n    os << \"]\\\
+    n\";\n#endif\n  }\n};\n\nnamespace internal {\n  template <typename Tp>\n  [[maybe_unused]]\
+    \ constexpr bool is_segment_tree_v = false;\n  template <typename Elem, typename\
+    \ Func>\n  [[maybe_unused]] constexpr bool is_segment_tree_v<segment_tree<Elem,\
     \ Func>> = true;\n}  // namespace internal\n\n//! @brief Utility class to automatically\
     \ call lock() in constructor and propagate_all_and_unlock() in destructor.\ntemplate\
     \ <typename Tp, std::enable_if_t<internal::is_segment_tree_v<Tp>, std::nullptr_t>\
@@ -382,7 +388,7 @@ data:
   isVerificationFile: false
   path: include/data_structure/segment_tree.hpp
   requiredBy: []
-  timestamp: '2021-08-06 20:45:22+09:00'
+  timestamp: '2021-08-06 22:08:44+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/segment_tree/3.test.cpp
