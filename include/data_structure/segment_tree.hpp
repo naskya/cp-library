@@ -193,6 +193,11 @@ public:
       data[i] = binary_op(data[i << 1], data[i << 1 | 1]);
   }
 
+  ~segment_tree() {
+    if (locked)
+      warn("Segment tree is destructed in a locked state.");
+  }
+
   //! @return Vector size (length)
   [[nodiscard]] int size() const noexcept {
     return length;
@@ -331,8 +336,13 @@ public:
       os << std::string(std::size(name) + 2, ' ');
 
     os << "prod [ ";
-    for (int i = 0; i <= size(); ++i)
-      os << prod(0, i) << ' ';
+
+    if (locked)
+      os << "cannot display since range product query is locked ";
+    else
+      for (int i = 0; i <= size(); ++i)
+        os << prod(0, i) << ' ';
+
     os << "]\n";
 #endif
   }
