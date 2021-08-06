@@ -437,12 +437,18 @@ lib::segment_tree<long long, std::bit_xor<>> tree_4(N);      // 4.
 lib::segment_tree<long long, std::bit_xor<>> tree_5(N, 10);  // 5.
 lib::segment_tree<long long, std::bit_xor<>> tree_6(v);      // 6.
 
+// 最小値を返す演算
 const auto func_min = [](const long long x, const long long y) constexpr { return std::min(x, y); };
+// 最小値を返す演算の単位元
 constexpr long long id_min = 1000000000000000005LL;
 
 lib::segment_tree tree_7(N, id_min, func_min);       // 7.
 lib::segment_tree tree_8(N, 500, id_min, func_min);  // 8.
 lib::segment_tree tree_9(v, id_min, func_min);       // 9.
+
+// 引数の部分にラムダ式を直接書いても良い
+// lib::segment_tree tree_9 (v, 1000000000000000005LL,
+//                           [](long long x, long long y) { return std::min(x, y); });
 ```
 
 1. 要素数 $N$ の、全ての要素が $0$ で初期化された、二項演算を加算とした Segment tree を構築します。
@@ -454,6 +460,22 @@ lib::segment_tree tree_9(v, id_min, func_min);       // 9.
 1. 要素数 $N$ の、全ての要素が `id_min` で初期化された、二項演算を最小値をとる演算とした Segment tree を構築します。
 1. 要素数 $N$ の、全ての要素が $500$ で初期化された、二項演算を最小値をとる演算とした Segment tree を構築します。
 1. $v$ の要素で初期化された、$v$ と同じ要素数の、二項演算を最小値をとる演算とした Segment tree を構築します。
+
+二項演算として関数へのポインタを渡すこともできます。
+
+```cpp
+unsigned max(unsigned x, unsigned y) {
+  return (x >= y) ? x : y;
+}
+
+int main() {
+  int N;
+  std::cin >> N;
+
+  lib::segment_tree tree(N, 0u, &max);  // OK
+  //                            ^^^^
+}
+```
 
 ### メンバ関数
 
@@ -471,7 +493,7 @@ $i$ 番目 (0-indexed) の要素に $x$ を加算します。
 
 #### `all_prod(l, r)`
 
-全要素についての区間積を返します。
+全要素についての区間積を返します (`prod(0, size())` と同じ値を返しますがこちらの方が高速です)。
 
 #### `get(i)`
 
@@ -487,27 +509,27 @@ $i$ 番目 (0-indexed) の要素の値を $x$ にします。
 
 ---
 
-以下は処理をほんのり高速化させるためのメンバ関数です。使い方を間違えると `assert` マクロによって異常終了します。
+以下は処理をほんのり高速化させるためのメンバ関数です。使い方を間違えると `assert` マクロによって異常終了するか、正しくない計算結果が返ります。
 
 これらの関数の使用を検討する場合、他に適したデータ構造が無いかを考えてください。
 
 #### `lock()`
 
-`set(i, x)` で $i$ 番目 (0-indexed) の要素の値を $x$ にした時に変更が自動的に親ノードに**伝播されない**ようにします。そのため `lock()` を行った後には (`unlock()` を行うまでは) 区間積の値は取得できなくなります。
+`set` 関数や `add` 関数で要素を変更した時に、その変更が自動的に親ノードに**伝播されない**ようにします。そのため `lock()` を行った後には (`unlock()` を行うまでは) 区間積は取得できなくなります。この関数を呼び、`unlock()` を行わずにもう一度この関数を呼ぶと `assert` マクロによって異常終了します。
 
 #### `unlock()`
 
-`set(i, x)` で $i$ 番目 (0-indexed) の要素の値を $x$ にした時に変更が自動的に親ノードに**伝播される**ようにします。`lock()` されていない状態でこの関数を呼ぶと `assert` マクロによって異常終了します。
+`set` 関数や `add` 関数で要素を変更した時に、その変更が自動的に親ノードに**伝播される**ようにします。`lock()` を呼んでいない状態でこの関数を呼ぶと `assert` マクロによって異常終了します。
 
 この関数は内部に保持されている `locked` という変数の値を `false` にセットするだけなので、この関数を呼んだだけでは変更が親ノードへ伝播されないことに注意してください。
 
 #### `propagate(i)`
 
-$i$ 番目の要素の変更を親ノードに伝播します。
+$i$ 番目の要素の変更を親ノードに伝播します。変更が自動的に親ノードに伝播されない状態で行った変更を手動で反映させるために使います。
 
 #### `propagate_all()`
 
-全ての要素の変更を親ノードに伝播します。
+全ての要素の変更を親ノードに伝播します。変更が自動的に親ノードに伝播されない状態で行った変更を手動で反映させるために使います。
 
 #### `propagate_all_and_unlock()`
 
@@ -527,14 +549,14 @@ $i$ 番目の要素の変更を親ノードに伝播します。
 lib::segmant_tree tree(N);
 
 {
-  // コンストラクタが呼ばれる
-  no_range_query_in_this_scope query_lock(tree);
+  // コンストラクタが呼ばれ、tree は変更が自動的に親ノードに伝播されない状態になる
+  lib::no_range_query_in_this_scope query_lock(tree);
 
-  // 大量の変更クエリ (ここで区間積の取得はできません)
+  // 大量の変更クエリ (ここで区間積の取得はできないが、get() を使うことはできる)
   for (int i = 0; i < Q; ++i)
     tree.set(x[i], y[i]);
 
-  // スコープを抜けるのでデストラクタが呼ばれる
+  // スコープを抜けるのでデストラクタが呼ばれ、tree への変更が適用される
 }
 ```
 
