@@ -25,15 +25,15 @@ lib::binary_indexed_tree<int>  // int 型の要素を持つ binary indexed tree
 ### コンストラクタ
 
 ```cpp
-lib::binary_indexed_tree<int> tree_1(N);     // 1.
-lib::binary_indexed_tree<int> tree_2(N, x);  // 2.
-
 std::vector<int> v {1, 2, 3, 4, 5};
-lib::binary_indexed_tree<int> tree_3(v);  // 3.
+
+lib::binary_indexed_tree<int> tree_1(N);      // 1.
+lib::binary_indexed_tree<int> tree_2(N, 10);  // 2.
+lib::binary_indexed_tree<int> tree_3(v);      // 3.
 ```
 
 1. 要素数 $N$ の、全ての要素が $0$ で初期化された Binary indexed tree を構築します。
-1. 要素数 $N$ の、全ての要素が $x$ で初期化された Binary indexed tree を構築します。
+1. 要素数 $N$ の、全ての要素が $10$ で初期化された Binary indexed tree を構築します。
 1. $v$ の要素で初期化された、$v$ と同じ要素数の Binary indexed tree を構築します。
 
 ### メンバ関数
@@ -61,7 +61,6 @@ $i$ 番目 (0-indexed) の要素の値を返します。
 #### `set(i, x)`
 
 $i$ 番目 (0-indexed) の要素の値を $x$ にします。
-
 
 #### `debug_print()`
 
