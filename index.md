@@ -26,6 +26,9 @@ data:
       path: include/data_structure/binary_indexed_tree.hpp
       title: Binary indexed tree
     - icon: ':heavy_check_mark:'
+      path: include/data_structure/segment_tree.hpp
+      title: Segment tree
+    - icon: ':heavy_check_mark:'
       path: include/data_structure/sparse_table.hpp
       title: Sparse table
     - icon: ':heavy_check_mark:'
@@ -49,6 +52,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: include/string/edit_distance.hpp
       title: Edit distance
+    - icon: ':heavy_check_mark:'
+      path: include/string/manachers_algorithm.hpp
+      title: Manacher's algorithm
     - icon: ':heavy_check_mark:'
       path: include/string/run_length_encoding.hpp
       title: Run length encoding
@@ -110,6 +116,32 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/data_structure/binary_indexed_tree/2.test.cpp
       title: test/data_structure/binary_indexed_tree/2.test.cpp
+  - name: test/data_structure/segment_tree
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/segment_tree/1.test.cpp
+      title: test/data_structure/segment_tree/1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/segment_tree/2.test.cpp
+      title: test/data_structure/segment_tree/2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/segment_tree/3.test.cpp
+      title: test/data_structure/segment_tree/3.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/segment_tree/4.test.cpp
+      title: test/data_structure/segment_tree/4.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/segment_tree/5.test.cpp
+      title: test/data_structure/segment_tree/5.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/segment_tree/6.test.cpp
+      title: test/data_structure/segment_tree/6.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/segment_tree/7.test.cpp
+      title: test/data_structure/segment_tree/7.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/data_structure/segment_tree/8.test.cpp
+      title: test/data_structure/segment_tree/8.test.cpp
   - name: test/data_structure/sparse_table
     pages:
     - icon: ':heavy_check_mark:'
@@ -161,6 +193,11 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/string/edit_distance/1.test.cpp
       title: test/string/edit_distance/1.test.cpp
+  - name: test/string/manachers_algorithm
+    pages:
+    - icon: ':heavy_check_mark:'
+      path: test/string/manachers_algorithm/1.test.cpp
+      title: test/string/manachers_algorithm/1.test.cpp
   - name: test/string/run_length_encoding
     pages:
     - icon: ':heavy_check_mark:'

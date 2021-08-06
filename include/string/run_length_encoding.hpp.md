@@ -20,7 +20,7 @@ data:
     \ (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
     #  else\n#    define warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n\
     #endif\n\nnamespace lib {\n\n//! @tparam Container container type (deduced from\
-    \ parameters)\n//! @param src source container (std::string, std::vector, std::deque,\
+    \ parameter)\n//! @param src source container (std::string, std::vector, std::deque,\
     \ ...)\n//! @return A std::vector<std::pair<element type of src, int>> which contains\
     \ the RLE result.\n//! @note Time complexity: O(size(src))\ntemplate <typename\
     \ Container>\n[[nodiscard]] auto run_length_encoding(const Container& src) {\n\
@@ -41,7 +41,7 @@ data:
     \ line 17\n#    define warn(msg) (std::cerr << (msg) << '\\n')\n// #  define warn(msg)\
     \ (static_cast<void>(0))\n#  else\n#    define warn(msg) (static_cast<void>(0))\n\
     #  endif\n#  define warn_not_defined\n#endif\n\nnamespace lib {\n\n//! @tparam\
-    \ Container container type (deduced from parameters)\n//! @param src source container\
+    \ Container container type (deduced from parameter)\n//! @param src source container\
     \ (std::string, std::vector, std::deque, ...)\n//! @return A std::vector<std::pair<element\
     \ type of src, int>> which contains the RLE result.\n//! @note Time complexity:\
     \ O(size(src))\ntemplate <typename Container>\n[[nodiscard]] auto run_length_encoding(const\
@@ -59,7 +59,7 @@ data:
   isVerificationFile: false
   path: include/string/run_length_encoding.hpp
   requiredBy: []
-  timestamp: '2021-08-03 15:55:56+09:00'
+  timestamp: '2021-08-05 23:16:49+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/run_length_encoding/1.test.cpp
