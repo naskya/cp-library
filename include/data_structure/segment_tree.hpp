@@ -101,7 +101,7 @@ public:
         data(length << 1, id),
         binary_op(),
         locked(false) {
-    std::fill(std::begin(data) + length, std::begin(data) + length + length, init_val);
+    std::fill(std::begin(data) + length, std::end(data), init_val);
     for (int i = length - 1; i > 0; --i)
       data[i] = binary_op(data[i << 1], data[i << 1 | 1]);
   }
@@ -145,7 +145,7 @@ public:
         data(length << 1, id),
         binary_op(binary_operation),
         locked(false) {
-    std::fill(std::begin(data) + length, std::begin(data) + length + length, init_val);
+    std::fill(std::begin(data) + length, std::end(data), init_val);
     for (int i = length - 1; i > 0; --i)
       data[i] = binary_op(data[i << 1], data[i << 1 | 1]);
   }
@@ -188,7 +188,7 @@ public:
         data(length << 1, id),
         binary_op(std::move(binary_operation)),
         locked(false) {
-    std::fill(std::begin(data) + length, std::begin(data) + length + length, init_val);
+    std::fill(std::begin(data) + length, std::end(data), init_val);
     for (int i = length - 1; i > 0; --i)
       data[i] = binary_op(data[i << 1], data[i << 1 | 1]);
   }
