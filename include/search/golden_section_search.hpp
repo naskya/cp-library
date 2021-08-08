@@ -1,8 +1,8 @@
 
-//! @file golden_ratio_search.hpp
+//! @file golden_section_search.hpp
 
-#ifndef GOLDEN_RATIO_SEARCH_HPP
-#define GOLDEN_RATIO_SEARCH_HPP
+#ifndef GOLDEN_SECTION_SEARCH_HPP
+#define GOLDEN_SECTION_SEARCH_HPP
 
 #include <cassert>
 #include <cmath>
@@ -28,7 +28,7 @@ namespace lib {
 //! @return std::pair { argmin(f(x)), min(f(x)) } (or argmax & max)
 //! @note time complexity: O(log((high - low) / diff * (time needed to calculate f(x))))
 template <bool minimize, typename RealType, typename Func>
-[[nodiscard]] auto golden_ratio_search(RealType low, RealType high, const Func& f, const RealType diff = 1e-9L) {
+[[nodiscard]] auto golden_section_search(RealType low, RealType high, const Func& f, const RealType diff = 1e-9L) {
   using F_ResType = decltype(f(std::declval<RealType>()));
   O_assert(low <= high);
 
@@ -67,4 +67,4 @@ template <bool minimize, typename RealType, typename Func>
 #  undef O_assert_not_defined
 #endif
 
-#endif  // GOLDEN_RATIO_SEARCH_HPP
+#endif  // GOLDEN_SECTION_SEARCH_HPP

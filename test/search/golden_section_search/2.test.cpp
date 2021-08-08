@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <iostream>
 
-#include "../../../include/search/golden_ratio_search.hpp"
+#include "../../../include/search/golden_section_search.hpp"
 
 int main() {
   long double x_a, y_a, x_b, y_b;
@@ -16,9 +16,9 @@ int main() {
   const auto l = [&](const long double y) -> long double {
     const long double y_a_1 = y - y_a;
     const long double y_b_1 = y - y_b;
-    return std::sqrt(y_a_1 * y_a_1 + x_a_2) + std::sqrt(y_b_1 * y_b_1 + x_b_2);
+    return -std::sqrt(y_a_1 * y_a_1 + x_a_2) - std::sqrt(y_b_1 * y_b_1 + x_b_2);
   };
 
   std::cout << std::fixed << std::setprecision(10)
-            << lib::golden_ratio_search<true>(-100.0L, 1100.0L, l).first << '\n';
+            << lib::golden_section_search<false>(-100.0L, 1100.0L, l).first << '\n';
 }
