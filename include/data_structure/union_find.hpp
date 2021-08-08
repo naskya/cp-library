@@ -107,7 +107,7 @@ public:
   //! @param name variable name
   //! @param os output stream
   void debug_print([[maybe_unused]] std::string name = "", [[maybe_unused]] std::ostream& os = std::cerr) const {
-#ifndef ONLINE_JUDGE
+#if (CP_LIBRARY_DEBUG_LEVEL >= 1)
     name += (name.empty() ? "" : ".");
     name += "groups(): ";
 

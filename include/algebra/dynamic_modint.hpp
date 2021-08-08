@@ -10,7 +10,7 @@
 #include <type_traits>
 
 #ifndef warn
-#  ifndef ONLINE_JUDGE
+#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
 //! @note You can suppress the warning by uncommenting line 17
 #    define warn(msg) (std::cerr << (msg) << '\n')
@@ -54,7 +54,8 @@ private:
       u   = std::move(v);
       v   = std::move(tmp);
     }
-    if (u < 0) u += *modulo_ptr;
+    if (u < 0)
+      u += *modulo_ptr;
     return static_cast<Tp>(u);
   }
 
@@ -62,12 +63,15 @@ private:
   //! @param v integer
   //! @return integer within [0, *modulo_ptr)
   //! @note Time complexity: O(1)
-  template <typename Sp> static constexpr Tp clamp(Sp v) noexcept {
+  template <typename Sp>
+  static constexpr Tp clamp(Sp v) noexcept {
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
-    if (*modulo_ptr <= v || v < -*modulo_ptr) v %= *modulo_ptr;
+    if (*modulo_ptr <= v || v < -*modulo_ptr)
+      v %= *modulo_ptr;
 #pragma GCC diagnostic pop
-    if (v < 0) v += *modulo_ptr;
+    if (v < 0)
+      v += *modulo_ptr;
     return static_cast<Tp>(v);
   }
 
@@ -87,7 +91,8 @@ public:
   constexpr dynamic_modint(const Tp v, bool) noexcept : value(v) {}
 
   //! @brief Create a modint
-  template <typename ValueType> constexpr dynamic_modint(const ValueType v) noexcept : value(clamp(v)) {}
+  template <typename ValueType>
+  constexpr dynamic_modint(const ValueType v) noexcept : value(clamp(v)) {}
 
   [[nodiscard]] constexpr dynamic_modint operator+(const dynamic_modint rhs) const noexcept {
     return dynamic_modint(value + rhs.value);
@@ -130,12 +135,14 @@ public:
 
   constexpr dynamic_modint& operator+=(const dynamic_modint rhs) noexcept {
     value += rhs.value;
-    if (value >= *modulo_ptr) value -= *modulo_ptr;
+    if (value >= *modulo_ptr)
+      value -= *modulo_ptr;
     return *this;
   }
   constexpr dynamic_modint& operator-=(const dynamic_modint rhs) noexcept {
     value -= rhs.value;
-    if (value < 0) value += *modulo_ptr;
+    if (value < 0)
+      value += *modulo_ptr;
     return *this;
   }
   constexpr dynamic_modint& operator*=(const dynamic_modint rhs) noexcept {
@@ -151,7 +158,8 @@ public:
     warn("operator%= : Are you sure you want to do this?");
 
     value %= rhs.value;
-    if (value < 0) value += *modulo_ptr;
+    if (value < 0)
+      value += *modulo_ptr;
     return *this;
   }
 
@@ -233,53 +241,63 @@ public:
     return dynamic_modint(value >> rhs, true);
   }
 
-  template <typename RhsType> constexpr dynamic_modint& operator+=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr dynamic_modint& operator+=(const RhsType rhs) noexcept {
     value = clamp(value + clamp(rhs));
     return *this;
   }
-  template <typename RhsType> constexpr dynamic_modint& operator-=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr dynamic_modint& operator-=(const RhsType rhs) noexcept {
     value = clamp(value - clamp(rhs));
     return *this;
   }
-  template <typename RhsType> constexpr dynamic_modint& operator*=(const RhsType rhs) noexcept {
+  template <typename RhsType>
+  constexpr dynamic_modint& operator*=(const RhsType rhs) noexcept {
     value = clamp(value * clamp(rhs));
     return *this;
   }
-  template <typename RhsType> constexpr dynamic_modint& operator/=(const RhsType rhs) {
+  template <typename RhsType>
+  constexpr dynamic_modint& operator/=(const RhsType rhs) {
     internal::LongInt<Tp> mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
     value                     = clamp(mul * value);
     return *this;
   }
 
-  template <typename RhsType> constexpr dynamic_modint& operator%=(const RhsType rhs) {
+  template <typename RhsType>
+  constexpr dynamic_modint& operator%=(const RhsType rhs) {
     warn("operator%= : Are you sure you want to do this?");
     value %= rhs;
     return *this;
   }
 
-  template <typename RhsType> constexpr dynamic_modint& operator&=(const RhsType rhs) {
+  template <typename RhsType>
+  constexpr dynamic_modint& operator&=(const RhsType rhs) {
     warn("operator&= : Are you sure you want to do this?");
     value &= rhs;
     return *this;
   }
-  template <typename RhsType> constexpr dynamic_modint& operator|=(const RhsType rhs) {
+  template <typename RhsType>
+  constexpr dynamic_modint& operator|=(const RhsType rhs) {
     warn("operator|= : Are you sure you want to do this?");
     value |= rhs;
     clamp();
     return *this;
   }
-  template <typename RhsType> constexpr dynamic_modint& operator^=(const RhsType rhs) {
+  template <typename RhsType>
+  constexpr dynamic_modint& operator^=(const RhsType rhs) {
     warn("operator^= : Are you sure you want to do this?");
     value ^= rhs;
     clamp();
     return *this;
   }
-  template <typename RhsType> constexpr dynamic_modint& operator<<=(const RhsType rhs) {
+  template <typename RhsType>
+  constexpr dynamic_modint& operator<<=(const RhsType rhs) {
     warn("operator<<= : Are you sure you want to do this?");
     value = clamp((internal::LongInt<Tp>) value << rhs);
     return *this;
   }
-  template <typename RhsType> constexpr dynamic_modint& operator>>=(const RhsType rhs) {
+  template <typename RhsType>
+  constexpr dynamic_modint& operator>>=(const RhsType rhs) {
     warn("operator>>= : Are you sure you want to do this?");
     value >>= rhs;
     return *this;
@@ -380,8 +398,10 @@ public:
   friend std::istream& operator>>(std::istream& is, dynamic_modint& rhs) {
     std::int_least64_t tmp;
     is >> tmp;
-    if (tmp < -*modulo_ptr || *modulo_ptr <= tmp) tmp %= *modulo_ptr;
-    if (tmp < 0) tmp += *modulo_ptr;
+    if (tmp < -*modulo_ptr || *modulo_ptr <= tmp)
+      tmp %= *modulo_ptr;
+    if (tmp < 0)
+      tmp += *modulo_ptr;
     rhs.value = static_cast<Tp>(tmp);
     return is;
   }
@@ -403,13 +423,17 @@ public:
   template <bool index_positive_guaranteed = true, typename T = int>
   [[nodiscard]] constexpr dynamic_modint pow(T index) const noexcept {
     if constexpr (!index_positive_guaranteed) {
-      if (value == 0) return dynamic_modint(0, true);
-      if (index == 0) return dynamic_modint(1, true);
-      if (index < 0) return dynamic_modint(value, true).inv().pow<true>(-index);
+      if (value == 0)
+        return dynamic_modint(0, true);
+      if (index == 0)
+        return dynamic_modint(1, true);
+      if (index < 0)
+        return dynamic_modint(value, true).inv().pow<true>(-index);
     }
     dynamic_modint res(1, true), base(value, true);
     while (index > 0) {
-      if (index & 1) res *= base;
+      if (index & 1)
+        res *= base;
       base *= base;
       index >>= 1;
     }
@@ -428,7 +452,8 @@ public:
         Tp q = num / x;
         num  = num % x;
         den += q * u;
-        if (num == 0) break;
+        if (num == 0)
+          break;
         if (num + den < cost) {
           cost       = num + den;
           res.first  = num;

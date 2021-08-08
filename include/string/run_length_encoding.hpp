@@ -10,7 +10,7 @@
 #include <vector>
 
 #ifndef warn
-#  ifndef ONLINE_JUDGE
+#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
 //! @note You can suppress the warning by uncommenting line 17
 #    define warn(msg) (std::cerr << (msg) << '\n')

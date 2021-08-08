@@ -14,7 +14,7 @@
 #include <vector>
 
 #ifndef warn
-#  ifndef ONLINE_JUDGE
+#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
 //! @note You can suppress the warning by uncommenting line 21
 #    define warn(msg) (std::cerr << (msg) << '\n')
@@ -323,7 +323,7 @@ public:
   }
 
   void debug_print([[maybe_unused]] const std::string& name = "", [[maybe_unused]] std::ostream& os = std::cerr) const {
-#ifndef ONLINE_JUDGE
+#if (CP_LIBRARY_DEBUG_LEVEL >= 1)
     if (!name.empty())
       os << name << ": ";
 
