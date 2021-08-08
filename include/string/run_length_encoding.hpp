@@ -35,7 +35,11 @@ template <typename Container>
     return std::vector<std::pair<Elem, int>> {};
   }
   std::vector<std::pair<Elem, int>> res {{*std::cbegin(src), 1}};
-  for (auto iter1 = std::cbegin(src), iter2 = iter1 + 1; iter2 != std::cend(src); iter2 += 2) {
+
+  auto iter2 = std::cbegin(src);
+  auto iter1 = iter2++;
+
+  for (; iter2 != std::cend(src); std::advance(iter2, 2)) {
     if (*iter1 == *iter2)
       ++res.back().second;
     else
