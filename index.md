@@ -45,8 +45,8 @@ data:
       path: include/search/binary_search.hpp
       title: Binary search
     - icon: ':heavy_check_mark:'
-      path: include/search/golden_ratio_search.hpp
-      title: Golden ratio search
+      path: include/search/golden_section_search.hpp
+      title: Golden section search
   - name: include/string
     pages:
     - icon: ':heavy_check_mark:'
@@ -180,14 +180,14 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/search/binary_search/3.test.cpp
       title: test/search/binary_search/3.test.cpp
-  - name: test/search/golden_ratio_search
+  - name: test/search/golden_section_search
     pages:
     - icon: ':heavy_check_mark:'
-      path: test/search/golden_ratio_search/1.test.cpp
-      title: test/search/golden_ratio_search/1.test.cpp
+      path: test/search/golden_section_search/1.test.cpp
+      title: test/search/golden_section_search/1.test.cpp
     - icon: ':heavy_check_mark:'
-      path: test/search/golden_ratio_search/2.test.cpp
-      title: test/search/golden_ratio_search/2.test.cpp
+      path: test/search/golden_section_search/2.test.cpp
+      title: test/search/golden_section_search/2.test.cpp
   - name: test/string/edit_distance
     pages:
     - icon: ':heavy_check_mark:'
