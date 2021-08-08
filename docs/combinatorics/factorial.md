@@ -3,7 +3,7 @@ title: Factorial, Permutation, Combination, Multinomial coefficients
 documentation_of: //include/combinatorics/factorial.hpp
 ---
 
-階乗を計算する関数・順列の数を計算する関数・二項係数を計算する関数が定義されています。
+階乗・順列の数・二項係数・多項係数を計算する関数が定義されています。
 
 ---
 
@@ -21,7 +21,7 @@ $n$ 個の区別できるものの中から $r$ 個を選ぶとき、考えら�
 
 ### `multinomial(n, r...)`
 
-$n$ 個のもののうち $r_1, \, r_2, \, \cdots, r_k$ 個のものがお互いに区別できないとき、それらを任意の順番で横一列に並べる方法の数 $\left(= \binom{n}{r_1, \, r_2, \, \cdots, r_k} \right)$ を返します。$\sum_{i = 1}^k r_i = n$ が成り立つ必要があります。
+$n$ 個のもののうち $r_1, \, r_2, \, \cdots, r_k$ 個のものがお互いに区別できないとき、それらを任意の順番で横一列に並べる方法の数 $\left(= \binom{n}{r_1, \, r_2, \, \cdots, r_k} \ \right)$ を返します。$\sum_{i = 1}^k r_i = n$ が成り立つ必要があります。
 
 ### `stars_and_bars(n, r)`
 
@@ -44,16 +44,16 @@ using mint = lib::static_modint<1000000007>;
 constexpr int N = 500000;
 
 // 階乗と階乗の逆元を前計算
-const auto fact_array = lib::factorial_array<N, mint>();
+const auto fact_array     = lib::factorial_array<N, mint>();
 const auto fact_inv_array = lib::factorial_array<N, mint>(fact_array.back());
 
 // 以下の計算は全て定数時間で行われる
 const mint a = fact_array[n];  // factorial(n) は fact_array[n]
-const mint b = permutation(n, r,                         fact_array, fact_inv_array);
-const mint c = combination(n, r,                         fact_array, fact_inv_array);
-const mint d = multinomial(n, r_1, r_2, n - (r_1 + r_2), fact_array, fact_inv_array);
-const mint e = stars_and_bars(n, r,                      fact_array, fact_inv_array);
-//                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+const mint b = permutation   (n, r,                       fact_array, fact_inv_array);
+const mint c = combination   (n, r,                       fact_array, fact_inv_array);
+const mint d = multinomial   (n, r_1, r_2, n - r_1 - r_2, fact_array, fact_inv_array);
+const mint e = stars_and_bars(n, r,                       fact_array, fact_inv_array);
+//                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
 ---
