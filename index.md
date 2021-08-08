@@ -19,7 +19,7 @@ data:
     pages:
     - icon: ':heavy_check_mark:'
       path: include/combinatorics/factorial.hpp
-      title: Factorial, Permutation, Combination
+      title: Factorial, Permutation, Combination, Multinomial coefficients
   - name: include/data_structure
     pages:
     - icon: ':heavy_check_mark:'
