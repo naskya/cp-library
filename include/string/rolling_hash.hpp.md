@@ -587,7 +587,7 @@ C++ の標準ライブラリの `std::string` のメンバ関数 `substr` と同
 const std::string S = "0123456789";
 const auto S_rhash  = lib::get_rolling_hash(S);
 
-const auto a = S_rhash.substring(5);     // 文字列 "56789" のハッシュ値 (`single_hash` 型のオブジェクト)
+const auto a = S_rhash.substring(5);     // 文字列 "56789" のハッシュ値 (single_hash 型のオブジェクト)
 const auto b = S_rhash.substring(2, 3);  // 文字列 "234" のハッシュ値
 const auto c = S_rhash.whole_string();   // 文字列 "0123456789" のハッシュ値
 ```
@@ -667,7 +667,7 @@ const std::string A = "This ";
 const std::string B = "is";
 const std::string C = "This is";
 
-const auto A_hash = lib::get_single_hash(A);
+      auto A_hash = lib::get_single_hash(A);  // const 修飾すると += は使えない
 const auto B_hash = lib::get_single_hash(B);
 const auto C_hash = lib::get_single_hash(C);
 
