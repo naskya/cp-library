@@ -37,5 +37,6 @@
 "test/string/manachers_algorithm/1.test.cpp": "2021-08-06 16:06:28 +0900",
 "test/string/rolling_hash/1.test.cpp": "2021-08-09 13:03:19 +0900",
 "test/string/rolling_hash/2.test.cpp": "2021-08-09 13:03:19 +0900",
+"test/string/run_length_encoding/1.test.cpp": "2021-08-08 16:49:43 +0900",
 "test/string/z_algorithm/1.test.cpp": "2021-07-30 02:15:50 +0900"
 }
