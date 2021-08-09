@@ -24,57 +24,57 @@ data:
   bundledCode: "#line 1 \"include/graph/minimum_spanning_tree.hpp\"\n\n//! @file minimum_spanning_tree.hpp\n\
     \n#ifndef MINIMUM_SPANNING_TREE_HPP\n#define MINIMUM_SPANNING_TREE_HPP\n\n#include\
     \ <algorithm>\n#include <cassert>\n#include <queue>\n#include <tuple>\n#include\
-    \ <vector>\n\n#ifndef warn\n#  ifndef ONLINE_JUDGE\n//! @brief Print warning message\n\
-    //! @note You can suppress the warning by uncommenting line 18\n#    define warn(msg)\
-    \ (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
-    #  else\n#    define warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n\
-    #endif\n\n#ifndef O_assert\n//! @brief Assert macro\n#  define O_assert(...) assert(__VA_ARGS__)\n\
-    #  define O_assert_not_defined\n#endif\n\nnamespace lib {\n\nnamespace internal\
-    \ {\n  //! @note from union_find.hpp\n  class simple_union_find {\n  private:\n\
-    \    const int nodes;\n    mutable std::vector<int> par_or_size;\n\n  public:\n\
-    \    simple_union_find(const int number_of_nodes)\n        : nodes(number_of_nodes),\
-    \ par_or_size(number_of_nodes, -1) {}\n\n    [[nodiscard]] int parent(const int\
-    \ node) const {\n      O_assert(0 <= node && node < nodes);\n      if (par_or_size[node]\
-    \ < 0)\n        return node;\n      else\n        return par_or_size[node] = parent(par_or_size[node]);\n\
-    \    }\n\n    [[maybe_unused]] bool merge(int node_1, int node_2) {\n      node_1\
-    \ = parent(node_1);\n      node_2 = parent(node_2);\n\n      if (node_1 == node_2)\n\
-    \        return false;\n\n      if (par_or_size[node_1] > par_or_size[node_2])\n\
-    \        std::swap(node_1, node_2);\n      par_or_size[node_1] += par_or_size[node_2];\n\
-    \      par_or_size[node_2] = node_1;\n\n      return true;\n    }\n  };\n}  //\
-    \ namespace internal\n\n//! @brief Find the minimum spanning tree from edge list\
-    \ using Kruskal method.\n//! @tparam TotalCostType type of total cost (NOT deduced\
-    \ from parameter, int or long long should work in most cases)\n//! @tparam NodeIndexType\
-    \ type of node indices (deduced from parameter)\n//! @tparam CostType type of\
-    \ costs (deduced from parameter)\n//! @tparam Container container type of edge\
-    \ list (deduced from parameter)\n//! @param nodes number of nodes\n//! @param\
-    \ edge_list list of edges (edges must be represented as {node_1, node_2, cost})\n\
-    //! @return std::pair<vector, CostType> (list of edges in minimum spanning tree,\
-    \ total cost)\n//! @note time complexity: O(E log V) where E is number of edges\
-    \ and V is number of nodes\ntemplate <typename TotalCostType, typename NodeIndexType,\
-    \ typename CostType, template <typename...> typename Container>\n[[nodiscard]]\
-    \ auto minimum_spanning_tree(const int nodes,\n                              \
-    \           const Container<std::tuple<NodeIndexType, NodeIndexType, CostType>>&\
-    \ edge_list) {\n  using Edge = std::tuple<NodeIndexType, NodeIndexType, CostType>;\n\
-    \  std::pair<std::vector<Edge>, TotalCostType> res {{}, TotalCostType(0)};\n\n\
-    \  if (edge_list.empty()) {\n    warn(\"An empty edge list is provided.\");\n\
-    \    return res;\n  }\n\n  auto edge_list_cpy = edge_list;\n\n  std::sort(std::begin(edge_list_cpy),\
-    \ std::end(edge_list_cpy), [](const Edge& lhs, const Edge& rhs) {\n    return\
-    \ std::get<2>(lhs) < std::get<2>(rhs);\n  });\n\n  internal::simple_union_find\
-    \ uf(nodes);\n\n  for (auto&& [node_1, node_2, cost] : edge_list_cpy) {\n    if\
-    \ (uf.merge(node_1, node_2)) {\n      res.first.emplace_back(node_1, node_2, cost);\n\
-    \      res.second += cost;\n    }\n  }\n\n  return res;\n}\n\n//! @brief Find\
-    \ the minimum spanning tree from edge list using Kruskal method.\n//! @tparam\
-    \ TotalCostType type of total cost (NOT deduced from parameter, int or long long\
-    \ should work in most cases)\n//! @tparam NodeIndexType type of node indices (deduced\
-    \ from parameter)\n//! @tparam CostType type of costs (deduced from parameter)\n\
-    //! @tparam Container container type of edge list (deduced from parameter)\n//!\
-    \ @param nodes number of nodes\n//! @param edge_list list of edges (edges must\
-    \ be represented as {node_1, node_2, cost})\n//! @return std::pair<vector, CostType>\
-    \ (list of edges in minimum spanning tree, total cost)\n//! @note time complexity:\
-    \ O(E log V) where E is number of edges and V is number of nodes\ntemplate <typename\
-    \ TotalCostType, typename NodeIndexType, typename CostType, template <typename...>\
-    \ typename Container>\n[[nodiscard]] auto minimum_spanning_tree(const int nodes,\n\
-    \                                         Container<std::tuple<NodeIndexType,\
+    \ <vector>\n\n#ifndef warn\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print\
+    \ warning message\n//! @note You can suppress the warning by uncommenting line\
+    \ 18\n#    define warn(msg) (std::cerr << (msg) << '\\n')\n// #  define warn(msg)\
+    \ (static_cast<void>(0))\n#  else\n#    define warn(msg) (static_cast<void>(0))\n\
+    #  endif\n#  define warn_not_defined\n#endif\n\n#ifndef O_assert\n//! @brief Assert\
+    \ macro\n#  define O_assert(...) assert(__VA_ARGS__)\n#  define O_assert_not_defined\n\
+    #endif\n\nnamespace lib {\n\nnamespace internal {\n  //! @note from union_find.hpp\n\
+    \  class simple_union_find {\n  private:\n    const int nodes;\n    mutable std::vector<int>\
+    \ par_or_size;\n\n  public:\n    simple_union_find(const int number_of_nodes)\n\
+    \        : nodes(number_of_nodes), par_or_size(number_of_nodes, -1) {}\n\n   \
+    \ [[nodiscard]] int parent(const int node) const {\n      O_assert(0 <= node &&\
+    \ node < nodes);\n      if (par_or_size[node] < 0)\n        return node;\n   \
+    \   else\n        return par_or_size[node] = parent(par_or_size[node]);\n    }\n\
+    \n    [[maybe_unused]] bool merge(int node_1, int node_2) {\n      node_1 = parent(node_1);\n\
+    \      node_2 = parent(node_2);\n\n      if (node_1 == node_2)\n        return\
+    \ false;\n\n      if (par_or_size[node_1] > par_or_size[node_2])\n        std::swap(node_1,\
+    \ node_2);\n      par_or_size[node_1] += par_or_size[node_2];\n      par_or_size[node_2]\
+    \ = node_1;\n\n      return true;\n    }\n  };\n}  // namespace internal\n\n//!\
+    \ @brief Find the minimum spanning tree from edge list using Kruskal method.\n\
+    //! @tparam TotalCostType type of total cost (NOT deduced from parameter, int\
+    \ or long long should work in most cases)\n//! @tparam NodeIndexType type of node\
+    \ indices (deduced from parameter)\n//! @tparam CostType type of costs (deduced\
+    \ from parameter)\n//! @tparam Container container type of edge list (deduced\
+    \ from parameter)\n//! @param nodes number of nodes\n//! @param edge_list list\
+    \ of edges (edges must be represented as {node_1, node_2, cost})\n//! @return\
+    \ std::pair<vector, CostType> (list of edges in minimum spanning tree, total cost)\n\
+    //! @note time complexity: O(E log V) where E is number of edges and V is number\
+    \ of nodes\ntemplate <typename TotalCostType, typename NodeIndexType, typename\
+    \ CostType, template <typename...> typename Container>\n[[nodiscard]] auto minimum_spanning_tree(const\
+    \ int nodes,\n                                         const Container<std::tuple<NodeIndexType,\
+    \ NodeIndexType, CostType>>& edge_list) {\n  using Edge = std::tuple<NodeIndexType,\
+    \ NodeIndexType, CostType>;\n  std::pair<std::vector<Edge>, TotalCostType> res\
+    \ {{}, TotalCostType(0)};\n\n  if (edge_list.empty()) {\n    warn(\"An empty edge\
+    \ list is provided.\");\n    return res;\n  }\n\n  auto edge_list_cpy = edge_list;\n\
+    \n  std::sort(std::begin(edge_list_cpy), std::end(edge_list_cpy), [](const Edge&\
+    \ lhs, const Edge& rhs) {\n    return std::get<2>(lhs) < std::get<2>(rhs);\n \
+    \ });\n\n  internal::simple_union_find uf(nodes);\n\n  for (auto&& [node_1, node_2,\
+    \ cost] : edge_list_cpy) {\n    if (uf.merge(node_1, node_2)) {\n      res.first.emplace_back(node_1,\
+    \ node_2, cost);\n      res.second += cost;\n    }\n  }\n\n  return res;\n}\n\n\
+    //! @brief Find the minimum spanning tree from edge list using Kruskal method.\n\
+    //! @tparam TotalCostType type of total cost (NOT deduced from parameter, int\
+    \ or long long should work in most cases)\n//! @tparam NodeIndexType type of node\
+    \ indices (deduced from parameter)\n//! @tparam CostType type of costs (deduced\
+    \ from parameter)\n//! @tparam Container container type of edge list (deduced\
+    \ from parameter)\n//! @param nodes number of nodes\n//! @param edge_list list\
+    \ of edges (edges must be represented as {node_1, node_2, cost})\n//! @return\
+    \ std::pair<vector, CostType> (list of edges in minimum spanning tree, total cost)\n\
+    //! @note time complexity: O(E log V) where E is number of edges and V is number\
+    \ of nodes\ntemplate <typename TotalCostType, typename NodeIndexType, typename\
+    \ CostType, template <typename...> typename Container>\n[[nodiscard]] auto minimum_spanning_tree(const\
+    \ int nodes,\n                                         Container<std::tuple<NodeIndexType,\
     \ NodeIndexType, CostType>>&& edge_list) {\n  using Edge = std::tuple<NodeIndexType,\
     \ NodeIndexType, CostType>;\n  std::pair<std::vector<Edge>, TotalCostType> res\
     \ {{}, TotalCostType(0)};\n\n  if (edge_list.empty()) {\n    warn(\"An empty edge\
@@ -139,12 +139,12 @@ data:
     #  undef O_assert\n#  undef O_assert_not_defined\n#endif\n\n#endif  // MINIMUM_SPANNING_TREE_HPP\n"
   code: "\n//! @file minimum_spanning_tree.hpp\n\n#ifndef MINIMUM_SPANNING_TREE_HPP\n\
     #define MINIMUM_SPANNING_TREE_HPP\n\n#include <algorithm>\n#include <cassert>\n\
-    #include <queue>\n#include <tuple>\n#include <vector>\n\n#ifndef warn\n#  ifndef\
-    \ ONLINE_JUDGE\n//! @brief Print warning message\n//! @note You can suppress the\
-    \ warning by uncommenting line 18\n#    define warn(msg) (std::cerr << (msg) <<\
-    \ '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n#  else\n#    define\
-    \ warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n#endif\n\
-    \n#ifndef O_assert\n//! @brief Assert macro\n#  define O_assert(...) assert(__VA_ARGS__)\n\
+    #include <queue>\n#include <tuple>\n#include <vector>\n\n#ifndef warn\n#  if (CP_LIBRARY_DEBUG_LEVEL\
+    \ >= 1)\n//! @brief Print warning message\n//! @note You can suppress the warning\
+    \ by uncommenting line 18\n#    define warn(msg) (std::cerr << (msg) << '\\n')\n\
+    // #  define warn(msg) (static_cast<void>(0))\n#  else\n#    define warn(msg)\
+    \ (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n#endif\n\n#ifndef\
+    \ O_assert\n//! @brief Assert macro\n#  define O_assert(...) assert(__VA_ARGS__)\n\
     #  define O_assert_not_defined\n#endif\n\nnamespace lib {\n\nnamespace internal\
     \ {\n  //! @note from union_find.hpp\n  class simple_union_find {\n  private:\n\
     \    const int nodes;\n    mutable std::vector<int> par_or_size;\n\n  public:\n\
@@ -257,7 +257,7 @@ data:
   isVerificationFile: false
   path: include/graph/minimum_spanning_tree.hpp
   requiredBy: []
-  timestamp: '2021-08-05 15:14:00+09:00'
+  timestamp: '2021-08-08 16:38:11+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/graph/minimum_spanning_tree/3.test.cpp

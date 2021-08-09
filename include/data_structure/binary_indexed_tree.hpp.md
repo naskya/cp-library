@@ -101,12 +101,12 @@ data:
     \ - get(index));\n  }\n\n  //! @brief Print debug information.\n  //! @param name\
     \ variable name\n  //! @param os output stream\n  void debug_print([[maybe_unused]]\
     \ const std::string& name = \"\", [[maybe_unused]] std::ostream& os = std::cerr)\
-    \ const {\n#ifndef ONLINE_JUDGE\n    if (!name.empty())\n      os << name << \"\
-    : \";\n\n    os << \"val [ \";\n    for (int i = 0; i < size(); ++i)\n      os\
-    \ << get(i) << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n      os <<\
-    \ std::string(std::size(name) + 2, ' ');\n\n    os << \"sum [ \";\n    for (int\
-    \ i = 0; i <= size(); ++i)\n      os << partial_sum(i) << ' ';\n    os << \"]\\\
-    n\";\n#endif\n  }\n};\n\n}  // namespace lib\n\n#ifdef O_assert_not_defined\n\
+    \ const {\n#if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n    if (!name.empty())\n      os\
+    \ << name << \": \";\n\n    os << \"val [ \";\n    for (int i = 0; i < size();\
+    \ ++i)\n      os << get(i) << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n\
+    \      os << std::string(std::size(name) + 2, ' ');\n\n    os << \"sum [ \";\n\
+    \    for (int i = 0; i <= size(); ++i)\n      os << partial_sum(i) << ' ';\n \
+    \   os << \"]\\n\";\n#endif\n  }\n};\n\n}  // namespace lib\n\n#ifdef O_assert_not_defined\n\
     #  undef O_assert\n#  undef O_assert_not_defined\n#endif\n\n#endif  // BINARY_INDEXED_TREE_HPP\n"
   code: "\n//! @file binary_indexed_tree.hpp\n\n#ifndef BINARY_INDEXED_TREE_HPP\n\
     #define BINARY_INDEXED_TREE_HPP\n\n#include <cassert>\n#include <iostream>\n#include\
@@ -193,18 +193,18 @@ data:
     \    bit_0.add(index, value - get(index));\n  }\n\n  //! @brief Print debug information.\n\
     \  //! @param name variable name\n  //! @param os output stream\n  void debug_print([[maybe_unused]]\
     \ const std::string& name = \"\", [[maybe_unused]] std::ostream& os = std::cerr)\
-    \ const {\n#ifndef ONLINE_JUDGE\n    if (!name.empty())\n      os << name << \"\
-    : \";\n\n    os << \"val [ \";\n    for (int i = 0; i < size(); ++i)\n      os\
-    \ << get(i) << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n      os <<\
-    \ std::string(std::size(name) + 2, ' ');\n\n    os << \"sum [ \";\n    for (int\
-    \ i = 0; i <= size(); ++i)\n      os << partial_sum(i) << ' ';\n    os << \"]\\\
-    n\";\n#endif\n  }\n};\n\n}  // namespace lib\n\n#ifdef O_assert_not_defined\n\
+    \ const {\n#if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n    if (!name.empty())\n      os\
+    \ << name << \": \";\n\n    os << \"val [ \";\n    for (int i = 0; i < size();\
+    \ ++i)\n      os << get(i) << ' ';\n    os << \"]\\n\";\n\n    if (!name.empty())\n\
+    \      os << std::string(std::size(name) + 2, ' ');\n\n    os << \"sum [ \";\n\
+    \    for (int i = 0; i <= size(); ++i)\n      os << partial_sum(i) << ' ';\n \
+    \   os << \"]\\n\";\n#endif\n  }\n};\n\n}  // namespace lib\n\n#ifdef O_assert_not_defined\n\
     #  undef O_assert\n#  undef O_assert_not_defined\n#endif\n\n#endif  // BINARY_INDEXED_TREE_HPP\n"
   dependsOn: []
   isVerificationFile: false
   path: include/data_structure/binary_indexed_tree.hpp
   requiredBy: []
-  timestamp: '2021-08-06 18:07:02+09:00'
+  timestamp: '2021-08-08 16:38:11+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/binary_indexed_tree/1.test.cpp
@@ -275,6 +275,12 @@ $i$ 番目 (0-indexed) の要素の値を $x$ にします。
 
 #### `debug_print()`
 
-`ONLINE_JUDGE` が定義されていない場合、標準エラー出力にデバッグ情報(配列の内容)を出力します。`ONLINE_JUDGE` の定義の有無で切り替えるよりも自分のローカルの環境でのみ設定したマクロの定義の有無で切り替えた方が良いと思いますが、人によってその内容は変わるのでここではオンラインジャッジであるかどうかの判定に `ONLINE_JUDGE` を用いています。この部分を別のマクロに書き換えて使っても構いません。
+マクロ `CP_LIBRARY_DEBUG_LEVEL` が $1$ 以上の値として定義されている場合、標準エラー出力にデバッグ情報(配列の内容)を出力します。コンパイル時にこのマクロを定義する場合には
+
+```sh
+g++ -std=c++17 -DCP_LIBRARY_DEBUG_LEVEL=1 main.cpp
+```
+
+のように、`-DCP_LIBRARY_DEBUG_LEVEL=` に続けて値を指定します。
 
 ---

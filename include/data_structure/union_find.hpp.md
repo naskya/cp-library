@@ -61,15 +61,15 @@ data:
     \ std::vector<int>& v) { return v.empty(); }),\n      std::end(res));\n    return\
     \ res;\n  }\n\n  //! @brief Print debug information.\n  //! @param name variable\
     \ name\n  //! @param os output stream\n  void debug_print([[maybe_unused]] std::string\
-    \ name = \"\", [[maybe_unused]] std::ostream& os = std::cerr) const {\n#ifndef\
-    \ ONLINE_JUDGE\n    name += (name.empty() ? \"\" : \".\");\n    name += \"groups():\
-    \ \";\n\n    os << name;\n\n    const std::string pad(std::size(name), ' ');\n\
-    \    bool is_first_group = true;\n\n    for (auto&& group : groups()) {\n    \
-    \  if (!is_first_group) {\n        os << pad;\n      }\n      os << \"[ \";\n\
-    \      for (auto&& node : group) {\n        os << node << ' ';\n      }\n    \
-    \  os << \"]\\n\";\n      is_first_group = false;\n    }\n#endif\n  }\n};\n\n\
-    }  // namespace lib\n\n#ifdef O_assert_not_defined\n#  undef O_assert\n#  undef\
-    \ O_assert_not_defined\n#endif\n\n#endif  // UNION_FIND_HPP\n"
+    \ name = \"\", [[maybe_unused]] std::ostream& os = std::cerr) const {\n#if (CP_LIBRARY_DEBUG_LEVEL\
+    \ >= 1)\n    name += (name.empty() ? \"\" : \".\");\n    name += \"groups(): \"\
+    ;\n\n    os << name;\n\n    const std::string pad(std::size(name), ' ');\n   \
+    \ bool is_first_group = true;\n\n    for (auto&& group : groups()) {\n      if\
+    \ (!is_first_group) {\n        os << pad;\n      }\n      os << \"[ \";\n    \
+    \  for (auto&& node : group) {\n        os << node << ' ';\n      }\n      os\
+    \ << \"]\\n\";\n      is_first_group = false;\n    }\n#endif\n  }\n};\n\n}  //\
+    \ namespace lib\n\n#ifdef O_assert_not_defined\n#  undef O_assert\n#  undef O_assert_not_defined\n\
+    #endif\n\n#endif  // UNION_FIND_HPP\n"
   code: "\n//! @file union_find.hpp\n//! @details Provide a data structure for managing\
     \ disjoint sets.\n//! @note This file is based on AtCoder Library https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp\n\
     \n#ifndef UNION_FIND_HPP\n#define UNION_FIND_HPP\n\n#include <algorithm>\n#include\
@@ -114,20 +114,20 @@ data:
     \ std::vector<int>& v) { return v.empty(); }),\n      std::end(res));\n    return\
     \ res;\n  }\n\n  //! @brief Print debug information.\n  //! @param name variable\
     \ name\n  //! @param os output stream\n  void debug_print([[maybe_unused]] std::string\
-    \ name = \"\", [[maybe_unused]] std::ostream& os = std::cerr) const {\n#ifndef\
-    \ ONLINE_JUDGE\n    name += (name.empty() ? \"\" : \".\");\n    name += \"groups():\
-    \ \";\n\n    os << name;\n\n    const std::string pad(std::size(name), ' ');\n\
-    \    bool is_first_group = true;\n\n    for (auto&& group : groups()) {\n    \
-    \  if (!is_first_group) {\n        os << pad;\n      }\n      os << \"[ \";\n\
-    \      for (auto&& node : group) {\n        os << node << ' ';\n      }\n    \
-    \  os << \"]\\n\";\n      is_first_group = false;\n    }\n#endif\n  }\n};\n\n\
-    }  // namespace lib\n\n#ifdef O_assert_not_defined\n#  undef O_assert\n#  undef\
-    \ O_assert_not_defined\n#endif\n\n#endif  // UNION_FIND_HPP\n"
+    \ name = \"\", [[maybe_unused]] std::ostream& os = std::cerr) const {\n#if (CP_LIBRARY_DEBUG_LEVEL\
+    \ >= 1)\n    name += (name.empty() ? \"\" : \".\");\n    name += \"groups(): \"\
+    ;\n\n    os << name;\n\n    const std::string pad(std::size(name), ' ');\n   \
+    \ bool is_first_group = true;\n\n    for (auto&& group : groups()) {\n      if\
+    \ (!is_first_group) {\n        os << pad;\n      }\n      os << \"[ \";\n    \
+    \  for (auto&& node : group) {\n        os << node << ' ';\n      }\n      os\
+    \ << \"]\\n\";\n      is_first_group = false;\n    }\n#endif\n  }\n};\n\n}  //\
+    \ namespace lib\n\n#ifdef O_assert_not_defined\n#  undef O_assert\n#  undef O_assert_not_defined\n\
+    #endif\n\n#endif  // UNION_FIND_HPP\n"
   dependsOn: []
   isVerificationFile: false
   path: include/data_structure/union_find.hpp
   requiredBy: []
-  timestamp: '2021-08-03 15:46:25+09:00'
+  timestamp: '2021-08-08 16:38:11+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/union_find/1.test.cpp
@@ -177,6 +177,12 @@ $i$ 番目 (0-indexed) の頂点と $j$ 番目 (0-indexed) の頂点が属する
 
 #### `debug_print()`
 
-`ONLINE_JUDGE` が定義されていない場合、標準エラー出力にデバッグ情報(`groups()` の内容)を出力します。`ONLINE_JUDGE` の定義の有無で切り替えるよりも自分のローカルの環境でのみ設定したマクロの定義の有無で切り替えた方が良いと思いますが、人によってその内容は変わるのでここではオンラインジャッジであるかどうかの判定に `ONLINE_JUDGE` を用いています。この部分を別のマクロに書き換えて使っても構いません。
+マクロ `CP_LIBRARY_DEBUG_LEVEL` が $1$ 以上の値として定義されている場合、標準エラー出力にデバッグ情報(`groups()` の内容)を出力します。コンパイル時にこのマクロを定義する場合には
+
+```sh
+g++ -std=c++17 -DCP_LIBRARY_DEBUG_LEVEL=1 main.cpp
+```
+
+のように、`-DCP_LIBRARY_DEBUG_LEVEL=` に続けて内容を指定します。
 
 ---

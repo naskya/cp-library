@@ -36,12 +36,12 @@ data:
   bundledCode: "#line 1 \"include/algebra/static_modint.hpp\"\n\n//! @file static_modint.hpp\n\
     \n#ifndef STATIC_MODINT_HPP\n#define STATIC_MODINT_HPP\n\n#include <cstdint>\n\
     #include <iostream>\n#include <limits>\n#include <type_traits>\n\n#ifndef warn\n\
-    #  ifndef ONLINE_JUDGE\n//! @brief Print warning message\n//! @note You can suppress\
-    \ the warning by uncommenting line 17\n#    define warn(msg) (std::cerr << (msg)\
-    \ << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n#  else\n#    define\
-    \ warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n#endif\n\
-    \nnamespace lib {\n\n//! @brief modint (for compile-time constant modulo)\n//!\
-    \ @tparam modulo modulo (e.g. 1000000007).\ntemplate <std::int_least32_t modulo,\n\
+    #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print warning message\n//! @note\
+    \ You can suppress the warning by uncommenting line 17\n#    define warn(msg)\
+    \ (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
+    #  else\n#    define warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n\
+    #endif\n\nnamespace lib {\n\n//! @brief modint (for compile-time constant modulo)\n\
+    //! @tparam modulo modulo (e.g. 1000000007).\ntemplate <std::int_least32_t modulo,\n\
     \          std::enable_if_t<(1 < modulo) && (modulo < std::numeric_limits<std::int_least32_t>::max()\
     \ / 2),\n                           std::nullptr_t> = nullptr>\nstruct static_modint\
     \ {\nprivate:\n  std::int_least32_t value;\n\n  //! @param n non-zero integer\n\
@@ -318,9 +318,9 @@ data:
     \ undef warn\n#  endif\n#endif\n\n#endif  // STATIC_MODINT_HPP\n"
   code: "\n//! @file static_modint.hpp\n\n#ifndef STATIC_MODINT_HPP\n#define STATIC_MODINT_HPP\n\
     \n#include <cstdint>\n#include <iostream>\n#include <limits>\n#include <type_traits>\n\
-    \n#ifndef warn\n#  ifndef ONLINE_JUDGE\n//! @brief Print warning message\n//!\
-    \ @note You can suppress the warning by uncommenting line 17\n#    define warn(msg)\
-    \ (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
+    \n#ifndef warn\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print warning\
+    \ message\n//! @note You can suppress the warning by uncommenting line 17\n# \
+    \   define warn(msg) (std::cerr << (msg) << '\\n')\n// #  define warn(msg) (static_cast<void>(0))\n\
     #  else\n#    define warn(msg) (static_cast<void>(0))\n#  endif\n#  define warn_not_defined\n\
     #endif\n\nnamespace lib {\n\n//! @brief modint (for compile-time constant modulo)\n\
     //! @tparam modulo modulo (e.g. 1000000007).\ntemplate <std::int_least32_t modulo,\n\
@@ -602,7 +602,7 @@ data:
   isVerificationFile: false
   path: include/algebra/static_modint.hpp
   requiredBy: []
-  timestamp: '2021-08-03 15:55:56+09:00'
+  timestamp: '2021-08-08 16:38:11+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp

@@ -56,6 +56,9 @@ data:
       path: include/string/manachers_algorithm.hpp
       title: Manacher's algorithm
     - icon: ':heavy_check_mark:'
+      path: include/string/rolling_hash.hpp
+      title: Rolling hash
+    - icon: ':x:'
       path: include/string/run_length_encoding.hpp
       title: Run length encoding
     - icon: ':heavy_check_mark:'
@@ -198,9 +201,17 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/string/manachers_algorithm/1.test.cpp
       title: test/string/manachers_algorithm/1.test.cpp
-  - name: test/string/run_length_encoding
+  - name: test/string/rolling_hash
     pages:
     - icon: ':heavy_check_mark:'
+      path: test/string/rolling_hash/1.test.cpp
+      title: test/string/rolling_hash/1.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/string/rolling_hash/2.test.cpp
+      title: test/string/rolling_hash/2.test.cpp
+  - name: test/string/run_length_encoding
+    pages:
+    - icon: ':x:'
       path: test/string/run_length_encoding/1.test.cpp
       title: test/string/run_length_encoding/1.test.cpp
   - name: test/string/z_algorithm

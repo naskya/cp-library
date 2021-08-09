@@ -58,11 +58,6 @@
 {{ include.content }}
 {% endhighlight %}
 
-{% elsif include.extension == "sh" %}
-{% highlight shell %}
-{{ include.content }}
-{% endhighlight %}
-
 {% else %}
 {% highlight cpp %}
 {{ include.content }}
