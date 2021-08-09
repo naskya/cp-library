@@ -80,7 +80,7 @@ hash.emplace_back(S_hash);  // OK
 ```cpp
 const std::string A = "This";
 const std::string B = "is";
-const bool check = lib::get_rolling_hash(A).substring(2) == lib::get_single_hash(B);  // true
+const bool check = (lib::get_rolling_hash(A).substring(2) == lib::get_single_hash(B));  // true
 ```
 
 ただし、マクロ `CP_LIBRARY_DEBUG_LEVEL` が $2$ 以上の値として定義されている場合には線形時間を掛けて元の文字列を直接比較し、ハッシュ値が等しいのに文字列が異なっている場合(ハッシュ値の衝突)を検知した場合にそれを報告して異常終了します。
