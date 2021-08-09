@@ -51,4 +51,4 @@ B: [ 0 1 ]
 
 ## Code
 
-<script src="https://gist.github.com/naskya/1e5e5cd269cfe16a76988378a60e2ca3.js"></script>
+[debug_print.hpp](https://gist.github.com/naskya/1e5e5cd269cfe16a76988378a60e2ca3)
