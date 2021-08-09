@@ -224,3 +224,6 @@ data:
       title: test/string/z_algorithm/1.test.cpp
 layout: toppage
 ---
+## About this library
+
+- [このリポジトリについての説明](https://naskya.github.io/cp-library/about/)

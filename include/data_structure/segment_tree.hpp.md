@@ -511,13 +511,7 @@ $i$ 番目 (0-indexed) の要素の値を $x$ にします。
 
 #### `debug_print()`
 
-マクロ `CP_LIBRARY_DEBUG_LEVEL` が $1$ 以上の値として定義されている場合、標準エラー出力にデバッグ情報(配列の内容)を出力します。コンパイル時にこのマクロを定義する場合には
-
-```sh
-g++ -std=c++17 -DCP_LIBRARY_DEBUG_LEVEL=1 main.cpp
-```
-
-のように、`-DCP_LIBRARY_DEBUG_LEVEL=` に続けて内容を指定します。
+[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、標準エラー出力にデバッグ情報(配列の内容)を出力します。
 
 ---
 
