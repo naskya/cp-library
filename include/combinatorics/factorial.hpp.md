@@ -70,8 +70,8 @@ data:
     \ Ts>\n[[nodiscard]] ReturnType multinomial(const Tp n, const Ts... r) {\n  static_assert(internal::is_all_same_v<Ts...>);\n\
     \n  if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\"\
     );\n    return 0;\n  }\n  if (((r < 0) || ...)) {\n    warn(\"r... contains negative\
-    \ number.\");\n    return 0;\n  }\n  if ((r + ...) != n) {\n    warn(\"Sum of\
-    \ r... is not equal to n.\");\n    return 0;\n  }\n  std::array<internal::first_type_t<Ts...>,\
+    \ number.\");\n    return 0;\n  }\n  if ((r + ...) > n) {\n    warn(\"Sum of r...\
+    \ is greater than n.\");\n    return 0;\n  }\n  std::array<internal::first_type_t<Ts...>,\
     \ sizeof...(Ts)> r_array {r...};\n\n  const auto max_idx = std::distance(std::cbegin(r_array),\
     \ std::max_element(std::cbegin(r_array), std::cend(r_array)));\n  const auto max_r\
     \   = r_array[max_idx];\n\n  unsigned current_den_idx                      = static_cast<int>(max_idx\
@@ -95,8 +95,8 @@ data:
     n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n    return 0;\n\
     \  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const auto v) { return\
     \ v < 0; })) {\n    warn(\"r contains negative number.\");\n    return 0;\n  }\n\
-    \  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) != n) {\n    warn(\"\
-    Sum of r is not equal to n.\");\n    return 0;\n  }\n\n  const auto max_idx =\
+    \  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {\n    warn(\"\
+    Sum of r is greater than n.\");\n    return 0;\n  }\n\n  const auto max_idx =\
     \ std::distance(std::cbegin(r), std::max_element(std::cbegin(r), std::cend(r)));\n\
     \  const auto max_r   = r[max_idx];\n\n  unsigned current_den_idx = static_cast<int>(max_idx\
     \ == 0);\n  Elem current_den_cnt     = 1;\n\n  ReturnType res = 1;\n\n  for (Tp\
@@ -168,7 +168,7 @@ data:
     \ Size>& factorial_modinv_array) {\n  if (n == 0)\n    warn(\"n is zero.\");\n\
     \  if (n < 0) {\n    warn(\"n is negative.\");\n    return 0;\n  }\n  if (((r\
     \ < 0) || ...)) {\n    warn(\"r contains negative number.\");\n    return 0;\n\
-    \  }\n  if ((r + ...) != n) {\n    warn(\"Sum of r... is not equal to n.\");\n\
+    \  }\n  if ((r + ...) > n) {\n    warn(\"Sum of r... is greater than n.\");\n\
     \    return 0;\n  }\n  return factorial_array[n] * ((factorial_modinv_array[r])\
     \ * ...);\n}\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array\
     \ (deduced from parameters)\n//! @tparam Modint deduced from parameters\n//! @tparam\
@@ -185,8 +185,8 @@ data:
     \    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n  \
     \  return 0;\n  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const auto\
     \ v) { return v < 0; })) {\n    warn(\"r contains negative number.\");\n    return\
-    \ 0;\n  }\n  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) != n) {\n\
-    \    warn(\"Sum of r is not equal to n.\");\n    return 0;\n  }\n  return factorial_array[n]\
+    \ 0;\n  }\n  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {\n \
+    \   warn(\"Sum of r is greater than n.\");\n    return 0;\n  }\n  return factorial_array[n]\
     \ * std::reduce(std::cbegin(r), std::cend(r), Modint(1),\n                   \
     \                       [&](const Modint res, const Elem e) { return res * factorial_modinv_array[e];\
     \ });\n}\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array\
@@ -258,8 +258,8 @@ data:
     \ ReturnType multinomial(const Tp n, const Ts... r) {\n  static_assert(internal::is_all_same_v<Ts...>);\n\
     \n  if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\"\
     );\n    return 0;\n  }\n  if (((r < 0) || ...)) {\n    warn(\"r... contains negative\
-    \ number.\");\n    return 0;\n  }\n  if ((r + ...) != n) {\n    warn(\"Sum of\
-    \ r... is not equal to n.\");\n    return 0;\n  }\n  std::array<internal::first_type_t<Ts...>,\
+    \ number.\");\n    return 0;\n  }\n  if ((r + ...) > n) {\n    warn(\"Sum of r...\
+    \ is greater than n.\");\n    return 0;\n  }\n  std::array<internal::first_type_t<Ts...>,\
     \ sizeof...(Ts)> r_array {r...};\n\n  const auto max_idx = std::distance(std::cbegin(r_array),\
     \ std::max_element(std::cbegin(r_array), std::cend(r_array)));\n  const auto max_r\
     \   = r_array[max_idx];\n\n  unsigned current_den_idx                      = static_cast<int>(max_idx\
@@ -283,8 +283,8 @@ data:
     n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n    return 0;\n\
     \  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const auto v) { return\
     \ v < 0; })) {\n    warn(\"r contains negative number.\");\n    return 0;\n  }\n\
-    \  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) != n) {\n    warn(\"\
-    Sum of r is not equal to n.\");\n    return 0;\n  }\n\n  const auto max_idx =\
+    \  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {\n    warn(\"\
+    Sum of r is greater than n.\");\n    return 0;\n  }\n\n  const auto max_idx =\
     \ std::distance(std::cbegin(r), std::max_element(std::cbegin(r), std::cend(r)));\n\
     \  const auto max_r   = r[max_idx];\n\n  unsigned current_den_idx = static_cast<int>(max_idx\
     \ == 0);\n  Elem current_den_cnt     = 1;\n\n  ReturnType res = 1;\n\n  for (Tp\
@@ -356,7 +356,7 @@ data:
     \ Size>& factorial_modinv_array) {\n  if (n == 0)\n    warn(\"n is zero.\");\n\
     \  if (n < 0) {\n    warn(\"n is negative.\");\n    return 0;\n  }\n  if (((r\
     \ < 0) || ...)) {\n    warn(\"r contains negative number.\");\n    return 0;\n\
-    \  }\n  if ((r + ...) != n) {\n    warn(\"Sum of r... is not equal to n.\");\n\
+    \  }\n  if ((r + ...) > n) {\n    warn(\"Sum of r... is greater than n.\");\n\
     \    return 0;\n  }\n  return factorial_array[n] * ((factorial_modinv_array[r])\
     \ * ...);\n}\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array\
     \ (deduced from parameters)\n//! @tparam Modint deduced from parameters\n//! @tparam\
@@ -373,8 +373,8 @@ data:
     \    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n  \
     \  return 0;\n  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const auto\
     \ v) { return v < 0; })) {\n    warn(\"r contains negative number.\");\n    return\
-    \ 0;\n  }\n  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) != n) {\n\
-    \    warn(\"Sum of r is not equal to n.\");\n    return 0;\n  }\n  return factorial_array[n]\
+    \ 0;\n  }\n  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {\n \
+    \   warn(\"Sum of r is greater than n.\");\n    return 0;\n  }\n  return factorial_array[n]\
     \ * std::reduce(std::cbegin(r), std::cend(r), Modint(1),\n                   \
     \                       [&](const Modint res, const Elem e) { return res * factorial_modinv_array[e];\
     \ });\n}\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array\
@@ -395,14 +395,14 @@ data:
   isVerificationFile: false
   path: include/combinatorics/factorial.hpp
   requiredBy: []
-  timestamp: '2021-08-08 16:38:11+09:00'
+  timestamp: '2021-08-09 13:42:41+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp
   - test/combinatorics/factorial/2.test.cpp
 documentation_of: include/combinatorics/factorial.hpp
 layout: document
-title: Factorial, Permutation, Combination, Multinomial coefficients
+title: Factorial, Permutation, Combination, Multinomial coefficient
 ---
 
 階乗・順列の数・二項係数・多項係数を計算する関数が定義されています。
@@ -411,7 +411,7 @@ title: Factorial, Permutation, Combination, Multinomial coefficients
 
 ### `factorial(n)`
 
-$n$ の階乗 ($n!$) を返します。
+$n$ の階乗 $\left(= n!\right)$ を返します。
 
 ### `permutation(n, r)`
 
@@ -423,7 +423,7 @@ $n$ 個の区別できるものの中から $r$ 個を選ぶとき、考えら�
 
 ### `multinomial(n, r...)`
 
-$n$ 個のもののうち $r_1, \, r_2, \, \cdots, r_k$ 個のものがお互いに区別できないとき、それらを任意の順番で横一列に並べる方法の数 $\left(= \binom{n}{r_1, \, r_2, \, \cdots, r_k \ } \right)$ を返します。$\sum_{i = 1}^k r_i = n$ が成り立つ必要があります。
+$n$ 個のもののうち $r_1, \, r_2, \, \cdots, r_k$ 個のものがお互いに区別できないとき、それらを任意の順番で横一列に並べる方法の数 $\left(= \binom{n}{r_1, \, r_2, \, \cdots, r_k \ } = \frac{n!}{r_1! \, r_2! \, \cdots \, r_k!} \right)$ を返します。$\sum_{i = 1}^k r_i \leq n$ が成り立つ必要があります。
 
 ### `stars_and_bars(n, r)`
 
