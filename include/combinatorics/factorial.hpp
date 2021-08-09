@@ -120,7 +120,7 @@ template <typename Tp, typename ReturnType = Tp>
 //! @tparam ReturnType set appropriately if there is a possibility of overflow (e.g. long long, __int128, modint)
 //! @tparam Ts deduced from parameters
 //! @param n non-negative integer
-//! @param r non-negative integers of same type whose sum is equal to n
+//! @param r non-negative integers of same type whose sum is less than or equal to n
 //! @return Number of ways to arrange n objects when r_1, r_2, ... objects are indistinguishable.
 //! @note Time complexity: O(n - max(r))
 template <typename Tp, typename ReturnType = Tp, typename... Ts>
@@ -172,7 +172,7 @@ template <typename Tp, typename ReturnType = Tp, typename... Ts>
 //! @tparam ReturnType set appropriately if there is a possibility of overflow (e.g. long long, __int128, modint)
 //! @tparam Container container type (deduced from parameters)
 //! @param n non-negative integer
-//! @param r container of non-negative integers whose sum is equal to n
+//! @param r container of non-negative integers whose sum is less than or equal to n
 //! @return Number of ways to arrange n objects when r[0], r[1], ... objects are indistinguishable.
 //! @note Time complexity: O(n - max(r))
 template <typename Tp, typename ReturnType = Tp, typename Container>
@@ -321,7 +321,7 @@ template <std::size_t Size, typename Modint, typename Tp>
 //! @tparam Tp deduced from parameters
 //! @tparam Ts deduced from parameters
 //! @param n non-negative integer
-//! @param r non-negative integers whose sum is equal to n
+//! @param r non-negative integers whose sum is less than or equal to n
 //! @param factorial_array Array that factorial_array() returns
 //! @param factorial_modinv_array Array that factorial_modinv_array() returns
 //! @return Number of ways to arrange n objects when r_1, r_2, ... objects are indistinguishable.
@@ -350,7 +350,7 @@ template <std::size_t Size, typename Modint, typename Tp, typename... Ts>
 //! @tparam Tp deduced from parameters
 //! @tparam container type (deduced from parameters)
 //! @param n non-negative integer
-//! @param r container of non-negative integers whose sum is equal to n
+//! @param r container of non-negative integers whose sum is less than or equal to n
 //! @param factorial_array Array that factorial_array() returns
 //! @param factorial_modinv_array Array that factorial_modinv_array() returns
 //! @return Number of ways to arrange n objects when r[0], r[1], ... objects are indistinguishable.
