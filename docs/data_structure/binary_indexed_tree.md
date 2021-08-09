@@ -70,6 +70,6 @@ $i$ 番目 (0-indexed) の要素の値を $x$ にします。
 g++ -std=c++17 -DCP_LIBRARY_DEBUG_LEVEL=1 main.cpp
 ```
 
-のように、`-DCP_LIBRARY_DEBUG_LEVEL=` に続けて内容を指定します。
+のように、`-DCP_LIBRARY_DEBUG_LEVEL=` に続けて値を指定します。
 
 ---
