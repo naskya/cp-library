@@ -137,8 +137,8 @@ template <typename Tp, typename ReturnType = Tp, typename... Ts>
     warn("r... contains negative number.");
     return 0;
   }
-  if ((r + ...) != n) {
-    warn("Sum of r... is not equal to n.");
+  if ((r + ...) > n) {
+    warn("Sum of r... is greater than n.");
     return 0;
   }
   std::array<internal::first_type_t<Ts...>, sizeof...(Ts)> r_array {r...};
@@ -188,8 +188,8 @@ template <typename Tp, typename ReturnType = Tp, typename Container>
     warn("r contains negative number.");
     return 0;
   }
-  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) != n) {
-    warn("Sum of r is not equal to n.");
+  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {
+    warn("Sum of r is greater than n.");
     return 0;
   }
 
@@ -338,8 +338,8 @@ template <std::size_t Size, typename Modint, typename Tp, typename... Ts>
     warn("r contains negative number.");
     return 0;
   }
-  if ((r + ...) != n) {
-    warn("Sum of r... is not equal to n.");
+  if ((r + ...) > n) {
+    warn("Sum of r... is greater than n.");
     return 0;
   }
   return factorial_array[n] * ((factorial_modinv_array[r]) * ...);
@@ -368,8 +368,8 @@ template <std::size_t Size, typename Modint, typename Tp, typename Container>
     warn("r contains negative number.");
     return 0;
   }
-  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) != n) {
-    warn("Sum of r is not equal to n.");
+  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {
+    warn("Sum of r is greater than n.");
     return 0;
   }
   return factorial_array[n] * std::reduce(std::cbegin(r), std::cend(r), Modint(1),

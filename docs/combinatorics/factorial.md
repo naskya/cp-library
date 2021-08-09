@@ -1,5 +1,5 @@
 ---
-title: Factorial, Permutation, Combination, Multinomial coefficients
+title: Factorial, Permutation, Combination, Multinomial coefficient
 documentation_of: //include/combinatorics/factorial.hpp
 ---
 
@@ -9,7 +9,7 @@ documentation_of: //include/combinatorics/factorial.hpp
 
 ### `factorial(n)`
 
-$n$ の階乗 ($n!$) を返します。
+$n$ の階乗 $\left(= n!\right)$ を返します。
 
 ### `permutation(n, r)`
 
@@ -21,7 +21,7 @@ $n$ 個の区別できるものの中から $r$ 個を選ぶとき、考えら�
 
 ### `multinomial(n, r...)`
 
-$n$ 個のもののうち $r_1, \, r_2, \, \cdots, r_k$ 個のものがお互いに区別できないとき、それらを任意の順番で横一列に並べる方法の数 $\left(= \binom{n}{r_1, \, r_2, \, \cdots, r_k \ } \right)$ を返します。$\sum_{i = 1}^k r_i = n$ が成り立つ必要があります。
+$n$ 個のもののうち $r_1, \, r_2, \, \cdots, r_k$ 個のものがお互いに区別できないとき、それらを任意の順番で横一列に並べる方法の数 $\left(= \binom{n}{r_1, \, r_2, \, \cdots, r_k \ } = \frac{n!}{r_1! \, r_2! \, \cdots \, r_k!} \right)$ を返します。$\sum_{i = 1}^k r_i \leq n$ が成り立つ必要があります。
 
 ### `stars_and_bars(n, r)`
 
