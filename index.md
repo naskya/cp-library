@@ -209,6 +209,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/string/rolling_hash/2.test.cpp
       title: test/string/rolling_hash/2.test.cpp
+    - icon: ':heavy_check_mark:'
+      path: test/string/rolling_hash/3.test.cpp
+      title: test/string/rolling_hash/3.test.cpp
   - name: test/string/run_length_encoding
     pages:
     - icon: ':heavy_check_mark:'

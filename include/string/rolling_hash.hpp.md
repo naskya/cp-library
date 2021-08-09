@@ -9,6 +9,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/string/rolling_hash/2.test.cpp
     title: test/string/rolling_hash/2.test.cpp
+  - icon: ':heavy_check_mark:'
+    path: test/string/rolling_hash/3.test.cpp
+    title: test/string/rolling_hash/3.test.cpp
   _isVerificationFailed: false
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
@@ -530,6 +533,7 @@ data:
   timestamp: '2021-08-09 13:03:19+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/string/rolling_hash/3.test.cpp
   - test/string/rolling_hash/1.test.cpp
   - test/string/rolling_hash/2.test.cpp
 documentation_of: include/string/rolling_hash.hpp
