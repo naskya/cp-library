@@ -94,7 +94,7 @@ const auto A_hash = lib::get_single_hash(A);
 
 #### `operator==`
 
-両辺の `single_hash_t` 型のオブジェクトが等しいか定数時間で比較します。比較は文字列の長さの比較とハッシュ値の比較が行われ、どちらも等しい時に `true` を、そうでないときに `false` を返します。
+両辺の `single_hash` 型のオブジェクトが等しいか定数時間で比較します。比較は文字列の長さの比較とハッシュ値の比較が行われ、どちらも等しい時に `true` を、そうでないときに `false` を返します。
 
 ```cpp
 const std::string A = "This";
