@@ -3,7 +3,7 @@ title: Rolling hash
 documentation_of: //include/string/rolling_hash.hpp
 ---
 
-ハッシュ値を前計算しておくことで文字列や配列の大量の比較を定数時間で行うための `rolling_hash` クラスと `single_hash` 構造体が定義されています。実装は [安全で爆速なRollingHashの話](https://qiita.com/keymoon/items/11fac5627672a6d6a9f6) を参考にしています。
+ハッシュ値を前計算しておくことで文字列や配列の大量の比較を定数時間で行うための `rolling_hash` クラスと `single_hash` 構造体が定義されています。実装は[安全で爆速なRollingHashの話](https://qiita.com/keymoon/items/11fac5627672a6d6a9f6)を参考にしています。
 
 文字列 (`std::string`) 以外のコンテナ (`std::vector<int>` 等)でもハッシュ値を計算する事が可能です。以下では便宜上、計算の入力に用いるコンテナを文字列と呼びます。
 
@@ -131,7 +131,7 @@ const bool check = (A_hash == C_hash);  // true
 
 #### `hash_value()`
 
-ハッシュ値を返します。戻り値は `std::uint_64_t` がいくつか入ったタプル (`std::tuple<std::uint_64_t, std::uint_64_t, ...>`) です。比較判定などはこの関数でハッシュ値を取得しなくても行えるので基本的には使用する必要の無い関数です。
+ハッシュ値を返します。戻り値は `std::uint64_t` がいくつか入ったタプル (`std::tuple<std::uint64_t, std::uint64_t, ...>`) です。比較判定などはこの関数でハッシュ値を取得しなくても行えるので基本的には使用する必要の無い関数です。
 
 #### `debug_print()`
 
