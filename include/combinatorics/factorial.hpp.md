@@ -64,14 +64,15 @@ data:
     //! @tparam ReturnType set appropriately if there is a possibility of overflow\
     \ (e.g. long long, __int128, modint)\n//! @tparam Ts deduced from parameters\n\
     //! @param n non-negative integer\n//! @param r non-negative integers of same\
-    \ type whose sum is equal to n\n//! @return Number of ways to arrange n objects\
-    \ when r_1, r_2, ... objects are indistinguishable.\n//! @note Time complexity:\
-    \ O(n - max(r))\ntemplate <typename Tp, typename ReturnType = Tp, typename...\
-    \ Ts>\n[[nodiscard]] ReturnType multinomial(const Tp n, const Ts... r) {\n  static_assert(internal::is_all_same_v<Ts...>);\n\
-    \n  if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\"\
-    );\n    return 0;\n  }\n  if (((r < 0) || ...)) {\n    warn(\"r... contains negative\
-    \ number.\");\n    return 0;\n  }\n  if ((r + ...) > n) {\n    warn(\"Sum of r...\
-    \ is greater than n.\");\n    return 0;\n  }\n  std::array<internal::first_type_t<Ts...>,\
+    \ type whose sum is less than or equal to n\n//! @return Number of ways to arrange\
+    \ n objects when r_1, r_2, ... objects are indistinguishable.\n//! @note Time\
+    \ complexity: O(n - max(r))\ntemplate <typename Tp, typename ReturnType = Tp,\
+    \ typename... Ts>\n[[nodiscard]] ReturnType multinomial(const Tp n, const Ts...\
+    \ r) {\n  static_assert(internal::is_all_same_v<Ts...>);\n\n  if (n == 0)\n  \
+    \  warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n    return\
+    \ 0;\n  }\n  if (((r < 0) || ...)) {\n    warn(\"r... contains negative number.\"\
+    );\n    return 0;\n  }\n  if ((r + ...) > n) {\n    warn(\"Sum of r... is greater\
+    \ than n.\");\n    return 0;\n  }\n  std::array<internal::first_type_t<Ts...>,\
     \ sizeof...(Ts)> r_array {r...};\n\n  const auto max_idx = std::distance(std::cbegin(r_array),\
     \ std::max_element(std::cbegin(r_array), std::cend(r_array)));\n  const auto max_r\
     \   = r_array[max_idx];\n\n  unsigned current_den_idx                      = static_cast<int>(max_idx\
@@ -87,122 +88,122 @@ data:
     \ ReturnType set appropriately if there is a possibility of overflow (e.g. long\
     \ long, __int128, modint)\n//! @tparam Container container type (deduced from\
     \ parameters)\n//! @param n non-negative integer\n//! @param r container of non-negative\
-    \ integers whose sum is equal to n\n//! @return Number of ways to arrange n objects\
-    \ when r[0], r[1], ... objects are indistinguishable.\n//! @note Time complexity:\
-    \ O(n - max(r))\ntemplate <typename Tp, typename ReturnType = Tp, typename Container>\n\
-    [[nodiscard]] ReturnType multinomial(const Tp n, const Container& r) {\n  using\
-    \ Elem = std::decay_t<decltype(*std::cbegin(r))>;\n  if (n == 0)\n    warn(\"\
-    n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n    return 0;\n\
-    \  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const auto v) { return\
-    \ v < 0; })) {\n    warn(\"r contains negative number.\");\n    return 0;\n  }\n\
-    \  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {\n    warn(\"\
-    Sum of r is greater than n.\");\n    return 0;\n  }\n\n  const auto max_idx =\
-    \ std::distance(std::cbegin(r), std::max_element(std::cbegin(r), std::cend(r)));\n\
-    \  const auto max_r   = r[max_idx];\n\n  unsigned current_den_idx = static_cast<int>(max_idx\
-    \ == 0);\n  Elem current_den_cnt     = 1;\n\n  ReturnType res = 1;\n\n  for (Tp\
-    \ i = 1; i <= n - max_r; ++i) {\n    res *= (n - i + 1);\n    res /= current_den_cnt;\n\
-    \    if (current_den_idx < std::size(r) - 1 && (current_den_cnt == r[current_den_idx]\
-    \ || current_den_idx == max_idx)) {\n      current_den_idx += static_cast<int>(current_den_cnt\
-    \ == r[current_den_idx]);\n      current_den_idx += static_cast<int>(current_den_idx\
-    \ == max_idx);\n      current_den_cnt = 1;\n    } else if (current_den_idx ==\
-    \ std::size(r) - 1 && current_den_cnt == r[current_den_idx]) {\n      current_den_cnt\
-    \ = 1;\n    } else {\n      ++current_den_cnt;\n    }\n  }\n\n  return res;\n\
-    }\n\n//! @tparam Tp deduced from parameters\n//! @tparam ReturnType set appropriately\
-    \ if there is a possibility of overflow (e.g. long long, __int128, modint)\n//!\
-    \ @param n non-negative integer (doesn't have to be primitive)\n//! @param r non-negative\
-    \ integer (doesn't have to be primitive)\n//! @return nHr, or number of ways to\
-    \ put n indistinguishable balls into r distinguishable bins.\n//! @note Time complexity:\
-    \ O(r)\ntemplate <typename Tp, typename ReturnType = Tp>\n[[nodiscard]] ReturnType\
-    \ stars_and_bars(const Tp n, const Tp r) {\n  return combination<Tp, ReturnType>(n\
-    \ + r - 1, r);\n}\n\n//! @tparam Max upper limit\n//! @tparam ReturnType value\
-    \ type\n//! @return std::array which contains 0!, 1!, ..., Max! (Max + 1 numbers)\n\
-    //! @note Time complexity: O(Max)\ntemplate <std::size_t Max, typename ReturnType>\n\
-    [[nodiscard]] constexpr std::array<ReturnType, Max + 1> factorial_array() {\n\
-    \  std::array<ReturnType, Max + 1> res;\n  res[0] = 1;\n\n  for (std::size_t i\
-    \ = 1; i <= Max; ++i)\n    res[i] = res[i - 1] * i;\n\n  return res;\n}\n\n//!\
-    \ @tparam Max upper limit\n//! @tparam Modint value type (deduced from parameter,\
-    \ must be Modint)\n//! @param fact factorial of Max (which is the result of factorial\
-    \ or factorial_array)\n//! @return std::array which contains multiplicative inverse\
-    \ of 0!, 1!, ..., Max! (Max + 1 numbers)\n//! @note Time complexity: O(Max)\n\
-    template <std::size_t Max, typename Modint>\n[[nodiscard]] constexpr std::array<Modint,\
-    \ Max + 1> factorial_modinv_array(const Modint fact) {\n  std::array<Modint, Max\
-    \ + 1> res;\n  res[Max] = fact.inv();\n\n  for (std::size_t i = Max; i > 0; --i)\n\
-    \    res[i - 1] = res[i] * i;\n\n  return res;\n}\n\n//! @tparam Size Size of\
-    \ factorial_array and factorial_modinv_array (deduced from parameters)\n//! @tparam\
-    \ Tp deduced from parameters\n//! @tparam Modint deduced from parameters\n//!\
-    \ @param n non-negative integer\n//! @param r non-negative integer\n//! @param\
-    \ factorial_array Array that factorial_array() returns\n//! @param factorial_modinv_array\
-    \ Array that factorial_modinv_array() returns\n//! @return nPr, or number of ways\
-    \ to select r out of n distinguishable objects and arrange them in any order.\n\
-    //! @note Time complexity: O(1)\ntemplate <std::size_t Size, typename Modint,\
-    \ typename Tp>\n[[nodiscard]] Modint permutation(const Tp n, const Tp r, const\
-    \ std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array)\
-    \ {\n  if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is\
-    \ negative.\");\n    return 0;\n  }\n  if (r < 0) {\n    warn(\"r is negative.\"\
-    );\n    return 0;\n  }\n  if (n < r) {\n    warn(\"n is less than r.\");\n   \
-    \ return 0;\n  }\n  return factorial_array[n] * factorial_modinv_array[n - r];\n\
-    }\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array (deduced\
-    \ from parameters)\n//! @tparam Tp deduced from parameters\n//! @tparam Modint\
-    \ deduced from parameters\n//! @param n non-negative integer\n//! @param r non-negative\
-    \ integer\n//! @param factorial_array Array that factorial_array() returns\n//!\
-    \ @param factorial_modinv_array Array that factorial_modinv_array() returns\n\
-    //! @return nCr, or number of ways to select r out of n distinguishable objects.\n\
-    //! @note Time complexity: O(1)\ntemplate <std::size_t Size, typename Modint,\
-    \ typename Tp>\n[[nodiscard]] constexpr Modint combination(const Tp n, const Tp\
-    \ r, const std::array<Modint, Size>& factorial_array, const std::array<Modint,\
+    \ integers whose sum is less than or equal to n\n//! @return Number of ways to\
+    \ arrange n objects when r[0], r[1], ... objects are indistinguishable.\n//! @note\
+    \ Time complexity: O(n - max(r))\ntemplate <typename Tp, typename ReturnType =\
+    \ Tp, typename Container>\n[[nodiscard]] ReturnType multinomial(const Tp n, const\
+    \ Container& r) {\n  using Elem = std::decay_t<decltype(*std::cbegin(r))>;\n \
+    \ if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\"\
+    );\n    return 0;\n  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const\
+    \ auto v) { return v < 0; })) {\n    warn(\"r contains negative number.\");\n\
+    \    return 0;\n  }\n  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0))\
+    \ > n) {\n    warn(\"Sum of r is greater than n.\");\n    return 0;\n  }\n\n \
+    \ const auto max_idx = std::distance(std::cbegin(r), std::max_element(std::cbegin(r),\
+    \ std::cend(r)));\n  const auto max_r   = r[max_idx];\n\n  unsigned current_den_idx\
+    \ = static_cast<int>(max_idx == 0);\n  Elem current_den_cnt     = 1;\n\n  ReturnType\
+    \ res = 1;\n\n  for (Tp i = 1; i <= n - max_r; ++i) {\n    res *= (n - i + 1);\n\
+    \    res /= current_den_cnt;\n    if (current_den_idx < std::size(r) - 1 && (current_den_cnt\
+    \ == r[current_den_idx] || current_den_idx == max_idx)) {\n      current_den_idx\
+    \ += static_cast<int>(current_den_cnt == r[current_den_idx]);\n      current_den_idx\
+    \ += static_cast<int>(current_den_idx == max_idx);\n      current_den_cnt = 1;\n\
+    \    } else if (current_den_idx == std::size(r) - 1 && current_den_cnt == r[current_den_idx])\
+    \ {\n      current_den_cnt = 1;\n    } else {\n      ++current_den_cnt;\n    }\n\
+    \  }\n\n  return res;\n}\n\n//! @tparam Tp deduced from parameters\n//! @tparam\
+    \ ReturnType set appropriately if there is a possibility of overflow (e.g. long\
+    \ long, __int128, modint)\n//! @param n non-negative integer (doesn't have to\
+    \ be primitive)\n//! @param r non-negative integer (doesn't have to be primitive)\n\
+    //! @return nHr, or number of ways to put n indistinguishable balls into r distinguishable\
+    \ bins.\n//! @note Time complexity: O(r)\ntemplate <typename Tp, typename ReturnType\
+    \ = Tp>\n[[nodiscard]] ReturnType stars_and_bars(const Tp n, const Tp r) {\n \
+    \ return combination<Tp, ReturnType>(n + r - 1, r);\n}\n\n//! @tparam Max upper\
+    \ limit\n//! @tparam ReturnType value type\n//! @return std::array which contains\
+    \ 0!, 1!, ..., Max! (Max + 1 numbers)\n//! @note Time complexity: O(Max)\ntemplate\
+    \ <std::size_t Max, typename ReturnType>\n[[nodiscard]] constexpr std::array<ReturnType,\
+    \ Max + 1> factorial_array() {\n  std::array<ReturnType, Max + 1> res;\n  res[0]\
+    \ = 1;\n\n  for (std::size_t i = 1; i <= Max; ++i)\n    res[i] = res[i - 1] *\
+    \ i;\n\n  return res;\n}\n\n//! @tparam Max upper limit\n//! @tparam Modint value\
+    \ type (deduced from parameter, must be Modint)\n//! @param fact factorial of\
+    \ Max (which is the result of factorial or factorial_array)\n//! @return std::array\
+    \ which contains multiplicative inverse of 0!, 1!, ..., Max! (Max + 1 numbers)\n\
+    //! @note Time complexity: O(Max)\ntemplate <std::size_t Max, typename Modint>\n\
+    [[nodiscard]] constexpr std::array<Modint, Max + 1> factorial_modinv_array(const\
+    \ Modint fact) {\n  std::array<Modint, Max + 1> res;\n  res[Max] = fact.inv();\n\
+    \n  for (std::size_t i = Max; i > 0; --i)\n    res[i - 1] = res[i] * i;\n\n  return\
+    \ res;\n}\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array\
+    \ (deduced from parameters)\n//! @tparam Tp deduced from parameters\n//! @tparam\
+    \ Modint deduced from parameters\n//! @param n non-negative integer\n//! @param\
+    \ r non-negative integer\n//! @param factorial_array Array that factorial_array()\
+    \ returns\n//! @param factorial_modinv_array Array that factorial_modinv_array()\
+    \ returns\n//! @return nPr, or number of ways to select r out of n distinguishable\
+    \ objects and arrange them in any order.\n//! @note Time complexity: O(1)\ntemplate\
+    \ <std::size_t Size, typename Modint, typename Tp>\n[[nodiscard]] Modint permutation(const\
+    \ Tp n, const Tp r, const std::array<Modint, Size>& factorial_array, const std::array<Modint,\
     \ Size>& factorial_modinv_array) {\n  if (n == 0)\n    warn(\"n is zero.\");\n\
     \  if (n < 0) {\n    warn(\"n is negative.\");\n    return 0;\n  }\n  if (r <\
     \ 0) {\n    warn(\"r is negative.\");\n    return 0;\n  }\n  if (n < r) {\n  \
     \  warn(\"n is less than r.\");\n    return 0;\n  }\n  return factorial_array[n]\
-    \ * factorial_modinv_array[n - r] * factorial_modinv_array[r];\n}\n\n//! @tparam\
-    \ Size Size of factorial_array and factorial_modinv_array (deduced from parameters)\n\
-    //! @tparam Modint deduced from parameters\n//! @tparam Tp deduced from parameters\n\
-    //! @tparam Ts deduced from parameters\n//! @param n non-negative integer\n//!\
-    \ @param r non-negative integers whose sum is equal to n\n//! @param factorial_array\
-    \ Array that factorial_array() returns\n//! @param factorial_modinv_array Array\
-    \ that factorial_modinv_array() returns\n//! @return Number of ways to arrange\
-    \ n objects when r_1, r_2, ... objects are indistinguishable.\n//! @note Time\
-    \ complexity: O(sizeof...(r))\ntemplate <std::size_t Size, typename Modint, typename\
-    \ Tp, typename... Ts>\n[[nodiscard]] constexpr Modint multinomial(const Tp n,\
-    \ const Ts... r, const std::array<Modint, Size>& factorial_array, const std::array<Modint,\
-    \ Size>& factorial_modinv_array) {\n  if (n == 0)\n    warn(\"n is zero.\");\n\
-    \  if (n < 0) {\n    warn(\"n is negative.\");\n    return 0;\n  }\n  if (((r\
-    \ < 0) || ...)) {\n    warn(\"r contains negative number.\");\n    return 0;\n\
-    \  }\n  if ((r + ...) > n) {\n    warn(\"Sum of r... is greater than n.\");\n\
-    \    return 0;\n  }\n  return factorial_array[n] * ((factorial_modinv_array[r])\
-    \ * ...);\n}\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array\
-    \ (deduced from parameters)\n//! @tparam Modint deduced from parameters\n//! @tparam\
-    \ Tp deduced from parameters\n//! @tparam container type (deduced from parameters)\n\
-    //! @param n non-negative integer\n//! @param r container of non-negative integers\
-    \ whose sum is equal to n\n//! @param factorial_array Array that factorial_array()\
+    \ * factorial_modinv_array[n - r];\n}\n\n//! @tparam Size Size of factorial_array\
+    \ and factorial_modinv_array (deduced from parameters)\n//! @tparam Tp deduced\
+    \ from parameters\n//! @tparam Modint deduced from parameters\n//! @param n non-negative\
+    \ integer\n//! @param r non-negative integer\n//! @param factorial_array Array\
+    \ that factorial_array() returns\n//! @param factorial_modinv_array Array that\
+    \ factorial_modinv_array() returns\n//! @return nCr, or number of ways to select\
+    \ r out of n distinguishable objects.\n//! @note Time complexity: O(1)\ntemplate\
+    \ <std::size_t Size, typename Modint, typename Tp>\n[[nodiscard]] constexpr Modint\
+    \ combination(const Tp n, const Tp r, const std::array<Modint, Size>& factorial_array,\
+    \ const std::array<Modint, Size>& factorial_modinv_array) {\n  if (n == 0)\n \
+    \   warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n   \
+    \ return 0;\n  }\n  if (r < 0) {\n    warn(\"r is negative.\");\n    return 0;\n\
+    \  }\n  if (n < r) {\n    warn(\"n is less than r.\");\n    return 0;\n  }\n \
+    \ return factorial_array[n] * factorial_modinv_array[n - r] * factorial_modinv_array[r];\n\
+    }\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array (deduced\
+    \ from parameters)\n//! @tparam Modint deduced from parameters\n//! @tparam Tp\
+    \ deduced from parameters\n//! @tparam Ts deduced from parameters\n//! @param\
+    \ n non-negative integer\n//! @param r non-negative integers whose sum is less\
+    \ than or equal to n\n//! @param factorial_array Array that factorial_array()\
     \ returns\n//! @param factorial_modinv_array Array that factorial_modinv_array()\
-    \ returns\n//! @return Number of ways to arrange n objects when r[0], r[1], ...\
-    \ objects are indistinguishable.\n//! @note Time complexity: O(size(r))\ntemplate\
-    \ <std::size_t Size, typename Modint, typename Tp, typename Container>\n[[nodiscard]]\
-    \ constexpr Modint multinomial(const Tp n, const Container& r, const std::array<Modint,\
+    \ returns\n//! @return Number of ways to arrange n objects when r_1, r_2, ...\
+    \ objects are indistinguishable.\n//! @note Time complexity: O(sizeof...(r))\n\
+    template <std::size_t Size, typename Modint, typename Tp, typename... Ts>\n[[nodiscard]]\
+    \ constexpr Modint multinomial(const Tp n, const Ts... r, const std::array<Modint,\
     \ Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array)\
-    \ {\n  using Elem = std::decay_t<decltype(*std::cbegin(r))>;\n  if (n == 0)\n\
-    \    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n  \
-    \  return 0;\n  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const auto\
-    \ v) { return v < 0; })) {\n    warn(\"r contains negative number.\");\n    return\
-    \ 0;\n  }\n  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {\n \
-    \   warn(\"Sum of r is greater than n.\");\n    return 0;\n  }\n  return factorial_array[n]\
-    \ * std::reduce(std::cbegin(r), std::cend(r), Modint(1),\n                   \
-    \                       [&](const Modint res, const Elem e) { return res * factorial_modinv_array[e];\
-    \ });\n}\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array\
-    \ (deduced from parameters)\n//! @tparam Tp deduced from parameters\n//! @tparam\
-    \ Modint deduced from parameters\n//! @param n non-negative integer\n//! @param\
-    \ r non-negative integers whose sum is equal to n\n//! @param factorial_array\
-    \ Array that factorial_array() returns\n//! @param factorial_modinv_array Array\
-    \ that factorial_modinv_array() returns\n//! @return nHr, or number of ways to\
-    \ put n indistinguishable balls into r distinguishable bins.\n//! @note Time complexity:\
-    \ O(1)\ntemplate <std::size_t Size, typename Modint, typename Tp>\n[[nodiscard]]\
-    \ constexpr Modint stars_and_bars(const Tp n, const Tp r, const std::array<Modint,\
-    \ Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array)\
-    \ {\n  return combination(n + r - 1, r, factorial_array, factorial_modinv_array);\n\
-    }\n\n}  // namespace lib\n\n#ifdef warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n\
-    // warn may be defined 2 times (by uncommenting line 19)\n#  ifdef warn\n#   \
-    \ undef warn\n#  endif\n#endif\n\n#endif\n"
+    \ {\n  if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is\
+    \ negative.\");\n    return 0;\n  }\n  if (((r < 0) || ...)) {\n    warn(\"r contains\
+    \ negative number.\");\n    return 0;\n  }\n  if ((r + ...) > n) {\n    warn(\"\
+    Sum of r... is greater than n.\");\n    return 0;\n  }\n  return factorial_array[n]\
+    \ * ((factorial_modinv_array[r]) * ...);\n}\n\n//! @tparam Size Size of factorial_array\
+    \ and factorial_modinv_array (deduced from parameters)\n//! @tparam Modint deduced\
+    \ from parameters\n//! @tparam Tp deduced from parameters\n//! @tparam container\
+    \ type (deduced from parameters)\n//! @param n non-negative integer\n//! @param\
+    \ r container of non-negative integers whose sum is less than or equal to n\n\
+    //! @param factorial_array Array that factorial_array() returns\n//! @param factorial_modinv_array\
+    \ Array that factorial_modinv_array() returns\n//! @return Number of ways to arrange\
+    \ n objects when r[0], r[1], ... objects are indistinguishable.\n//! @note Time\
+    \ complexity: O(size(r))\ntemplate <std::size_t Size, typename Modint, typename\
+    \ Tp, typename Container>\n[[nodiscard]] constexpr Modint multinomial(const Tp\
+    \ n, const Container& r, const std::array<Modint, Size>& factorial_array, const\
+    \ std::array<Modint, Size>& factorial_modinv_array) {\n  using Elem = std::decay_t<decltype(*std::cbegin(r))>;\n\
+    \  if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\"\
+    );\n    return 0;\n  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const\
+    \ auto v) { return v < 0; })) {\n    warn(\"r contains negative number.\");\n\
+    \    return 0;\n  }\n  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0))\
+    \ > n) {\n    warn(\"Sum of r is greater than n.\");\n    return 0;\n  }\n  return\
+    \ factorial_array[n] * std::reduce(std::cbegin(r), std::cend(r), Modint(1),\n\
+    \                                          [&](const Modint res, const Elem e)\
+    \ { return res * factorial_modinv_array[e]; });\n}\n\n//! @tparam Size Size of\
+    \ factorial_array and factorial_modinv_array (deduced from parameters)\n//! @tparam\
+    \ Tp deduced from parameters\n//! @tparam Modint deduced from parameters\n//!\
+    \ @param n non-negative integer\n//! @param r non-negative integers whose sum\
+    \ is equal to n\n//! @param factorial_array Array that factorial_array() returns\n\
+    //! @param factorial_modinv_array Array that factorial_modinv_array() returns\n\
+    //! @return nHr, or number of ways to put n indistinguishable balls into r distinguishable\
+    \ bins.\n//! @note Time complexity: O(1)\ntemplate <std::size_t Size, typename\
+    \ Modint, typename Tp>\n[[nodiscard]] constexpr Modint stars_and_bars(const Tp\
+    \ n, const Tp r, const std::array<Modint, Size>& factorial_array, const std::array<Modint,\
+    \ Size>& factorial_modinv_array) {\n  return combination(n + r - 1, r, factorial_array,\
+    \ factorial_modinv_array);\n}\n\n}  // namespace lib\n\n#ifdef warn_not_defined\n\
+    #  undef warn\n#  undef warn_not_defined\n// warn may be defined 2 times (by uncommenting\
+    \ line 19)\n#  ifdef warn\n#    undef warn\n#  endif\n#endif\n\n#endif\n"
   code: "\n//! @file factorial.hpp\n//! @brief Factorial, Permutation, Combination,\
     \ Multinomial coefficients\n\n#ifndef FACTORIAL_HPP\n#define FACTORIAL_HPP\n\n\
     #include <algorithm>\n#include <array>\n#include <iostream>\n#include <numeric>\n\
@@ -252,10 +253,10 @@ data:
     \ @tparam ReturnType set appropriately if there is a possibility of overflow (e.g.\
     \ long long, __int128, modint)\n//! @tparam Ts deduced from parameters\n//! @param\
     \ n non-negative integer\n//! @param r non-negative integers of same type whose\
-    \ sum is equal to n\n//! @return Number of ways to arrange n objects when r_1,\
-    \ r_2, ... objects are indistinguishable.\n//! @note Time complexity: O(n - max(r))\n\
-    template <typename Tp, typename ReturnType = Tp, typename... Ts>\n[[nodiscard]]\
-    \ ReturnType multinomial(const Tp n, const Ts... r) {\n  static_assert(internal::is_all_same_v<Ts...>);\n\
+    \ sum is less than or equal to n\n//! @return Number of ways to arrange n objects\
+    \ when r_1, r_2, ... objects are indistinguishable.\n//! @note Time complexity:\
+    \ O(n - max(r))\ntemplate <typename Tp, typename ReturnType = Tp, typename...\
+    \ Ts>\n[[nodiscard]] ReturnType multinomial(const Tp n, const Ts... r) {\n  static_assert(internal::is_all_same_v<Ts...>);\n\
     \n  if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\"\
     );\n    return 0;\n  }\n  if (((r < 0) || ...)) {\n    warn(\"r... contains negative\
     \ number.\");\n    return 0;\n  }\n  if ((r + ...) > n) {\n    warn(\"Sum of r...\
@@ -275,127 +276,127 @@ data:
     \ ReturnType set appropriately if there is a possibility of overflow (e.g. long\
     \ long, __int128, modint)\n//! @tparam Container container type (deduced from\
     \ parameters)\n//! @param n non-negative integer\n//! @param r container of non-negative\
-    \ integers whose sum is equal to n\n//! @return Number of ways to arrange n objects\
-    \ when r[0], r[1], ... objects are indistinguishable.\n//! @note Time complexity:\
-    \ O(n - max(r))\ntemplate <typename Tp, typename ReturnType = Tp, typename Container>\n\
-    [[nodiscard]] ReturnType multinomial(const Tp n, const Container& r) {\n  using\
-    \ Elem = std::decay_t<decltype(*std::cbegin(r))>;\n  if (n == 0)\n    warn(\"\
-    n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n    return 0;\n\
-    \  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const auto v) { return\
-    \ v < 0; })) {\n    warn(\"r contains negative number.\");\n    return 0;\n  }\n\
-    \  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {\n    warn(\"\
-    Sum of r is greater than n.\");\n    return 0;\n  }\n\n  const auto max_idx =\
-    \ std::distance(std::cbegin(r), std::max_element(std::cbegin(r), std::cend(r)));\n\
-    \  const auto max_r   = r[max_idx];\n\n  unsigned current_den_idx = static_cast<int>(max_idx\
-    \ == 0);\n  Elem current_den_cnt     = 1;\n\n  ReturnType res = 1;\n\n  for (Tp\
-    \ i = 1; i <= n - max_r; ++i) {\n    res *= (n - i + 1);\n    res /= current_den_cnt;\n\
-    \    if (current_den_idx < std::size(r) - 1 && (current_den_cnt == r[current_den_idx]\
-    \ || current_den_idx == max_idx)) {\n      current_den_idx += static_cast<int>(current_den_cnt\
-    \ == r[current_den_idx]);\n      current_den_idx += static_cast<int>(current_den_idx\
-    \ == max_idx);\n      current_den_cnt = 1;\n    } else if (current_den_idx ==\
-    \ std::size(r) - 1 && current_den_cnt == r[current_den_idx]) {\n      current_den_cnt\
-    \ = 1;\n    } else {\n      ++current_den_cnt;\n    }\n  }\n\n  return res;\n\
-    }\n\n//! @tparam Tp deduced from parameters\n//! @tparam ReturnType set appropriately\
-    \ if there is a possibility of overflow (e.g. long long, __int128, modint)\n//!\
-    \ @param n non-negative integer (doesn't have to be primitive)\n//! @param r non-negative\
-    \ integer (doesn't have to be primitive)\n//! @return nHr, or number of ways to\
-    \ put n indistinguishable balls into r distinguishable bins.\n//! @note Time complexity:\
-    \ O(r)\ntemplate <typename Tp, typename ReturnType = Tp>\n[[nodiscard]] ReturnType\
-    \ stars_and_bars(const Tp n, const Tp r) {\n  return combination<Tp, ReturnType>(n\
-    \ + r - 1, r);\n}\n\n//! @tparam Max upper limit\n//! @tparam ReturnType value\
-    \ type\n//! @return std::array which contains 0!, 1!, ..., Max! (Max + 1 numbers)\n\
-    //! @note Time complexity: O(Max)\ntemplate <std::size_t Max, typename ReturnType>\n\
-    [[nodiscard]] constexpr std::array<ReturnType, Max + 1> factorial_array() {\n\
-    \  std::array<ReturnType, Max + 1> res;\n  res[0] = 1;\n\n  for (std::size_t i\
-    \ = 1; i <= Max; ++i)\n    res[i] = res[i - 1] * i;\n\n  return res;\n}\n\n//!\
-    \ @tparam Max upper limit\n//! @tparam Modint value type (deduced from parameter,\
-    \ must be Modint)\n//! @param fact factorial of Max (which is the result of factorial\
-    \ or factorial_array)\n//! @return std::array which contains multiplicative inverse\
-    \ of 0!, 1!, ..., Max! (Max + 1 numbers)\n//! @note Time complexity: O(Max)\n\
-    template <std::size_t Max, typename Modint>\n[[nodiscard]] constexpr std::array<Modint,\
-    \ Max + 1> factorial_modinv_array(const Modint fact) {\n  std::array<Modint, Max\
-    \ + 1> res;\n  res[Max] = fact.inv();\n\n  for (std::size_t i = Max; i > 0; --i)\n\
-    \    res[i - 1] = res[i] * i;\n\n  return res;\n}\n\n//! @tparam Size Size of\
-    \ factorial_array and factorial_modinv_array (deduced from parameters)\n//! @tparam\
-    \ Tp deduced from parameters\n//! @tparam Modint deduced from parameters\n//!\
-    \ @param n non-negative integer\n//! @param r non-negative integer\n//! @param\
-    \ factorial_array Array that factorial_array() returns\n//! @param factorial_modinv_array\
-    \ Array that factorial_modinv_array() returns\n//! @return nPr, or number of ways\
-    \ to select r out of n distinguishable objects and arrange them in any order.\n\
-    //! @note Time complexity: O(1)\ntemplate <std::size_t Size, typename Modint,\
-    \ typename Tp>\n[[nodiscard]] Modint permutation(const Tp n, const Tp r, const\
-    \ std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array)\
-    \ {\n  if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is\
-    \ negative.\");\n    return 0;\n  }\n  if (r < 0) {\n    warn(\"r is negative.\"\
-    );\n    return 0;\n  }\n  if (n < r) {\n    warn(\"n is less than r.\");\n   \
-    \ return 0;\n  }\n  return factorial_array[n] * factorial_modinv_array[n - r];\n\
-    }\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array (deduced\
-    \ from parameters)\n//! @tparam Tp deduced from parameters\n//! @tparam Modint\
-    \ deduced from parameters\n//! @param n non-negative integer\n//! @param r non-negative\
-    \ integer\n//! @param factorial_array Array that factorial_array() returns\n//!\
-    \ @param factorial_modinv_array Array that factorial_modinv_array() returns\n\
-    //! @return nCr, or number of ways to select r out of n distinguishable objects.\n\
-    //! @note Time complexity: O(1)\ntemplate <std::size_t Size, typename Modint,\
-    \ typename Tp>\n[[nodiscard]] constexpr Modint combination(const Tp n, const Tp\
-    \ r, const std::array<Modint, Size>& factorial_array, const std::array<Modint,\
+    \ integers whose sum is less than or equal to n\n//! @return Number of ways to\
+    \ arrange n objects when r[0], r[1], ... objects are indistinguishable.\n//! @note\
+    \ Time complexity: O(n - max(r))\ntemplate <typename Tp, typename ReturnType =\
+    \ Tp, typename Container>\n[[nodiscard]] ReturnType multinomial(const Tp n, const\
+    \ Container& r) {\n  using Elem = std::decay_t<decltype(*std::cbegin(r))>;\n \
+    \ if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\"\
+    );\n    return 0;\n  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const\
+    \ auto v) { return v < 0; })) {\n    warn(\"r contains negative number.\");\n\
+    \    return 0;\n  }\n  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0))\
+    \ > n) {\n    warn(\"Sum of r is greater than n.\");\n    return 0;\n  }\n\n \
+    \ const auto max_idx = std::distance(std::cbegin(r), std::max_element(std::cbegin(r),\
+    \ std::cend(r)));\n  const auto max_r   = r[max_idx];\n\n  unsigned current_den_idx\
+    \ = static_cast<int>(max_idx == 0);\n  Elem current_den_cnt     = 1;\n\n  ReturnType\
+    \ res = 1;\n\n  for (Tp i = 1; i <= n - max_r; ++i) {\n    res *= (n - i + 1);\n\
+    \    res /= current_den_cnt;\n    if (current_den_idx < std::size(r) - 1 && (current_den_cnt\
+    \ == r[current_den_idx] || current_den_idx == max_idx)) {\n      current_den_idx\
+    \ += static_cast<int>(current_den_cnt == r[current_den_idx]);\n      current_den_idx\
+    \ += static_cast<int>(current_den_idx == max_idx);\n      current_den_cnt = 1;\n\
+    \    } else if (current_den_idx == std::size(r) - 1 && current_den_cnt == r[current_den_idx])\
+    \ {\n      current_den_cnt = 1;\n    } else {\n      ++current_den_cnt;\n    }\n\
+    \  }\n\n  return res;\n}\n\n//! @tparam Tp deduced from parameters\n//! @tparam\
+    \ ReturnType set appropriately if there is a possibility of overflow (e.g. long\
+    \ long, __int128, modint)\n//! @param n non-negative integer (doesn't have to\
+    \ be primitive)\n//! @param r non-negative integer (doesn't have to be primitive)\n\
+    //! @return nHr, or number of ways to put n indistinguishable balls into r distinguishable\
+    \ bins.\n//! @note Time complexity: O(r)\ntemplate <typename Tp, typename ReturnType\
+    \ = Tp>\n[[nodiscard]] ReturnType stars_and_bars(const Tp n, const Tp r) {\n \
+    \ return combination<Tp, ReturnType>(n + r - 1, r);\n}\n\n//! @tparam Max upper\
+    \ limit\n//! @tparam ReturnType value type\n//! @return std::array which contains\
+    \ 0!, 1!, ..., Max! (Max + 1 numbers)\n//! @note Time complexity: O(Max)\ntemplate\
+    \ <std::size_t Max, typename ReturnType>\n[[nodiscard]] constexpr std::array<ReturnType,\
+    \ Max + 1> factorial_array() {\n  std::array<ReturnType, Max + 1> res;\n  res[0]\
+    \ = 1;\n\n  for (std::size_t i = 1; i <= Max; ++i)\n    res[i] = res[i - 1] *\
+    \ i;\n\n  return res;\n}\n\n//! @tparam Max upper limit\n//! @tparam Modint value\
+    \ type (deduced from parameter, must be Modint)\n//! @param fact factorial of\
+    \ Max (which is the result of factorial or factorial_array)\n//! @return std::array\
+    \ which contains multiplicative inverse of 0!, 1!, ..., Max! (Max + 1 numbers)\n\
+    //! @note Time complexity: O(Max)\ntemplate <std::size_t Max, typename Modint>\n\
+    [[nodiscard]] constexpr std::array<Modint, Max + 1> factorial_modinv_array(const\
+    \ Modint fact) {\n  std::array<Modint, Max + 1> res;\n  res[Max] = fact.inv();\n\
+    \n  for (std::size_t i = Max; i > 0; --i)\n    res[i - 1] = res[i] * i;\n\n  return\
+    \ res;\n}\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array\
+    \ (deduced from parameters)\n//! @tparam Tp deduced from parameters\n//! @tparam\
+    \ Modint deduced from parameters\n//! @param n non-negative integer\n//! @param\
+    \ r non-negative integer\n//! @param factorial_array Array that factorial_array()\
+    \ returns\n//! @param factorial_modinv_array Array that factorial_modinv_array()\
+    \ returns\n//! @return nPr, or number of ways to select r out of n distinguishable\
+    \ objects and arrange them in any order.\n//! @note Time complexity: O(1)\ntemplate\
+    \ <std::size_t Size, typename Modint, typename Tp>\n[[nodiscard]] Modint permutation(const\
+    \ Tp n, const Tp r, const std::array<Modint, Size>& factorial_array, const std::array<Modint,\
     \ Size>& factorial_modinv_array) {\n  if (n == 0)\n    warn(\"n is zero.\");\n\
     \  if (n < 0) {\n    warn(\"n is negative.\");\n    return 0;\n  }\n  if (r <\
     \ 0) {\n    warn(\"r is negative.\");\n    return 0;\n  }\n  if (n < r) {\n  \
     \  warn(\"n is less than r.\");\n    return 0;\n  }\n  return factorial_array[n]\
-    \ * factorial_modinv_array[n - r] * factorial_modinv_array[r];\n}\n\n//! @tparam\
-    \ Size Size of factorial_array and factorial_modinv_array (deduced from parameters)\n\
-    //! @tparam Modint deduced from parameters\n//! @tparam Tp deduced from parameters\n\
-    //! @tparam Ts deduced from parameters\n//! @param n non-negative integer\n//!\
-    \ @param r non-negative integers whose sum is equal to n\n//! @param factorial_array\
-    \ Array that factorial_array() returns\n//! @param factorial_modinv_array Array\
-    \ that factorial_modinv_array() returns\n//! @return Number of ways to arrange\
-    \ n objects when r_1, r_2, ... objects are indistinguishable.\n//! @note Time\
-    \ complexity: O(sizeof...(r))\ntemplate <std::size_t Size, typename Modint, typename\
-    \ Tp, typename... Ts>\n[[nodiscard]] constexpr Modint multinomial(const Tp n,\
-    \ const Ts... r, const std::array<Modint, Size>& factorial_array, const std::array<Modint,\
-    \ Size>& factorial_modinv_array) {\n  if (n == 0)\n    warn(\"n is zero.\");\n\
-    \  if (n < 0) {\n    warn(\"n is negative.\");\n    return 0;\n  }\n  if (((r\
-    \ < 0) || ...)) {\n    warn(\"r contains negative number.\");\n    return 0;\n\
-    \  }\n  if ((r + ...) > n) {\n    warn(\"Sum of r... is greater than n.\");\n\
-    \    return 0;\n  }\n  return factorial_array[n] * ((factorial_modinv_array[r])\
-    \ * ...);\n}\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array\
-    \ (deduced from parameters)\n//! @tparam Modint deduced from parameters\n//! @tparam\
-    \ Tp deduced from parameters\n//! @tparam container type (deduced from parameters)\n\
-    //! @param n non-negative integer\n//! @param r container of non-negative integers\
-    \ whose sum is equal to n\n//! @param factorial_array Array that factorial_array()\
+    \ * factorial_modinv_array[n - r];\n}\n\n//! @tparam Size Size of factorial_array\
+    \ and factorial_modinv_array (deduced from parameters)\n//! @tparam Tp deduced\
+    \ from parameters\n//! @tparam Modint deduced from parameters\n//! @param n non-negative\
+    \ integer\n//! @param r non-negative integer\n//! @param factorial_array Array\
+    \ that factorial_array() returns\n//! @param factorial_modinv_array Array that\
+    \ factorial_modinv_array() returns\n//! @return nCr, or number of ways to select\
+    \ r out of n distinguishable objects.\n//! @note Time complexity: O(1)\ntemplate\
+    \ <std::size_t Size, typename Modint, typename Tp>\n[[nodiscard]] constexpr Modint\
+    \ combination(const Tp n, const Tp r, const std::array<Modint, Size>& factorial_array,\
+    \ const std::array<Modint, Size>& factorial_modinv_array) {\n  if (n == 0)\n \
+    \   warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n   \
+    \ return 0;\n  }\n  if (r < 0) {\n    warn(\"r is negative.\");\n    return 0;\n\
+    \  }\n  if (n < r) {\n    warn(\"n is less than r.\");\n    return 0;\n  }\n \
+    \ return factorial_array[n] * factorial_modinv_array[n - r] * factorial_modinv_array[r];\n\
+    }\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array (deduced\
+    \ from parameters)\n//! @tparam Modint deduced from parameters\n//! @tparam Tp\
+    \ deduced from parameters\n//! @tparam Ts deduced from parameters\n//! @param\
+    \ n non-negative integer\n//! @param r non-negative integers whose sum is less\
+    \ than or equal to n\n//! @param factorial_array Array that factorial_array()\
     \ returns\n//! @param factorial_modinv_array Array that factorial_modinv_array()\
-    \ returns\n//! @return Number of ways to arrange n objects when r[0], r[1], ...\
-    \ objects are indistinguishable.\n//! @note Time complexity: O(size(r))\ntemplate\
-    \ <std::size_t Size, typename Modint, typename Tp, typename Container>\n[[nodiscard]]\
-    \ constexpr Modint multinomial(const Tp n, const Container& r, const std::array<Modint,\
+    \ returns\n//! @return Number of ways to arrange n objects when r_1, r_2, ...\
+    \ objects are indistinguishable.\n//! @note Time complexity: O(sizeof...(r))\n\
+    template <std::size_t Size, typename Modint, typename Tp, typename... Ts>\n[[nodiscard]]\
+    \ constexpr Modint multinomial(const Tp n, const Ts... r, const std::array<Modint,\
     \ Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array)\
-    \ {\n  using Elem = std::decay_t<decltype(*std::cbegin(r))>;\n  if (n == 0)\n\
-    \    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\");\n  \
-    \  return 0;\n  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const auto\
-    \ v) { return v < 0; })) {\n    warn(\"r contains negative number.\");\n    return\
-    \ 0;\n  }\n  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {\n \
-    \   warn(\"Sum of r is greater than n.\");\n    return 0;\n  }\n  return factorial_array[n]\
-    \ * std::reduce(std::cbegin(r), std::cend(r), Modint(1),\n                   \
-    \                       [&](const Modint res, const Elem e) { return res * factorial_modinv_array[e];\
-    \ });\n}\n\n//! @tparam Size Size of factorial_array and factorial_modinv_array\
-    \ (deduced from parameters)\n//! @tparam Tp deduced from parameters\n//! @tparam\
-    \ Modint deduced from parameters\n//! @param n non-negative integer\n//! @param\
-    \ r non-negative integers whose sum is equal to n\n//! @param factorial_array\
-    \ Array that factorial_array() returns\n//! @param factorial_modinv_array Array\
-    \ that factorial_modinv_array() returns\n//! @return nHr, or number of ways to\
-    \ put n indistinguishable balls into r distinguishable bins.\n//! @note Time complexity:\
-    \ O(1)\ntemplate <std::size_t Size, typename Modint, typename Tp>\n[[nodiscard]]\
-    \ constexpr Modint stars_and_bars(const Tp n, const Tp r, const std::array<Modint,\
-    \ Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array)\
-    \ {\n  return combination(n + r - 1, r, factorial_array, factorial_modinv_array);\n\
-    }\n\n}  // namespace lib\n\n#ifdef warn_not_defined\n#  undef warn\n#  undef warn_not_defined\n\
-    // warn may be defined 2 times (by uncommenting line 19)\n#  ifdef warn\n#   \
-    \ undef warn\n#  endif\n#endif\n\n#endif\n"
+    \ {\n  if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is\
+    \ negative.\");\n    return 0;\n  }\n  if (((r < 0) || ...)) {\n    warn(\"r contains\
+    \ negative number.\");\n    return 0;\n  }\n  if ((r + ...) > n) {\n    warn(\"\
+    Sum of r... is greater than n.\");\n    return 0;\n  }\n  return factorial_array[n]\
+    \ * ((factorial_modinv_array[r]) * ...);\n}\n\n//! @tparam Size Size of factorial_array\
+    \ and factorial_modinv_array (deduced from parameters)\n//! @tparam Modint deduced\
+    \ from parameters\n//! @tparam Tp deduced from parameters\n//! @tparam container\
+    \ type (deduced from parameters)\n//! @param n non-negative integer\n//! @param\
+    \ r container of non-negative integers whose sum is less than or equal to n\n\
+    //! @param factorial_array Array that factorial_array() returns\n//! @param factorial_modinv_array\
+    \ Array that factorial_modinv_array() returns\n//! @return Number of ways to arrange\
+    \ n objects when r[0], r[1], ... objects are indistinguishable.\n//! @note Time\
+    \ complexity: O(size(r))\ntemplate <std::size_t Size, typename Modint, typename\
+    \ Tp, typename Container>\n[[nodiscard]] constexpr Modint multinomial(const Tp\
+    \ n, const Container& r, const std::array<Modint, Size>& factorial_array, const\
+    \ std::array<Modint, Size>& factorial_modinv_array) {\n  using Elem = std::decay_t<decltype(*std::cbegin(r))>;\n\
+    \  if (n == 0)\n    warn(\"n is zero.\");\n  if (n < 0) {\n    warn(\"n is negative.\"\
+    );\n    return 0;\n  }\n  if (std::any_of(std::cbegin(r), std::cend(r), [](const\
+    \ auto v) { return v < 0; })) {\n    warn(\"r contains negative number.\");\n\
+    \    return 0;\n  }\n  if (std::reduce(std::cbegin(r), std::cend(r), Elem(0))\
+    \ > n) {\n    warn(\"Sum of r is greater than n.\");\n    return 0;\n  }\n  return\
+    \ factorial_array[n] * std::reduce(std::cbegin(r), std::cend(r), Modint(1),\n\
+    \                                          [&](const Modint res, const Elem e)\
+    \ { return res * factorial_modinv_array[e]; });\n}\n\n//! @tparam Size Size of\
+    \ factorial_array and factorial_modinv_array (deduced from parameters)\n//! @tparam\
+    \ Tp deduced from parameters\n//! @tparam Modint deduced from parameters\n//!\
+    \ @param n non-negative integer\n//! @param r non-negative integers whose sum\
+    \ is equal to n\n//! @param factorial_array Array that factorial_array() returns\n\
+    //! @param factorial_modinv_array Array that factorial_modinv_array() returns\n\
+    //! @return nHr, or number of ways to put n indistinguishable balls into r distinguishable\
+    \ bins.\n//! @note Time complexity: O(1)\ntemplate <std::size_t Size, typename\
+    \ Modint, typename Tp>\n[[nodiscard]] constexpr Modint stars_and_bars(const Tp\
+    \ n, const Tp r, const std::array<Modint, Size>& factorial_array, const std::array<Modint,\
+    \ Size>& factorial_modinv_array) {\n  return combination(n + r - 1, r, factorial_array,\
+    \ factorial_modinv_array);\n}\n\n}  // namespace lib\n\n#ifdef warn_not_defined\n\
+    #  undef warn\n#  undef warn_not_defined\n// warn may be defined 2 times (by uncommenting\
+    \ line 19)\n#  ifdef warn\n#    undef warn\n#  endif\n#endif\n\n#endif\n"
   dependsOn: []
   isVerificationFile: false
   path: include/combinatorics/factorial.hpp
   requiredBy: []
-  timestamp: '2021-08-09 13:42:41+09:00'
+  timestamp: '2021-08-09 13:44:01+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp
