@@ -16,10 +16,11 @@ data:
     document_title: Assert macro
     links: []
   bundledCode: "#line 1 \"include/search/golden_section_search.hpp\"\n\n//! @file\
-    \ golden_section_search.hpp\n\n#ifndef GOLDEN_SECTION_SEARCH_HPP\n#define GOLDEN_SECTION_SEARCH_HPP\n\
-    \n#include <cassert>\n#include <cmath>\n#include <type_traits>\n#include <utility>\n\
-    \n#ifndef O_assert\n//! @brief Assert macro\n#  define O_assert(...) assert(__VA_ARGS__)\n\
-    #  define O_assert_not_defined\n#endif\n\nnamespace lib {\n\n//! @brief Function\
+    \ golden_section_search.hpp\n\n#ifndef CP_LIBRARY_GOLDEN_SECTION_SEARCH_HPP\n\
+    #define CP_LIBRARY_GOLDEN_SECTION_SEARCH_HPP\n\n#include <cassert>\n#include <cmath>\n\
+    #include <type_traits>\n#include <utility>\n\n#ifndef CP_LIBRARY_ASSERT\n//! @brief\
+    \ Assert macro\n#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)\n#  define\
+    \ CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace lib {\n\n//! @brief Function\
     \ to find the maximum or minimum value of a convex function f(x) when x is in\
     \ [a, b]\n//! @tparam minimize Set to true if you want to minimize the f(x), otherwise\
     \ set to false.\n//! @tparam RealType type of x (deduced from parameters)\n//!\
@@ -30,10 +31,10 @@ data:
     \ (time needed to calculate f(x))))\ntemplate <bool minimize, typename RealType,\
     \ typename Func>\n[[nodiscard]] auto golden_section_search(RealType low, RealType\
     \ high, const Func& f, const RealType diff = 1e-9L) {\n  using F_ResType = decltype(f(std::declval<RealType>()));\n\
-    \  O_assert(low <= high);\n\n  using std::sqrt;\n  const RealType phi        =\
-    \ (1 + sqrt(RealType(5.0L))) / 2;\n  const RealType phi_plus_1 = phi + 1;\n\n\
-    \  RealType mid_low     = (low * phi + high) / phi_plus_1;\n  RealType mid_high\
-    \    = (low + high * phi) / phi_plus_1;\n  F_ResType score_low  = f(mid_low);\n\
+    \  CP_LIBRARY_ASSERT(low <= high);\n\n  using std::sqrt;\n  const RealType phi\
+    \        = (1 + sqrt(RealType(5.0L))) / 2;\n  const RealType phi_plus_1 = phi\
+    \ + 1;\n\n  RealType mid_low     = (low * phi + high) / phi_plus_1;\n  RealType\
+    \ mid_high    = (low + high * phi) / phi_plus_1;\n  F_ResType score_low  = f(mid_low);\n\
     \  F_ResType score_high = f(mid_high);\n\n  while (high - low > diff) {\n    if\
     \ (minimize ^ (score_low < score_high)) {\n      low        = mid_low;\n     \
     \ mid_low    = mid_high;\n      score_low  = score_high;\n      mid_high   = (low\
@@ -41,27 +42,27 @@ data:
     \      high       = mid_high;\n      mid_high   = mid_low;\n      score_high =\
     \ score_low;\n      mid_low    = (low * phi + high) / phi_plus_1;\n      score_low\
     \  = f(mid_low);\n    }\n  }\n\n  return std::pair {low, score_low};\n}\n\n} \
-    \ // namespace lib\n\n#ifdef O_assert_not_defined\n#  undef O_assert\n#  undef\
-    \ O_assert_not_defined\n#endif\n\n#endif  // GOLDEN_SECTION_SEARCH_HPP\n"
-  code: "\n//! @file golden_section_search.hpp\n\n#ifndef GOLDEN_SECTION_SEARCH_HPP\n\
-    #define GOLDEN_SECTION_SEARCH_HPP\n\n#include <cassert>\n#include <cmath>\n#include\
-    \ <type_traits>\n#include <utility>\n\n#ifndef O_assert\n//! @brief Assert macro\n\
-    #  define O_assert(...) assert(__VA_ARGS__)\n#  define O_assert_not_defined\n\
-    #endif\n\nnamespace lib {\n\n//! @brief Function to find the maximum or minimum\
-    \ value of a convex function f(x) when x is in [a, b]\n//! @tparam minimize Set\
-    \ to true if you want to minimize the f(x), otherwise set to false.\n//! @tparam\
-    \ RealType type of x (deduced from parameters)\n//! @tparam Func type of f (deduced\
-    \ from parameters)\n//! @param low lower bound (a)\n//! @param high upper bound\
-    \ (b)\n//! @param f function to minimize or maximize\n//! @param diff acceptable\
-    \ error\n//! @return std::pair { argmin(f(x)), min(f(x)) } (or argmax & max)\n\
-    //! @note time complexity: O(log((high - low) / diff * (time needed to calculate\
-    \ f(x))))\ntemplate <bool minimize, typename RealType, typename Func>\n[[nodiscard]]\
-    \ auto golden_section_search(RealType low, RealType high, const Func& f, const\
-    \ RealType diff = 1e-9L) {\n  using F_ResType = decltype(f(std::declval<RealType>()));\n\
-    \  O_assert(low <= high);\n\n  using std::sqrt;\n  const RealType phi        =\
-    \ (1 + sqrt(RealType(5.0L))) / 2;\n  const RealType phi_plus_1 = phi + 1;\n\n\
-    \  RealType mid_low     = (low * phi + high) / phi_plus_1;\n  RealType mid_high\
-    \    = (low + high * phi) / phi_plus_1;\n  F_ResType score_low  = f(mid_low);\n\
+    \ // namespace lib\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n#  undef CP_LIBRARY_ASSERT\n\
+    #  undef CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\n#endif  // CP_LIBRARY_GOLDEN_SECTION_SEARCH_HPP\n"
+  code: "\n//! @file golden_section_search.hpp\n\n#ifndef CP_LIBRARY_GOLDEN_SECTION_SEARCH_HPP\n\
+    #define CP_LIBRARY_GOLDEN_SECTION_SEARCH_HPP\n\n#include <cassert>\n#include <cmath>\n\
+    #include <type_traits>\n#include <utility>\n\n#ifndef CP_LIBRARY_ASSERT\n//! @brief\
+    \ Assert macro\n#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)\n#  define\
+    \ CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace lib {\n\n//! @brief Function\
+    \ to find the maximum or minimum value of a convex function f(x) when x is in\
+    \ [a, b]\n//! @tparam minimize Set to true if you want to minimize the f(x), otherwise\
+    \ set to false.\n//! @tparam RealType type of x (deduced from parameters)\n//!\
+    \ @tparam Func type of f (deduced from parameters)\n//! @param low lower bound\
+    \ (a)\n//! @param high upper bound (b)\n//! @param f function to minimize or maximize\n\
+    //! @param diff acceptable error\n//! @return std::pair { argmin(f(x)), min(f(x))\
+    \ } (or argmax & max)\n//! @note time complexity: O(log((high - low) / diff *\
+    \ (time needed to calculate f(x))))\ntemplate <bool minimize, typename RealType,\
+    \ typename Func>\n[[nodiscard]] auto golden_section_search(RealType low, RealType\
+    \ high, const Func& f, const RealType diff = 1e-9L) {\n  using F_ResType = decltype(f(std::declval<RealType>()));\n\
+    \  CP_LIBRARY_ASSERT(low <= high);\n\n  using std::sqrt;\n  const RealType phi\
+    \        = (1 + sqrt(RealType(5.0L))) / 2;\n  const RealType phi_plus_1 = phi\
+    \ + 1;\n\n  RealType mid_low     = (low * phi + high) / phi_plus_1;\n  RealType\
+    \ mid_high    = (low + high * phi) / phi_plus_1;\n  F_ResType score_low  = f(mid_low);\n\
     \  F_ResType score_high = f(mid_high);\n\n  while (high - low > diff) {\n    if\
     \ (minimize ^ (score_low < score_high)) {\n      low        = mid_low;\n     \
     \ mid_low    = mid_high;\n      score_low  = score_high;\n      mid_high   = (low\
@@ -69,13 +70,13 @@ data:
     \      high       = mid_high;\n      mid_high   = mid_low;\n      score_high =\
     \ score_low;\n      mid_low    = (low * phi + high) / phi_plus_1;\n      score_low\
     \  = f(mid_low);\n    }\n  }\n\n  return std::pair {low, score_low};\n}\n\n} \
-    \ // namespace lib\n\n#ifdef O_assert_not_defined\n#  undef O_assert\n#  undef\
-    \ O_assert_not_defined\n#endif\n\n#endif  // GOLDEN_SECTION_SEARCH_HPP\n"
+    \ // namespace lib\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n#  undef CP_LIBRARY_ASSERT\n\
+    #  undef CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\n#endif  // CP_LIBRARY_GOLDEN_SECTION_SEARCH_HPP\n"
   dependsOn: []
   isVerificationFile: false
   path: include/search/golden_section_search.hpp
   requiredBy: []
-  timestamp: '2021-08-08 16:01:46+09:00'
+  timestamp: '2021-08-11 13:32:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/search/golden_section_search/1.test.cpp

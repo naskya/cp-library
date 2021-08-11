@@ -50,10 +50,9 @@ g++ -std=c++17 -DCP_LIBRARY_DEBUG_LEVEL=1 main.cpp
 ```cpp
 #include <cassert>
 
-#ifndef O_assert
-//! @brief Assert macro
-#  define O_assert(...) assert(__VA_ARGS__)
-#  define O_assert_not_defined
+#ifndef CP_LIBRARY_ASSERT
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -62,14 +61,14 @@ namespace lib {
 
 }
 
-#ifdef O_assert_not_defined
-#  undef O_assert
-#  undef O_assert_not_defined
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 ```
 
-のようにして、`assert` ではなく `O_assert` を用いるようにしています。そのまま使うと通常の `assert` マクロと同じ挙動となります。
+のようにして、`assert` ではなく `CP_LIBRARY_ASSERT` を用いるようにしています。そのまま使うと通常の `assert` マクロと同じ挙動となります。
 
-マクロをカスタマイズしたい場合には、ライブラリよりも上の行で独自の `O_assert` マクロを定義してください。`O_assert` が定義されている場合、そちらのマクロが使用されます。
+マクロをカスタマイズしたい場合には、ライブラリよりも上の行で独自の `CP_LIBRARY_ASSERT` マクロを定義してください。`CP_LIBRARY_ASSERT` が定義されている場合、そちらのマクロが使用されます。
 
-他にも警告を出力する `warn` マクロやエラーメッセージを出力して異常終了する `err_and_exit` マクロが同様に定義されています。カスタマイズしたい場合には、ライブラリよりも上の行で独自のものを定義してください。
+他にも警告を出力する `CP_LIBRARY_WARN` マクロやエラーメッセージを出力して異常終了する `CP_LIBRARY_ERROR` マクロが同様に定義されています。カスタマイズしたい場合には、ライブラリよりも上の行で独自のものを定義してください。

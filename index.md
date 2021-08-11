@@ -49,19 +49,19 @@ data:
       title: Golden section search
   - name: include/string
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: include/string/edit_distance.hpp
       title: Edit distance
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: include/string/manachers_algorithm.hpp
       title: Manacher's algorithm
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: include/string/rolling_hash.hpp
       title: Rolling hash
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: include/string/run_length_encoding.hpp
       title: Run length encoding
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: include/string/z_algorithm.hpp
       title: Z algorithm
   verificationCategories:
@@ -193,38 +193,38 @@ data:
       title: test/search/golden_section_search/2.test.cpp
   - name: test/string/edit_distance
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/string/edit_distance/1.test.cpp
       title: test/string/edit_distance/1.test.cpp
   - name: test/string/manachers_algorithm
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/string/manachers_algorithm/1.test.cpp
       title: test/string/manachers_algorithm/1.test.cpp
   - name: test/string/rolling_hash
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/string/rolling_hash/1.test.cpp
       title: test/string/rolling_hash/1.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/string/rolling_hash/2.test.cpp
       title: test/string/rolling_hash/2.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/string/rolling_hash/3.test.cpp
       title: test/string/rolling_hash/3.test.cpp
   - name: test/string/run_length_encoding
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/string/run_length_encoding/1.test.cpp
       title: test/string/run_length_encoding/1.test.cpp
   - name: test/string/z_algorithm
     pages:
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/string/z_algorithm/1.test.cpp
       title: test/string/z_algorithm/1.test.cpp
 layout: toppage
 ---
-## About this library
+## About this repository
 
 - [このリポジトリについての説明](https://naskya.github.io/cp-library/about)
 
