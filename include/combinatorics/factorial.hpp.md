@@ -13,10 +13,10 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    document_title: Factorial, Permutation, Combination, Multinomial coefficients
+    document_title: Factorial, Permutation, Combination, Multinomial coefficient
     links: []
   bundledCode: "#line 1 \"include/combinatorics/factorial.hpp\"\n\n//! @file factorial.hpp\n\
-    //! @brief Factorial, Permutation, Combination, Multinomial coefficients\n\n#ifndef\
+    //! @brief Factorial, Permutation, Combination, Multinomial coefficient\n\n#ifndef\
     \ CP_LIBRARY_FACTORIAL_HPP\n#define CP_LIBRARY_FACTORIAL_HPP\n\n#include <algorithm>\n\
     #include <array>\n#include <iostream>\n#include <numeric>\n#include <type_traits>\n\
     \n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print\
@@ -211,7 +211,7 @@ data:
     #  undef CP_LIBRARY_WARN\n#  undef CP_LIBRARY_WARN_NOT_DEFINED\n#  ifdef CP_LIBRARY_WARN\n\
     #    undef CP_LIBRARY_WARN\n#  endif\n#endif\n\n#endif\n"
   code: "\n//! @file factorial.hpp\n//! @brief Factorial, Permutation, Combination,\
-    \ Multinomial coefficients\n\n#ifndef CP_LIBRARY_FACTORIAL_HPP\n#define CP_LIBRARY_FACTORIAL_HPP\n\
+    \ Multinomial coefficient\n\n#ifndef CP_LIBRARY_FACTORIAL_HPP\n#define CP_LIBRARY_FACTORIAL_HPP\n\
     \n#include <algorithm>\n#include <array>\n#include <iostream>\n#include <numeric>\n\
     #include <type_traits>\n\n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL\
     \ >= 1)\n//! @brief Print warning message\n//! @note You can suppress the warning\
@@ -408,7 +408,7 @@ data:
   isVerificationFile: false
   path: include/combinatorics/factorial.hpp
   requiredBy: []
-  timestamp: '2021-08-11 13:38:32+09:00'
+  timestamp: '2021-08-11 13:40:43+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp

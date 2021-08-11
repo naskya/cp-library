@@ -3,12 +3,12 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/string/manachers_algorithm/1.test.cpp
     title: test/string/manachers_algorithm/1.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: Compute the length of the palindrome centered at each position
       using Manacher's Algorithm.
@@ -48,7 +48,7 @@ data:
   path: include/string/manachers_algorithm.hpp
   requiredBy: []
   timestamp: '2021-08-11 13:32:54+09:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/manachers_algorithm/1.test.cpp
 documentation_of: include/string/manachers_algorithm.hpp

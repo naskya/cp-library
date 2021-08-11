@@ -49,19 +49,19 @@ data:
       title: Golden section search
   - name: include/string
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: include/string/edit_distance.hpp
       title: Edit distance
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: include/string/manachers_algorithm.hpp
       title: Manacher's algorithm
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: include/string/rolling_hash.hpp
       title: Rolling hash
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: include/string/run_length_encoding.hpp
       title: Run length encoding
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: include/string/z_algorithm.hpp
       title: Z algorithm
   verificationCategories:
@@ -193,33 +193,33 @@ data:
       title: test/search/golden_section_search/2.test.cpp
   - name: test/string/edit_distance
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/string/edit_distance/1.test.cpp
       title: test/string/edit_distance/1.test.cpp
   - name: test/string/manachers_algorithm
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/string/manachers_algorithm/1.test.cpp
       title: test/string/manachers_algorithm/1.test.cpp
   - name: test/string/rolling_hash
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/string/rolling_hash/1.test.cpp
       title: test/string/rolling_hash/1.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/string/rolling_hash/2.test.cpp
       title: test/string/rolling_hash/2.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/string/rolling_hash/3.test.cpp
       title: test/string/rolling_hash/3.test.cpp
   - name: test/string/run_length_encoding
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/string/run_length_encoding/1.test.cpp
       title: test/string/run_length_encoding/1.test.cpp
   - name: test/string/z_algorithm
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/string/z_algorithm/1.test.cpp
       title: test/string/z_algorithm/1.test.cpp
 layout: toppage

@@ -3,18 +3,18 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/string/rolling_hash/1.test.cpp
     title: test/string/rolling_hash/1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/string/rolling_hash/2.test.cpp
     title: test/string/rolling_hash/2.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/string/rolling_hash/3.test.cpp
     title: test/string/rolling_hash/3.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: Assert macro
     links:
@@ -34,7 +34,7 @@ data:
     \ CP_LIBRARY_ERROR\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 2)\n//! @brief Print error\
     \ message and exit\n#    define CP_LIBRARY_ERROR(...) \\\n      do {         \
     \               \\\n        __VA_ARGS__               \\\n        CP_LIBRARY_ASSERT(false);\
-    \ \\\n      } while (false)\n#  else\n#    define CP_LIBRARY_ERROR(msg) (static_cast<void>(0))\n\
+    \ \\\n      } while (false)\n#  else\n#    define CP_LIBRARY_ERROR(...) (static_cast<void>(0))\n\
     #  endif\n#  define CP_LIBRARY_ERROR_NOT_DEFINED\n#endif\n\nnamespace lib {\n\n\
     namespace internal::rolling_hash_hpp {\n  using u64 = std::uint_least64_t;\n\n\
     \  template <unsigned index>\n  constexpr u64 mask = (u64(1) << index) - 1;\n\n\
@@ -294,7 +294,7 @@ data:
     #endif\n\n#ifndef CP_LIBRARY_ERROR\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 2)\n//! @brief\
     \ Print error message and exit\n#    define CP_LIBRARY_ERROR(...) \\\n      do\
     \ {                        \\\n        __VA_ARGS__               \\\n        CP_LIBRARY_ASSERT(false);\
-    \ \\\n      } while (false)\n#  else\n#    define CP_LIBRARY_ERROR(msg) (static_cast<void>(0))\n\
+    \ \\\n      } while (false)\n#  else\n#    define CP_LIBRARY_ERROR(...) (static_cast<void>(0))\n\
     #  endif\n#  define CP_LIBRARY_ERROR_NOT_DEFINED\n#endif\n\nnamespace lib {\n\n\
     namespace internal::rolling_hash_hpp {\n  using u64 = std::uint_least64_t;\n\n\
     \  template <unsigned index>\n  constexpr u64 mask = (u64(1) << index) - 1;\n\n\
@@ -546,8 +546,8 @@ data:
   isVerificationFile: false
   path: include/string/rolling_hash.hpp
   requiredBy: []
-  timestamp: '2021-08-11 13:38:32+09:00'
-  verificationStatus: LIBRARY_ALL_WA
+  timestamp: '2021-08-11 13:50:55+09:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/rolling_hash/3.test.cpp
   - test/string/rolling_hash/1.test.cpp
