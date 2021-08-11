@@ -30,7 +30,7 @@
 
 namespace lib {
 
-namespace internal {
+namespace internal::minimum_spanning_tree_hpp {
   //! @note from union_find.hpp
   class simple_union_find {
   private:
@@ -64,7 +64,7 @@ namespace internal {
       return true;
     }
   };
-}  // namespace internal
+}  // namespace internal::minimum_spanning_tree_hpp
 
 //! @brief Find the minimum spanning tree from edge list using Kruskal method.
 //! @tparam TotalCostType type of total cost (NOT deduced from parameter, int or long long should work in most cases)
@@ -92,7 +92,7 @@ template <typename TotalCostType, typename NodeIndexType, typename CostType, tem
     return std::get<2>(lhs) < std::get<2>(rhs);
   });
 
-  internal::simple_union_find uf(nodes);
+  internal::minimum_spanning_tree_hpp::simple_union_find uf(nodes);
 
   for (auto&& [node_1, node_2, cost] : edge_list_cpy) {
     if (uf.merge(node_1, node_2)) {
@@ -128,7 +128,7 @@ template <typename TotalCostType, typename NodeIndexType, typename CostType, tem
     return std::get<2>(lhs) < std::get<2>(rhs);
   });
 
-  internal::simple_union_find uf(nodes);
+  internal::minimum_spanning_tree_hpp::simple_union_find uf(nodes);
 
   for (auto&& [node_1, node_2, cost] : edge_list) {
     if (uf.merge(node_1, node_2)) {

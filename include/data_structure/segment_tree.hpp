@@ -33,7 +33,7 @@
 
 namespace lib {
 
-namespace internal {
+namespace internal::segment_tree_hpp {
   template <typename Func, typename Arg>
   auto is_binary_op_of_impl(int) -> std::bool_constant<std::is_same_v<decltype(std::declval<Func>()(std::declval<Arg>(), std::declval<Arg>())), Arg>>;
   template <typename Func, typename Arg>
@@ -42,13 +42,13 @@ namespace internal {
   //! @brief Check if Func(Arg, Arg) returns a value of type Arg.
   template <typename Func, typename Arg>
   [[maybe_unused]] constexpr bool is_binary_op_of_v = decltype(is_binary_op_of_impl<Func, Arg>(int {}))::value;
-}  // namespace internal
+}  // namespace internal::segment_tree_hpp
 
 //! @brief Segment tree
 //! @tparam Elem element type. Watch out for overflows.
 //! @tparam Func binary op type.
 template <typename Elem = long long, typename Func = std::plus<>,
-          std::enable_if_t<internal::is_binary_op_of_v<Func, Elem>, std::nullptr_t> = nullptr>
+          std::enable_if_t<internal::segment_tree_hpp::is_binary_op_of_v<Func, Elem>, std::nullptr_t> = nullptr>
 class segment_tree {
 private:
   const int length;
@@ -348,15 +348,15 @@ public:
   }
 };
 
-namespace internal {
+namespace internal::segment_tree_hpp {
   template <typename Tp>
   [[maybe_unused]] constexpr bool is_segment_tree_v = false;
   template <typename Elem, typename Func>
   [[maybe_unused]] constexpr bool is_segment_tree_v<segment_tree<Elem, Func>> = true;
-}  // namespace internal
+}  // namespace internal::segment_tree_hpp
 
 //! @brief Utility class to automatically call lock() in constructor and propagate_all_and_unlock() in destructor.
-template <typename Tp, std::enable_if_t<internal::is_segment_tree_v<Tp>, std::nullptr_t> = nullptr>
+template <typename Tp, std::enable_if_t<internal::segment_tree_hpp::is_segment_tree_v<Tp>, std::nullptr_t> = nullptr>
 class no_range_query_in_this_scope {
 private:
   Tp& target_segtree;

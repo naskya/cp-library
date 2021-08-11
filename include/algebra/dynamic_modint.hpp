@@ -23,7 +23,7 @@
 
 namespace lib {
 
-namespace internal {
+namespace internal::dynamic_modint_hpp {
   template <typename Tp, std::enable_if_t<std::is_integral_v<Tp>, std::nullptr_t> = nullptr>
   using LongInt = std::conditional_t<(64 <= std::numeric_limits<Tp>::digits), __int128_t, std::int_least64_t>;
 }
@@ -101,10 +101,10 @@ public:
     return dynamic_modint(value - rhs.value);
   }
   [[nodiscard]] constexpr dynamic_modint operator*(const dynamic_modint rhs) const noexcept {
-    return dynamic_modint((internal::LongInt<Tp>) value * rhs.value);
+    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value * rhs.value);
   }
   [[nodiscard]] constexpr dynamic_modint operator/(const dynamic_modint rhs) const {
-    return dynamic_modint((internal::LongInt<Tp>) value * calc_inverse(rhs.value));
+    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value * calc_inverse(rhs.value));
   }
 
   [[nodiscard]] constexpr dynamic_modint operator%(const dynamic_modint rhs) const {
@@ -126,7 +126,7 @@ public:
   }
   [[nodiscard]] constexpr dynamic_modint operator<<(const dynamic_modint rhs) const {
     CP_LIBRARY_WARN("operator<< : Are you sure you want to do this?");
-    return dynamic_modint((internal::LongInt<Tp>) value << rhs.value);
+    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value << rhs.value);
   }
   [[nodiscard]] constexpr dynamic_modint operator>>(const dynamic_modint rhs) const {
     CP_LIBRARY_WARN("operator>> : Are you sure you want to do this?");
@@ -146,11 +146,11 @@ public:
     return *this;
   }
   constexpr dynamic_modint& operator*=(const dynamic_modint rhs) noexcept {
-    value = clamp((internal::LongInt<Tp>) value * rhs.value);
+    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>) value * rhs.value);
     return *this;
   }
   constexpr dynamic_modint& operator/=(const dynamic_modint rhs) {
-    value = clamp((internal::LongInt<Tp>) value * calc_inverse(rhs.value));
+    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>) value * calc_inverse(rhs.value));
     return *this;
   }
 
@@ -182,7 +182,7 @@ public:
   }
   constexpr dynamic_modint& operator<<=(const dynamic_modint rhs) noexcept {
     CP_LIBRARY_WARN("operator<<= : Are you sure you want to do this?");
-    value = clamp((internal::LongInt<Tp>) value << rhs.value);
+    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>) value << rhs.value);
     return *this;
   }
   constexpr dynamic_modint& operator>>=(const dynamic_modint rhs) noexcept {
@@ -201,11 +201,11 @@ public:
   }
   template <typename RhsType>
   [[nodiscard]] constexpr dynamic_modint operator*(const RhsType rhs) const noexcept {
-    return dynamic_modint((internal::LongInt<Tp>) value * clamp(rhs));
+    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value * clamp(rhs));
   }
   template <typename RhsType>
   [[nodiscard]] constexpr dynamic_modint operator/(const RhsType rhs) const {
-    internal::LongInt<Tp> mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
+    internal::dynamic_modint_hpp::LongInt<Tp> mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
     return dynamic_modint(mul * value);
   }
 
@@ -233,7 +233,7 @@ public:
   template <typename RhsType>
   [[nodiscard]] constexpr dynamic_modint operator<<(const RhsType rhs) const {
     CP_LIBRARY_WARN("operator<< : Are you sure you want to do this?");
-    return dynamic_modint((internal::LongInt<Tp>) value << rhs);
+    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value << rhs);
   }
   template <typename RhsType>
   [[nodiscard]] constexpr dynamic_modint operator>>(const RhsType rhs) const {
@@ -258,7 +258,7 @@ public:
   }
   template <typename RhsType>
   constexpr dynamic_modint& operator/=(const RhsType rhs) {
-    internal::LongInt<Tp> mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
+    internal::dynamic_modint_hpp::LongInt<Tp> mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
     value                     = clamp(mul * value);
     return *this;
   }
@@ -293,7 +293,7 @@ public:
   template <typename RhsType>
   constexpr dynamic_modint& operator<<=(const RhsType rhs) {
     CP_LIBRARY_WARN("operator<<= : Are you sure you want to do this?");
-    value = clamp((internal::LongInt<Tp>) value << rhs);
+    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>) value << rhs);
     return *this;
   }
   template <typename RhsType>
@@ -498,7 +498,7 @@ template <typename LhsType, typename Tp, Tp* modulo_ptr>
 template <typename LhsType, typename Tp, Tp* modulo_ptr, std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>
 [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator<<(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
   CP_LIBRARY_WARN("operator<< : Are you sure you want to do this?");
-  return dynamic_modint<Tp, modulo_ptr>((internal::LongInt<Tp>) lhs << (Tp) rhs);
+  return dynamic_modint<Tp, modulo_ptr>((internal::dynamic_modint_hpp::LongInt<Tp>) lhs << (Tp) rhs);
 }
 template <typename LhsType, typename Tp, Tp* modulo_ptr, std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>
 [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator>>(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {

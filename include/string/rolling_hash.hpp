@@ -43,7 +43,7 @@
 
 namespace lib {
 
-namespace internal {
+namespace internal::rolling_hash_hpp {
   using u64 = std::uint_least64_t;
 
   template <unsigned index>
@@ -94,7 +94,7 @@ namespace internal {
   // See:  https://wandbox.org/permlink/xpqiYobUkI1EGpgo (on GCC 12.0.0)
   //       https://wandbox.org/permlink/26ZTzuIfTivSz2lR (on Clang 13.0.0)
   // ToDo: Replace decltype(std::tuple {(static_cast<u64>(Bases))...}) with hash_t<Bases...>
-  //       and replace decltype(std::tuple {(static_cast<internal::u64>(Bases))...}) with internal::hash_t<Bases...>
+  //       and replace decltype(std::tuple {(static_cast<internal::rolling_hash_hpp::u64>(Bases))...}) with internal::rolling_hash_hpp::hash_t<Bases...>
   //       when we figure out the workaround or this bug(?) is fixed.
 
   template <std::uint32_t... Bases, typename Container, std::size_t... Is>
@@ -129,7 +129,7 @@ namespace internal {
     return substr_hash_impl<Bases...>(hashes, starts, length, std::make_index_sequence<sizeof...(Bases)> {});
   }
 
-}  // namespace internal
+}  // namespace internal::rolling_hash_hpp
 
 #if (CP_LIBRARY_DEBUG_LEVEL >= 2)
 template <typename Elem, std::uint32_t... Bases>
@@ -137,12 +137,12 @@ class rolling_hash {
 private:
   static constexpr std::tuple bases_tuple {Bases...};
   std::vector<Elem> src;
-  std::vector<decltype(std::tuple {(static_cast<internal::u64>(Bases))...})> hashes;
+  std::vector<decltype(std::tuple {(static_cast<internal::rolling_hash_hpp::u64>(Bases))...})> hashes;
 
   struct single_hash {
   private:
     std::vector<Elem> src;
-    decltype(std::tuple {(static_cast<internal::u64>(Bases))...}) val;
+    decltype(std::tuple {(static_cast<internal::rolling_hash_hpp::u64>(Bases))...}) val;
     int length;
 
     template <std::size_t... Is>
@@ -151,7 +151,7 @@ private:
       res.src = src;
       res.src.insert(std::end(res.src), std::cbegin(rhs.src), std::cend(rhs.src));
       res.length = length + rhs.length;
-      static_cast<void>(((std::get<Is>(res.val) = internal::mod_mersenne_61(internal::mod_mersenne_61(internal::mult(std::get<Is>(val), internal::pow_mod_mersenne_61<std::get<Is>(bases_tuple)>(rhs.length))) + std::get<Is>(rhs.val))), ...));
+      static_cast<void>(((std::get<Is>(res.val) = internal::rolling_hash_hpp::mod_mersenne_61(internal::rolling_hash_hpp::mod_mersenne_61(internal::rolling_hash_hpp::mult(std::get<Is>(val), internal::rolling_hash_hpp::pow_mod_mersenne_61<std::get<Is>(bases_tuple)>(rhs.length))) + std::get<Is>(rhs.val))), ...));
       return res;
     }
 
@@ -159,7 +159,7 @@ private:
     void concat_self_impl(const single_hash& rhs, std::index_sequence<Is...>) {
       src.insert(std::end(src), std::cbegin(rhs.src), std::cend(rhs.src));
       length += rhs.length;
-      static_cast<void>(((std::get<Is>(val) = internal::mod_mersenne_61(internal::mod_mersenne_61(internal::mult(std::get<Is>(val), internal::pow_mod_mersenne_61<std::get<Is>(bases_tuple)>(rhs.length))) + std::get<Is>(rhs.val))), ...));
+      static_cast<void>(((std::get<Is>(val) = internal::rolling_hash_hpp::mod_mersenne_61(internal::rolling_hash_hpp::mod_mersenne_61(internal::rolling_hash_hpp::mult(std::get<Is>(val), internal::rolling_hash_hpp::pow_mod_mersenne_61<std::get<Is>(bases_tuple)>(rhs.length))) + std::get<Is>(rhs.val))), ...));
     }
 
   public:
@@ -170,12 +170,12 @@ private:
 
     //! @brief Construct singli_hash object from hash value and size.
     //! @note Time complexity: O(number of bases), which can be regarded as constant time
-    single_hash(const std::vector<Elem>& source, const decltype(std::tuple {(static_cast<internal::u64>(Bases))...})& hash, const int size)
+    single_hash(const std::vector<Elem>& source, const decltype(std::tuple {(static_cast<internal::rolling_hash_hpp::u64>(Bases))...})& hash, const int size)
         : src(source), val(hash), length(size) {}
 
     //! @brief Construct singli_hash object from hash value and size.
     //! @note Time complexity: O(number of bases), which can be regarded as constant time
-    single_hash(std::vector<Elem>&& source, decltype(std::tuple {(static_cast<internal::u64>(Bases))...})&& hash, const int size)
+    single_hash(std::vector<Elem>&& source, decltype(std::tuple {(static_cast<internal::rolling_hash_hpp::u64>(Bases))...})&& hash, const int size)
         : src(std::move(source)), val(std::move(hash)), length(size) {}
 
     //! @return The length of the sequence
@@ -195,7 +195,7 @@ private:
           const std::ios_base::fmtflags prev_state = std::cerr.flags();
           std::cerr << "*** Hash collision detected ***\n"
                     << "Hash value: (" << std::hex;
-          internal::print_tuple(val, std::cerr, std::make_index_sequence<std::tuple_size_v<decltype(val)>> {});
+          internal::rolling_hash_hpp::print_tuple(val, std::cerr, std::make_index_sequence<std::tuple_size_v<decltype(val)>> {});
           std::cerr << ")\n\n";
           std::cerr.flags(prev_state);
           if constexpr (std::is_same_v<char, Elem>) {
@@ -265,7 +265,7 @@ private:
       const std::ios_base::fmtflags prev_state = os.flags();
       os << (name.empty() ? std::string() : std::string(std::size(name) + 2, ' '))
          << "Hash value = " << std::hex << '(';
-      internal::print_tuple(val, os, std::make_index_sequence<std::tuple_size_v<decltype(val)>> {});
+      internal::rolling_hash_hpp::print_tuple(val, os, std::make_index_sequence<std::tuple_size_v<decltype(val)>> {});
       os << ")\n\n";
       os.flags(prev_state);
     }
@@ -276,7 +276,7 @@ public:
   //! @note Time complexity: O(length)
   template <typename Container>
   rolling_hash(const Container& source)
-      : src(std::cbegin(source), std::cend(source)), hashes(internal::build_hash_sequence<Bases...>(src)) {}
+      : src(std::cbegin(source), std::cend(source)), hashes(internal::rolling_hash_hpp::build_hash_sequence<Bases...>(src)) {}
 
   //! @return The length of the sequence
   [[nodiscard]] int size() const noexcept(noexcept(std::size(src))) {
@@ -295,7 +295,7 @@ public:
   //! @note Time complexity: O(length) since you are in debugging mode
   [[nodiscard]] single_hash substring(const int starts, int length = std::numeric_limits<int>::max()) const {
     length = std::min(static_cast<int>(std::size(src)) - starts, length);
-    return single_hash(std::vector<Elem>(std::cbegin(src) + starts, std::cbegin(src) + starts + length), internal::substr_hash<Bases...>(hashes, starts, length), length);
+    return single_hash(std::vector<Elem>(std::cbegin(src) + starts, std::cbegin(src) + starts + length), internal::rolling_hash_hpp::substr_hash<Bases...>(hashes, starts, length), length);
   }
 };
 #else
@@ -306,26 +306,26 @@ template <typename Elem, std::uint32_t... Bases>
 class rolling_hash {
 private:
   static constexpr std::tuple bases_tuple {Bases...};
-  std::vector<decltype(std::tuple {(static_cast<internal::u64>(Bases))...})> hashes;
+  std::vector<decltype(std::tuple {(static_cast<internal::rolling_hash_hpp::u64>(Bases))...})> hashes;
 
   //! @brief Object that represents string hash.
   struct single_hash {
   private:
-    decltype(std::tuple {(static_cast<internal::u64>(Bases))...}) val;
+    decltype(std::tuple {(static_cast<internal::rolling_hash_hpp::u64>(Bases))...}) val;
     int length;
 
     template <std::size_t... Is>
     [[nodiscard]] auto concat_impl(const single_hash& rhs, std::index_sequence<Is...>) const {
       single_hash res;
       res.length = length + rhs.length;
-      static_cast<void>(((std::get<Is>(res.val) = internal::mod_mersenne_61(internal::mod_mersenne_61(internal::mult(std::get<Is>(val), internal::pow_mod_mersenne_61<std::get<Is>(bases_tuple)>(rhs.length))) + std::get<Is>(rhs.val))), ...));
+      static_cast<void>(((std::get<Is>(res.val) = internal::rolling_hash_hpp::mod_mersenne_61(internal::rolling_hash_hpp::mod_mersenne_61(internal::rolling_hash_hpp::mult(std::get<Is>(val), internal::rolling_hash_hpp::pow_mod_mersenne_61<std::get<Is>(bases_tuple)>(rhs.length))) + std::get<Is>(rhs.val))), ...));
       return res;
     }
 
     template <std::size_t... Is>
     void concat_self_impl(const single_hash& rhs, std::index_sequence<Is...>) {
       length += rhs.length;
-      static_cast<void>(((std::get<Is>(val) = internal::mod_mersenne_61(internal::mod_mersenne_61(internal::mult(std::get<Is>(val), internal::pow_mod_mersenne_61<std::get<Is>(bases_tuple)>(rhs.length))) + std::get<Is>(rhs.val))), ...));
+      static_cast<void>(((std::get<Is>(val) = internal::rolling_hash_hpp::mod_mersenne_61(internal::rolling_hash_hpp::mod_mersenne_61(internal::rolling_hash_hpp::mult(std::get<Is>(val), internal::rolling_hash_hpp::pow_mod_mersenne_61<std::get<Is>(bases_tuple)>(rhs.length))) + std::get<Is>(rhs.val))), ...));
     }
 
   public:
@@ -336,12 +336,12 @@ private:
 
     //! @brief Construct singli_hash object from hash value and size.
     //! @note Time complexity: O(number of bases), which can be regarded as constant time
-    single_hash(const decltype(std::tuple {(static_cast<internal::u64>(Bases))...})& hash, const int size)
+    single_hash(const decltype(std::tuple {(static_cast<internal::rolling_hash_hpp::u64>(Bases))...})& hash, const int size)
         : val(hash), length(size) {}
 
     //! @brief Construct singli_hash object from hash value and size.
     //! @note Time complexity: O(number of bases), which can be regarded as constant time
-    single_hash(decltype(std::tuple {(static_cast<internal::u64>(Bases))...})&& hash, const int size)
+    single_hash(decltype(std::tuple {(static_cast<internal::rolling_hash_hpp::u64>(Bases))...})&& hash, const int size)
         : val(std::move(hash)), length(size) {}
 
     //! @return The length of the sequence
@@ -395,7 +395,7 @@ private:
 
       const std::ios_base::fmtflags prev_state = os.flags();
       os << "Hash value = " << std::hex << '(';
-      internal::print_tuple(val, os, std::make_index_sequence<std::tuple_size_v<decltype(val)>> {});
+      internal::rolling_hash_hpp::print_tuple(val, os, std::make_index_sequence<std::tuple_size_v<decltype(val)>> {});
       os << ")\n";
       os.flags(prev_state);
 #  endif
@@ -407,7 +407,7 @@ public:
   //! @note Time complexity: O(length)
   template <typename Container>
   rolling_hash(const Container& source)
-      : hashes(internal::build_hash_sequence<Bases...>(source)) {}
+      : hashes(internal::rolling_hash_hpp::build_hash_sequence<Bases...>(source)) {}
 
   //! @return The length of the sequence
   [[nodiscard]] int size() const noexcept(noexcept(std::size(hashes))) {
@@ -426,7 +426,7 @@ public:
   //! @note Time complexity: O(number of bases), which can be regarded as constant time
   [[nodiscard]] single_hash substring(const int starts, int length = std::numeric_limits<int>::max()) const {
     length = std::min(static_cast<int>(std::size(hashes)) - starts - 1, length);
-    return single_hash(internal::substr_hash<Bases...>(hashes, starts, length), length);
+    return single_hash(internal::rolling_hash_hpp::substr_hash<Bases...>(hashes, starts, length), length);
   }
 };
 #endif

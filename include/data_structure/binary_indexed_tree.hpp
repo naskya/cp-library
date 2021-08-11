@@ -17,7 +17,7 @@
 
 namespace lib {
 
-namespace internal {
+namespace internal::binary_indexed_tree_hpp {
   //! @brief Normal binary indexed tree.
   //! @tparam Elem Element type. Watch out for overflows.
   template <typename Elem>
@@ -100,14 +100,14 @@ namespace internal {
       add(index, value - get(index));
     }
   };
-}  // namespace internal
+}  // namespace internal::binary_indexed_tree_hpp
 
 //! @brief Binary indexed tree with uniform add function.
 //! @tparam Elem Element type. Watch out for overflows.
 template <typename Elem>
 class binary_indexed_tree {
 private:
-  internal::binary_indexed_tree_impl<Elem> bit_0, bit_1;
+  internal::binary_indexed_tree_hpp::binary_indexed_tree_impl<Elem> bit_0, bit_1;
 
   //! @return Sum of the elements within [0, index) (0-indexed, half-open interval)
   [[nodiscard]] Elem partial_sum(int index) const {

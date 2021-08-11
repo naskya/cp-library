@@ -25,7 +25,7 @@
 
 namespace lib {
 
-namespace internal {
+namespace internal::factorial_hpp {
   template <typename... Ts>
   struct is_all_same : std::false_type {};
   template <>
@@ -40,7 +40,7 @@ namespace internal {
   struct first_type { using type = Tp; };
   template <class... Ts>
   using first_type_t = typename first_type<Ts...>::type;
-}  // namespace internal
+}  // namespace internal::factorial_hpp
 
 //! @tparam Tp deduced from parameter
 //! @tparam ReturnType set appropriately if there is a possibility of overflow (e.g. long long, __int128, modint)
@@ -125,7 +125,7 @@ template <typename Tp, typename ReturnType = Tp>
 //! @note Time complexity: O(n - max(r))
 template <typename Tp, typename ReturnType = Tp, typename... Ts>
 [[nodiscard]] ReturnType multinomial(const Tp n, const Ts... r) {
-  static_assert(internal::is_all_same_v<Ts...>);
+  static_assert(internal::factorial_hpp::is_all_same_v<Ts...>);
 
   if (n == 0)
     CP_LIBRARY_WARN("n is zero.");
@@ -141,13 +141,13 @@ template <typename Tp, typename ReturnType = Tp, typename... Ts>
     CP_LIBRARY_WARN("Sum of r... is greater than n.");
     return 0;
   }
-  std::array<internal::first_type_t<Ts...>, sizeof...(Ts)> r_array {r...};
+  std::array<internal::factorial_hpp::first_type_t<Ts...>, sizeof...(Ts)> r_array {r...};
 
   const auto max_idx = std::distance(std::cbegin(r_array), std::max_element(std::cbegin(r_array), std::cend(r_array)));
   const auto max_r   = r_array[max_idx];
 
-  unsigned current_den_idx                      = static_cast<int>(max_idx == 0);
-  internal::first_type_t<Ts...> current_den_cnt = 1;
+  unsigned current_den_idx                                     = static_cast<int>(max_idx == 0);
+  internal::factorial_hpp::first_type_t<Ts...> current_den_cnt = 1;
 
   ReturnType res = 1;
 

@@ -18,11 +18,11 @@
 
 namespace lib {
 
-namespace internal {
+namespace internal::sparse_table_hpp {
   [[nodiscard]] int int_log2(const int n) {
     return std::numeric_limits<int>::digits - __builtin_clz(n);
   }
-}  // namespace internal
+}  // namespace internal::sparse_table_hpp
 
 //! @brief data structure to calculate interval products of associative and idempotent operations (for static array)
 //! @tparam Elem element type (deduced from constructor's parameters but can be set manually if needed)
@@ -43,7 +43,7 @@ public:
   template <typename Container>
   sparse_table(const Container& src, const Func& binary_op_functor)
       : length(static_cast<int>(std::size(src))), binary_op(binary_op_functor) {
-    const int M = internal::int_log2(length) + 1;
+    const int M = internal::sparse_table_hpp::int_log2(length) + 1;
 
     table = std::vector(length, std::vector<Elem>(M));
 
@@ -71,7 +71,7 @@ public:
   //! @note Time complexity: O(1)
   [[nodiscard]] Elem query(const int left, const int right) const {
     CP_LIBRARY_ASSERT(0 <= left && left < right && right <= length);
-    const int j = internal::int_log2(right - left);
+    const int j = internal::sparse_table_hpp::int_log2(right - left);
     return binary_op(table[left][j], table[right - (1 << j)][j]);
   }
 };
