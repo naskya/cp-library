@@ -1,4 +1,4 @@
-## About this library
+## About this repository
 
 - [このリポジトリについての説明](https://naskya.github.io/cp-library/about)
 
