@@ -1,24 +1,24 @@
 
 //! @file static_modint.hpp
 
-#ifndef STATIC_MODINT_HPP
-#define STATIC_MODINT_HPP
+#ifndef CP_LIBRARY_STATIC_MODINT_HPP
+#define CP_LIBRARY_STATIC_MODINT_HPP
 
 #include <cstdint>
 #include <iostream>
 #include <limits>
 #include <type_traits>
 
-#ifndef warn
+#ifndef CP_LIBRARY_WARN
 #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
 //! @note You can suppress the warning by uncommenting line 17
-#    define warn(msg) (std::cerr << (msg) << '\n')
-// #  define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\n')
+// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  else
-#    define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  endif
-#  define warn_not_defined
+#  define CP_LIBRARY_WARN_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -133,28 +133,28 @@ public:
   }
 
   [[nodiscard]] constexpr static_modint operator%(const static_modint rhs) const {
-    warn("operator% : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator% : Are you sure you want to do this?");
     return static_modint(value % rhs.value);
   }
 
   [[nodiscard]] constexpr static_modint operator&(const static_modint rhs) const {
-    warn("operator& : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator& : Are you sure you want to do this?");
     return static_modint(value & rhs.value, true);
   }
   [[nodiscard]] constexpr static_modint operator|(const static_modint rhs) const {
-    warn("operator| : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator| : Are you sure you want to do this?");
     return static_modint(value | rhs.value);
   }
   [[nodiscard]] constexpr static_modint operator^(const static_modint rhs) const {
-    warn("operator^ : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator^ : Are you sure you want to do this?");
     return static_modint(value ^ rhs.value);
   }
   [[nodiscard]] constexpr static_modint operator<<(const static_modint rhs) const {
-    warn("operator<< : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<< : Are you sure you want to do this?");
     return static_modint(static_cast<std::int_least64_t>(value) << rhs.value);
   }
   [[nodiscard]] constexpr static_modint operator>>(const static_modint rhs) const {
-    warn("operator>> : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>> : Are you sure you want to do this?");
     return static_modint(value >> rhs.value, true);
   }
 
@@ -180,7 +180,7 @@ public:
   }
 
   constexpr static_modint& operator%=(const static_modint rhs) {
-    warn("operator%= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator%= : Are you sure you want to do this?");
     value %= rhs.value;
     if (value < 0)
       value += modulo;
@@ -188,29 +188,29 @@ public:
   }
 
   constexpr static_modint& operator&=(const static_modint rhs) noexcept {
-    warn("operator&= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator&= : Are you sure you want to do this?");
     value &= rhs.value;
     return *this;
   }
   constexpr static_modint& operator|=(const static_modint rhs) noexcept {
-    warn("operator|= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator|= : Are you sure you want to do this?");
     value |= rhs.value;
     clamp_self();
     return *this;
   }
   constexpr static_modint& operator^=(const static_modint rhs) noexcept {
-    warn("operator^= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator^= : Are you sure you want to do this?");
     value ^= rhs.value;
     clamp_self();
     return *this;
   }
   constexpr static_modint& operator<<=(const static_modint rhs) noexcept {
-    warn("operator<<= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<<= : Are you sure you want to do this?");
     value = clamp_ll(static_cast<std::int_least64_t>(value) << rhs.value);
     return *this;
   }
   constexpr static_modint& operator>>=(const static_modint rhs) noexcept {
-    warn("operator>>= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>>= : Are you sure you want to do this?");
     value >>= rhs.value;
     return *this;
   }
@@ -235,33 +235,33 @@ public:
 
   template <typename RhsType>
   [[nodiscard]] constexpr static_modint operator%(const RhsType rhs) const {
-    warn("operator% : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator% : Are you sure you want to do this?");
     return static_modint(value % rhs, true);
   }
 
   template <typename RhsType>
   [[nodiscard]] constexpr static_modint operator&(const RhsType rhs) const {
-    warn("operator& : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator& : Are you sure you want to do this?");
     return static_modint(value & rhs, true);
   }
   template <typename RhsType>
   [[nodiscard]] constexpr static_modint operator|(const RhsType rhs) const {
-    warn("operator| : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator| : Are you sure you want to do this?");
     return static_modint(value | rhs);
   }
   template <typename RhsType>
   [[nodiscard]] constexpr static_modint operator^(const RhsType rhs) const {
-    warn("operator^ : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator^ : Are you sure you want to do this?");
     return static_modint(value ^ rhs);
   }
   template <typename RhsType>
   [[nodiscard]] constexpr static_modint operator<<(const RhsType rhs) const {
-    warn("operator<< : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<< : Are you sure you want to do this?");
     return static_modint(static_cast<std::int_least64_t>(value) << rhs);
   }
   template <typename RhsType>
   [[nodiscard]] constexpr static_modint operator>>(const RhsType rhs) const {
-    warn("operator>> : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>> : Are you sure you want to do this?");
     return static_modint(value >> rhs, true);
   }
 
@@ -289,50 +289,50 @@ public:
 
   template <typename RhsType>
   constexpr static_modint& operator%=(const RhsType rhs) {
-    warn("operator%= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator%= : Are you sure you want to do this?");
     value %= rhs;
     return *this;
   }
 
   template <typename RhsType>
   constexpr static_modint& operator&=(const RhsType rhs) noexcept {
-    warn("operator&= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator&= : Are you sure you want to do this?");
     value &= rhs;
     return *this;
   }
   template <typename RhsType>
   constexpr static_modint& operator|=(const RhsType rhs) noexcept {
-    warn("operator|= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator|= : Are you sure you want to do this?");
     value |= rhs;
     clamp_self();
     return *this;
   }
   template <typename RhsType>
   constexpr static_modint& operator^=(const RhsType rhs) noexcept {
-    warn("operator^= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator^= : Are you sure you want to do this?");
     value ^= rhs;
     clamp_self();
     return *this;
   }
   template <typename RhsType>
   constexpr static_modint& operator<<=(const RhsType rhs) noexcept {
-    warn("operator<<= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<<= : Are you sure you want to do this?");
     value = clamp_ll(static_cast<std::int_least64_t>(value) << rhs);
     return *this;
   }
   template <typename RhsType>
   constexpr static_modint& operator>>=(const RhsType rhs) noexcept {
-    warn("operator>>= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>>= : Are you sure you want to do this?");
     value >>= rhs;
     return *this;
   }
 
   [[nodiscard]] constexpr bool operator!() const {
-    warn("operator! : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator! : Are you sure you want to do this?");
     return value == 0;
   }
   [[nodiscard]] constexpr static_modint operator~() const {
-    warn("operator~ : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator~ : Are you sure you want to do this?");
     return static_modint(~value);
   }
   [[nodiscard]] constexpr static_modint operator-() const noexcept {
@@ -368,19 +368,19 @@ public:
     return value != rhs.value;
   }
   [[nodiscard]] constexpr bool operator<(const static_modint rhs) const {
-    warn("operator< : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator< : Are you sure you want to do this?");
     return value < rhs.value;
   }
   [[nodiscard]] constexpr bool operator<=(const static_modint rhs) const {
-    warn("operator<= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<= : Are you sure you want to do this?");
     return value <= rhs.value;
   }
   [[nodiscard]] constexpr bool operator>(const static_modint rhs) const {
-    warn("operator> : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator> : Are you sure you want to do this?");
     return value > rhs.value;
   }
   [[nodiscard]] constexpr bool operator>=(const static_modint rhs) const {
-    warn("operator>= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>= : Are you sure you want to do this?");
     return value >= rhs.value;
   }
 
@@ -394,22 +394,22 @@ public:
   }
   template <typename RhsType>
   [[nodiscard]] constexpr bool operator<(const RhsType rhs) const {
-    warn("operator< : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator< : Are you sure you want to do this?");
     return value < rhs;
   }
   template <typename RhsType>
   [[nodiscard]] constexpr bool operator<=(const RhsType rhs) const {
-    warn("operator<= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<= : Are you sure you want to do this?");
     return value <= rhs;
   }
   template <typename RhsType>
   [[nodiscard]] constexpr bool operator>(const RhsType rhs) const {
-    warn("operator> : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator> : Are you sure you want to do this?");
     return value > rhs;
   }
   template <typename RhsType>
   [[nodiscard]] constexpr bool operator>=(const RhsType rhs) const {
-    warn("operator>= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>= : Are you sure you want to do this?");
     return value >= rhs;
   }
 
@@ -515,18 +515,18 @@ template <typename LhsType, std::int_least32_t modulo>
 
 template <typename LhsType, std::int_least32_t modulo>
 [[nodiscard]] constexpr static_modint<modulo> operator%(const LhsType lhs, const static_modint<modulo> rhs) {
-  warn("operator% : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator% : Are you sure you want to do this?");
   return static_modint<modulo>(lhs % static_cast<std::int_least32_t>(rhs), true);
 }
 
 template <typename LhsType, std::int_least32_t modulo, std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>
 [[nodiscard]] constexpr static_modint<modulo> operator<<(const LhsType lhs, const static_modint<modulo> rhs) {
-  warn("operator<< : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator<< : Are you sure you want to do this?");
   return static_modint<modulo>(static_cast<std::int_least64_t>(lhs) << static_cast<std::int_least32_t>(rhs));
 }
 template <typename LhsType, std::int_least32_t modulo, std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>
 [[nodiscard]] constexpr static_modint<modulo> operator>>(const LhsType lhs, const static_modint<modulo> rhs) {
-  warn("operator>> : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator>> : Are you sure you want to do this?");
   return static_modint<modulo>(lhs >> static_cast<std::int_least32_t>(rhs));
 }
 
@@ -549,66 +549,65 @@ constexpr LhsType& operator/=(LhsType& lhs, const static_modint<modulo> rhs) noe
 
 template <typename LhsType, std::int_least32_t modulo>
 constexpr LhsType& operator%=(LhsType& lhs, const static_modint<modulo> rhs) noexcept {
-  warn("operator%= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator%= : Are you sure you want to do this?");
   return lhs %= static_cast<std::int_least32_t>(rhs);
 }
 
 template <typename LhsType, std::int_least32_t modulo>
 constexpr LhsType& operator&=(LhsType& lhs, const static_modint<modulo> rhs) noexcept {
-  warn("operator&= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator&= : Are you sure you want to do this?");
   return lhs &= static_cast<std::int_least32_t>(rhs);
 }
 template <typename LhsType, std::int_least32_t modulo>
 constexpr LhsType& operator|=(LhsType& lhs, const static_modint<modulo> rhs) noexcept {
-  warn("operator|= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator|= : Are you sure you want to do this?");
   return lhs |= static_cast<std::int_least32_t>(rhs);
 }
 template <typename LhsType, std::int_least32_t modulo>
 constexpr LhsType& operator^=(LhsType& lhs, const static_modint<modulo> rhs) noexcept {
-  warn("operator^= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator^= : Are you sure you want to do this?");
   return lhs ^= static_cast<std::int_least32_t>(rhs);
 }
 template <typename LhsType, std::int_least32_t modulo>
 constexpr LhsType& operator<<=(LhsType& lhs, const static_modint<modulo> rhs) noexcept {
-  warn("operator<<= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator<<= : Are you sure you want to do this?");
   return lhs <<= static_cast<std::int_least32_t>(rhs);
 }
 template <typename LhsType, std::int_least32_t modulo>
 constexpr LhsType& operator>>=(LhsType& lhs, const static_modint<modulo> rhs) noexcept {
-  warn("operator>>= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator>>= : Are you sure you want to do this?");
   return lhs >>= static_cast<std::int_least32_t>(rhs);
 }
 
 template <typename LhsType, std::int_least32_t modulo>
 [[nodiscard]] constexpr bool operator<(const LhsType lhs, const static_modint<modulo> rhs) {
-  warn("operator< : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator< : Are you sure you want to do this?");
   return lhs < static_cast<std::int_least32_t>(rhs);
 }
 template <typename LhsType, std::int_least32_t modulo>
 [[nodiscard]] constexpr bool operator<=(const LhsType lhs, const static_modint<modulo> rhs) {
-  warn("operator<= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator<= : Are you sure you want to do this?");
   return lhs < static_cast<std::int_least32_t>(rhs);
 }
 template <typename LhsType, std::int_least32_t modulo>
 [[nodiscard]] constexpr bool operator>(const LhsType lhs, const static_modint<modulo> rhs) {
-  warn("operator> : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator> : Are you sure you want to do this?");
   return lhs < static_cast<std::int_least32_t>(rhs);
 }
 template <typename LhsType, std::int_least32_t modulo>
 [[nodiscard]] constexpr bool operator>=(const LhsType lhs, const static_modint<modulo> rhs) {
-  warn("operator>= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator>= : Are you sure you want to do this?");
   return lhs < static_cast<std::int_least32_t>(rhs);
 }
 
 }  // namespace lib
 
-#ifdef warn_not_defined
-#  undef warn
-#  undef warn_not_defined
-// warn may be defined 2 times (by uncommenting line 17)
-#  ifdef warn
-#    undef warn
+#ifdef CP_LIBRARY_WARN_NOT_DEFINED
+#  undef CP_LIBRARY_WARN
+#  undef CP_LIBRARY_WARN_NOT_DEFINED
+#  ifdef CP_LIBRARY_WARN
+#    undef CP_LIBRARY_WARN
 #  endif
 #endif
 
-#endif  // STATIC_MODINT_HPP
+#endif  // CP_LIBRARY_STATIC_MODINT_HPP

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#define ROLLING_HASH_MAX_LENGTH 5000
+#define CP_LIBRARY_ROLLING_HASH_MAX_LENGTH 5000
 #include "../../../include/string/rolling_hash.hpp"
 
 int main() {

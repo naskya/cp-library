@@ -3,8 +3,8 @@
 //! @details Provide a data structure for managing disjoint sets.
 //! @note This file is based on AtCoder Library https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp
 
-#ifndef UNION_FIND_HPP
-#define UNION_FIND_HPP
+#ifndef CP_LIBRARY_UNION_FIND_HPP
+#define CP_LIBRARY_UNION_FIND_HPP
 
 #include <algorithm>
 #include <cassert>
@@ -12,10 +12,10 @@
 #include <string>
 #include <vector>
 
-#ifndef O_assert
+#ifndef CP_LIBRARY_ASSERT
 //! @brief Assert macro
-#  define O_assert(...) assert(__VA_ARGS__)
-#  define O_assert_not_defined
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -40,7 +40,7 @@ public:
   //! @return Index of the parent node (0-indexed)
   //! @note Time complexity: O(a(number_of_nodes)) where a is the inverse ackermann function
   [[nodiscard]] int parent(const int node) const {
-    O_assert(0 <= node && node < nodes);
+    CP_LIBRARY_ASSERT(0 <= node && node < nodes);
     if (par_or_size[node] < 0)
       return node;
     else
@@ -133,9 +133,9 @@ public:
 
 }  // namespace lib
 
-#ifdef O_assert_not_defined
-#  undef O_assert
-#  undef O_assert_not_defined
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
-#endif  // UNION_FIND_HPP
+#endif  // CP_LIBRARY_UNION_FIND_HPP

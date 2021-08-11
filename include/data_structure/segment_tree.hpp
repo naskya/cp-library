@@ -1,8 +1,8 @@
 
 //! @file segment_tree.hpp
 
-#ifndef SEGMENT_TREE_HPP
-#define SEGMENT_TREE_HPP
+#ifndef CP_LIBRARY_SEGMENT_TREE_HPP
+#define CP_LIBRARY_SEGMENT_TREE_HPP
 
 #include <algorithm>
 #include <cassert>
@@ -13,22 +13,22 @@
 #include <type_traits>
 #include <vector>
 
-#ifndef warn
+#ifndef CP_LIBRARY_WARN
 #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
 //! @note You can suppress the warning by uncommenting line 21
-#    define warn(msg) (std::cerr << (msg) << '\n')
-// #  define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\n')
+// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  else
-#    define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  endif
-#  define warn_not_defined
+#  define CP_LIBRARY_WARN_NOT_DEFINED
 #endif
 
-#ifndef O_assert
+#ifndef CP_LIBRARY_ASSERT
 //! @brief Assert macro
-#  define O_assert(...) assert(__VA_ARGS__)
-#  define O_assert_not_defined
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -195,7 +195,7 @@ public:
 
   ~segment_tree() {
     if (locked)
-      warn("Segment tree is destructed in a locked state.");
+      CP_LIBRARY_WARN("Segment tree is destructed in a locked state.");
   }
 
   //! @return Vector size (length)
@@ -209,7 +209,7 @@ public:
   //! @note Time complexity: O(log size) if unlocked
   //! @note Time complexity: O(1)        if locked
   void add(const int index, const Elem value) {
-    O_assert(0 <= index && index < length);
+    CP_LIBRARY_ASSERT(0 <= index && index < length);
     data[index + length] = data[index + length] + value;
     if (!locked)
       propagate_impl(index);
@@ -221,7 +221,7 @@ public:
   //! @note Time complexity: O(log size) if unlocked
   //! @note Time complexity: O(1)        if locked
   void set(const int index, const Elem value) {
-    O_assert(0 <= index && index < length);
+    CP_LIBRARY_ASSERT(0 <= index && index < length);
     data[index + length] = value;
     if (!locked)
       propagate_impl(index);
@@ -231,7 +231,7 @@ public:
   //! @param index index (0-indexed)
   //! @note Time complexity: O(1)
   [[nodiscard]] Elem get(const int index) const {
-    O_assert(0 <= index && index < length);
+    CP_LIBRARY_ASSERT(0 <= index && index < length);
     return data[index + length];
   }
 
@@ -241,8 +241,8 @@ public:
   //! @return product (result of the specified binary operation) of the elements within [left, right) (half-open interval)
   //! @note Time complexity: O(log size)
   [[nodiscard]] Elem prod(int L, int R) const {
-    O_assert(!locked);
-    O_assert(0 <= L && L <= R && R <= length);
+    CP_LIBRARY_ASSERT(!locked);
+    CP_LIBRARY_ASSERT(0 <= L && L <= R && R <= length);
     L += length;
     R += length;
 
@@ -268,7 +268,7 @@ public:
   //! @return product (result of the specified binary operation) of all elements
   //! @note Time complexity: O(1)
   [[nodiscard]] Elem all_prod() const {
-    O_assert(!locked);
+    CP_LIBRARY_ASSERT(!locked);
     return data[1];
   }
 
@@ -276,8 +276,8 @@ public:
   //! @brief Propagate changes in the index-th element to its ancestors.
   //! @note Time complexity: O(log size)
   void propagate(int index) {
-    O_assert(locked);
-    O_assert(0 <= index && index < length);
+    CP_LIBRARY_ASSERT(locked);
+    CP_LIBRARY_ASSERT(0 <= index && index < length);
     propagate_impl(index);
   }
 
@@ -285,7 +285,7 @@ public:
   //! @brief Propagate changes of all elements to the ancestors.
   //! @note Time complexity: O(size)
   void propagate_all() {
-    O_assert(locked);
+    CP_LIBRARY_ASSERT(locked);
     for (int i = length - 1; i > 0; --i)
       data[i] = binary_op(data[i << 1], data[i << 1 | 1]);
   }
@@ -302,7 +302,7 @@ public:
   //! @brief Stop automatic propagation on element changes.
   //! @note Time complexity: O(1)
   void lock() {
-    O_assert(!locked);
+    CP_LIBRARY_ASSERT(!locked);
     locked = true;
   }
 
@@ -311,7 +311,7 @@ public:
   //! @brief Resume automatic propagation on element changes.
   //! @note Time complexity: O(1)
   void unlock() {
-    O_assert(locked);
+    CP_LIBRARY_ASSERT(locked);
     locked = false;
   }
 
@@ -377,18 +377,17 @@ public:
 
 }  // namespace lib
 
-#ifdef warn_not_defined
-#  undef warn
-#  undef warn_not_defined
-// warn may be defined 2 times (by uncommenting line 21)
-#  ifdef warn
-#    undef warn
+#ifdef CP_LIBRARY_WARN_NOT_DEFINED
+#  undef CP_LIBRARY_WARN
+#  undef CP_LIBRARY_WARN_NOT_DEFINED
+#  ifdef CP_LIBRARY_WARN
+#    undef CP_LIBRARY_WARN
 #  endif
 #endif
 
-#ifdef O_assert_not_defined
-#  undef O_assert
-#  undef O_assert_not_defined
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
-#endif  // SEGMENT_TREE_HPP
+#endif  // CP_LIBRARY_SEGMENT_TREE_HPP

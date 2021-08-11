@@ -2,18 +2,18 @@
 //! @file sparse_table.hpp
 //! @details Provide a data structure to calculate interval products of associative and idempotent operations.
 
-#ifndef SPARSE_TABLE_HPP
-#define SPARSE_TABLE_HPP
+#ifndef CP_LIBRARY_SPARSE_TABLE_HPP
+#define CP_LIBRARY_SPARSE_TABLE_HPP
 
 #include <cassert>
 #include <limits>
 #include <type_traits>
 #include <vector>
 
-#ifndef O_assert
+#ifndef CP_LIBRARY_ASSERT
 //! @brief Assert macro
-#  define O_assert(...) assert(__VA_ARGS__)
-#  define O_assert_not_defined
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -70,7 +70,7 @@ public:
   //! @return product of the elements of an interval [left, right) (half-open interval)
   //! @note Time complexity: O(1)
   [[nodiscard]] Elem query(const int left, const int right) const {
-    O_assert(0 <= left && left < right && right <= length);
+    CP_LIBRARY_ASSERT(0 <= left && left < right && right <= length);
     const int j = internal::int_log2(right - left);
     return binary_op(table[left][j], table[right - (1 << j)][j]);
   }
@@ -83,9 +83,9 @@ sparse_table(const Container&, const Func&)
 
 }  // namespace lib
 
-#ifdef O_assert_not_defined
-#  undef O_assert
-#  undef O_assert_not_defined
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
-#endif  // SPARSE_TABLE_HPP
+#endif  // CP_LIBRARY_SPARSE_TABLE_HPP

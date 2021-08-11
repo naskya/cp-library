@@ -1,8 +1,8 @@
 
 //! @file manachers_algorithm.hpp
 
-#ifndef MANACHERS_ALGORITHM_HPP
-#define MANACHERS_ALGORITHM_HPP
+#ifndef CP_LIBRARY_MANACHERS_ALGORITHM_HPP
+#define CP_LIBRARY_MANACHERS_ALGORITHM_HPP
 
 #include <deque>
 
@@ -38,4 +38,4 @@ template <typename Container>
 
 }  // namespace lib
 
-#endif  // MANACHERS_ALGORITHM_HPP
+#endif  // CP_LIBRARY_MANACHERS_ALGORITHM_HPP

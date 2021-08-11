@@ -1,8 +1,8 @@
 
 //! @file minimum_spanning_tree.hpp
 
-#ifndef MINIMUM_SPANNING_TREE_HPP
-#define MINIMUM_SPANNING_TREE_HPP
+#ifndef CP_LIBRARY_MINIMUM_SPANNING_TREE_HPP
+#define CP_LIBRARY_MINIMUM_SPANNING_TREE_HPP
 
 #include <algorithm>
 #include <cassert>
@@ -10,22 +10,22 @@
 #include <tuple>
 #include <vector>
 
-#ifndef warn
+#ifndef CP_LIBRARY_WARN
 #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
 //! @note You can suppress the warning by uncommenting line 18
-#    define warn(msg) (std::cerr << (msg) << '\n')
-// #  define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\n')
+// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  else
-#    define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  endif
-#  define warn_not_defined
+#  define CP_LIBRARY_WARN_NOT_DEFINED
 #endif
 
-#ifndef O_assert
+#ifndef CP_LIBRARY_ASSERT
 //! @brief Assert macro
-#  define O_assert(...) assert(__VA_ARGS__)
-#  define O_assert_not_defined
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -42,7 +42,7 @@ namespace internal {
         : nodes(number_of_nodes), par_or_size(number_of_nodes, -1) {}
 
     [[nodiscard]] int parent(const int node) const {
-      O_assert(0 <= node && node < nodes);
+      CP_LIBRARY_ASSERT(0 <= node && node < nodes);
       if (par_or_size[node] < 0)
         return node;
       else
@@ -82,7 +82,7 @@ template <typename TotalCostType, typename NodeIndexType, typename CostType, tem
   std::pair<std::vector<Edge>, TotalCostType> res {{}, TotalCostType(0)};
 
   if (edge_list.empty()) {
-    warn("An empty edge list is provided.");
+    CP_LIBRARY_WARN("An empty edge list is provided.");
     return res;
   }
 
@@ -120,7 +120,7 @@ template <typename TotalCostType, typename NodeIndexType, typename CostType, tem
   std::pair<std::vector<Edge>, TotalCostType> res {{}, TotalCostType(0)};
 
   if (edge_list.empty()) {
-    warn("An empty edge list is provided.");
+    CP_LIBRARY_WARN("An empty edge list is provided.");
     return res;
   }
 
@@ -154,7 +154,7 @@ template <typename TotalCostType, typename NodeIndexType, typename CostType, tem
   std::pair res {std::vector<std::vector<std::pair<NodeIndexType, CostType>>>(nodes), TotalCostType(0)};
 
   if (nodes == 0) {
-    warn("An empty adjacency list is provided.");
+    CP_LIBRARY_WARN("An empty adjacency list is provided.");
     return res;
   }
 
@@ -202,7 +202,7 @@ template <typename TotalCostType, typename CostType, template <typename...> type
   std::pair res {std::vector(nodes, std::vector<CostType>(nodes, infinity)), TotalCostType(0)};
 
   if (nodes == 0) {
-    warn("An empty adjacency matrix is provided.");
+    CP_LIBRARY_WARN("An empty adjacency matrix is provided.");
     return res;
   }
 
@@ -237,18 +237,17 @@ template <typename TotalCostType, typename CostType, template <typename...> type
 
 }  // namespace lib
 
-#ifdef warn_not_defined
-#  undef warn
-#  undef warn_not_defined
-// warn may be defined 2 times (by uncommenting line 18)
-#  ifdef warn
-#    undef warn
+#ifdef CP_LIBRARY_WARN_NOT_DEFINED
+#  undef CP_LIBRARY_WARN
+#  undef CP_LIBRARY_WARN_NOT_DEFINED
+#  ifdef CP_LIBRARY_WARN
+#    undef CP_LIBRARY_WARN
 #  endif
 #endif
 
-#ifdef O_assert_not_defined
-#  undef O_assert
-#  undef O_assert_not_defined
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
-#endif  // MINIMUM_SPANNING_TREE_HPP
+#endif  // CP_LIBRARY_MINIMUM_SPANNING_TREE_HPP

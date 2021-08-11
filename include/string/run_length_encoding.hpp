@@ -1,24 +1,24 @@
 
 //! @file run_length_encoding.hpp
 
-#ifndef RUN_LENGTH_ENCODING_HPP
-#define RUN_LENGTH_ENCODING_HPP
+#ifndef CP_LIBRARY_RUN_LENGTH_ENCODING_HPP
+#define CP_LIBRARY_RUN_LENGTH_ENCODING_HPP
 
 #include <iostream>
 #include <type_traits>
 #include <utility>
 #include <vector>
 
-#ifndef warn
+#ifndef CP_LIBRARY_WARN
 #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
 //! @note You can suppress the warning by uncommenting line 17
-#    define warn(msg) (std::cerr << (msg) << '\n')
-// #  define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\n')
+// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  else
-#    define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  endif
-#  define warn_not_defined
+#  define CP_LIBRARY_WARN_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -31,7 +31,7 @@ template <typename Container>
 [[nodiscard]] auto run_length_encoding(const Container& src) {
   using Elem = std::decay_t<decltype(*std::cbegin(std::declval<Container>()))>;
   if (src.empty()) {
-    warn("An empty container is provided.");
+    CP_LIBRARY_WARN("An empty container is provided.");
     return std::vector<std::pair<Elem, int>> {};
   }
   std::vector<std::pair<Elem, int>> res {{*std::cbegin(src), 1}};
@@ -51,13 +51,12 @@ template <typename Container>
 
 }  // namespace lib
 
-#ifdef warn_not_defined
-#  undef warn
-#  undef warn_not_defined
-// warn may be defined 2 times (by uncommenting line 17)
-#  ifdef warn
-#    undef warn
+#ifdef CP_LIBRARY_WARN_NOT_DEFINED
+#  undef CP_LIBRARY_WARN
+#  undef CP_LIBRARY_WARN_NOT_DEFINED
+#  ifdef CP_LIBRARY_WARN
+#    undef CP_LIBRARY_WARN
 #  endif
 #endif
 
-#endif  // RUN_LENGTH_ENCODING_HPP
+#endif  // CP_LIBRARY_RUN_LENGTH_ENCODING_HPP

@@ -2,8 +2,8 @@
 //! @file z_algorithm.hpp
 //! @details Provide a function to calculate the length of the longest common prefix.
 
-#ifndef Z_ALGORITHM_HPP
-#define Z_ALGORITHM_HPP
+#ifndef CP_LIBRARY_Z_ALGORITHM_HPP
+#define CP_LIBRARY_Z_ALGORITHM_HPP
 
 #include <iterator>
 #include <vector>
@@ -39,4 +39,4 @@ template <typename Container>
 
 }  // namespace lib
 
-#endif  // Z_ALGORITHM_HPP
+#endif  // CP_LIBRARY_Z_ALGORITHM_HPP

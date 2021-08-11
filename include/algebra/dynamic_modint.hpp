@@ -1,24 +1,24 @@
 
 //! @file dynamic_modint.hpp
 
-#ifndef DYNAMIC_MODINT_HPP
-#define DYNAMIC_MODINT_HPP
+#ifndef CP_LIBRARY_DYNAMIC_MODINT_HPP
+#define CP_LIBRARY_DYNAMIC_MODINT_HPP
 
 #include <cstdint>
 #include <iostream>
 #include <limits>
 #include <type_traits>
 
-#ifndef warn
+#ifndef CP_LIBRARY_WARN
 #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
 //! @note You can suppress the warning by uncommenting line 17
-#    define warn(msg) (std::cerr << (msg) << '\n')
-// #  define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\n')
+// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  else
-#    define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  endif
-#  define warn_not_defined
+#  define CP_LIBRARY_WARN_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -108,28 +108,28 @@ public:
   }
 
   [[nodiscard]] constexpr dynamic_modint operator%(const dynamic_modint rhs) const {
-    warn("operator% : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator% : Are you sure you want to do this?");
     return dynamic_modint(value % rhs.value, true);
   }
 
   [[nodiscard]] constexpr dynamic_modint operator&(const dynamic_modint rhs) const {
-    warn("operator& : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator& : Are you sure you want to do this?");
     return dynamic_modint(value & rhs.value, true);
   }
   [[nodiscard]] constexpr dynamic_modint operator|(const dynamic_modint rhs) const {
-    warn("operator| : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator| : Are you sure you want to do this?");
     return dynamic_modint(value | rhs.value);
   }
   [[nodiscard]] constexpr dynamic_modint operator^(const dynamic_modint rhs) const {
-    warn("operator^ : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator^ : Are you sure you want to do this?");
     return dynamic_modint(value ^ rhs.value);
   }
   [[nodiscard]] constexpr dynamic_modint operator<<(const dynamic_modint rhs) const {
-    warn("operator<< : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<< : Are you sure you want to do this?");
     return dynamic_modint((internal::LongInt<Tp>) value << rhs.value);
   }
   [[nodiscard]] constexpr dynamic_modint operator>>(const dynamic_modint rhs) const {
-    warn("operator>> : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>> : Are you sure you want to do this?");
     return dynamic_modint(value >> rhs.value, true);
   }
 
@@ -155,7 +155,7 @@ public:
   }
 
   constexpr dynamic_modint& operator%=(const dynamic_modint rhs) {
-    warn("operator%= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator%= : Are you sure you want to do this?");
 
     value %= rhs.value;
     if (value < 0)
@@ -164,29 +164,29 @@ public:
   }
 
   constexpr dynamic_modint& operator&=(const dynamic_modint rhs) noexcept {
-    warn("operator&= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator&= : Are you sure you want to do this?");
     value &= rhs.value;
     return *this;
   }
   constexpr dynamic_modint& operator|=(const dynamic_modint rhs) noexcept {
-    warn("operator|= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator|= : Are you sure you want to do this?");
     value |= rhs.value;
     clamp();
     return *this;
   }
   constexpr dynamic_modint& operator^=(const dynamic_modint rhs) noexcept {
-    warn("operator^= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator^= : Are you sure you want to do this?");
     value ^= rhs.value;
     clamp();
     return *this;
   }
   constexpr dynamic_modint& operator<<=(const dynamic_modint rhs) noexcept {
-    warn("operator<<= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<<= : Are you sure you want to do this?");
     value = clamp((internal::LongInt<Tp>) value << rhs.value);
     return *this;
   }
   constexpr dynamic_modint& operator>>=(const dynamic_modint rhs) noexcept {
-    warn("operator>>= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>>= : Are you sure you want to do this?");
     value >>= rhs.value;
     return *this;
   }
@@ -211,33 +211,33 @@ public:
 
   template <typename RhsType>
   [[nodiscard]] constexpr dynamic_modint operator%(const RhsType rhs) const {
-    warn("operator% : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator% : Are you sure you want to do this?");
     return dynamic_modint(value % rhs, true);
   }
 
   template <typename RhsType>
   [[nodiscard]] constexpr dynamic_modint operator&(const RhsType rhs) const {
-    warn("operator& : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator& : Are you sure you want to do this?");
     return dynamic_modint(value & rhs, true);
   }
   template <typename RhsType>
   [[nodiscard]] constexpr dynamic_modint operator|(const RhsType rhs) const noexcept {
-    warn("operator| : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator| : Are you sure you want to do this?");
     return dynamic_modint(value | rhs);
   }
   template <typename RhsType>
   [[nodiscard]] constexpr dynamic_modint operator^(const RhsType rhs) const {
-    warn("operator^ : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator^ : Are you sure you want to do this?");
     return dynamic_modint(value ^ rhs);
   }
   template <typename RhsType>
   [[nodiscard]] constexpr dynamic_modint operator<<(const RhsType rhs) const {
-    warn("operator<< : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<< : Are you sure you want to do this?");
     return dynamic_modint((internal::LongInt<Tp>) value << rhs);
   }
   template <typename RhsType>
   [[nodiscard]] constexpr dynamic_modint operator>>(const RhsType rhs) const {
-    warn("operator>> : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>> : Are you sure you want to do this?");
     return dynamic_modint(value >> rhs, true);
   }
 
@@ -265,50 +265,50 @@ public:
 
   template <typename RhsType>
   constexpr dynamic_modint& operator%=(const RhsType rhs) {
-    warn("operator%= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator%= : Are you sure you want to do this?");
     value %= rhs;
     return *this;
   }
 
   template <typename RhsType>
   constexpr dynamic_modint& operator&=(const RhsType rhs) {
-    warn("operator&= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator&= : Are you sure you want to do this?");
     value &= rhs;
     return *this;
   }
   template <typename RhsType>
   constexpr dynamic_modint& operator|=(const RhsType rhs) {
-    warn("operator|= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator|= : Are you sure you want to do this?");
     value |= rhs;
     clamp();
     return *this;
   }
   template <typename RhsType>
   constexpr dynamic_modint& operator^=(const RhsType rhs) {
-    warn("operator^= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator^= : Are you sure you want to do this?");
     value ^= rhs;
     clamp();
     return *this;
   }
   template <typename RhsType>
   constexpr dynamic_modint& operator<<=(const RhsType rhs) {
-    warn("operator<<= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<<= : Are you sure you want to do this?");
     value = clamp((internal::LongInt<Tp>) value << rhs);
     return *this;
   }
   template <typename RhsType>
   constexpr dynamic_modint& operator>>=(const RhsType rhs) {
-    warn("operator>>= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>>= : Are you sure you want to do this?");
     value >>= rhs;
     return *this;
   }
 
   [[nodiscard]] constexpr bool operator!() const {
-    warn("operator! : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator! : Are you sure you want to do this?");
     return value == 0;
   }
   [[nodiscard]] constexpr dynamic_modint operator~() const {
-    warn("operator~ : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator~ : Are you sure you want to do this?");
     return dynamic_modint(~value);
   }
   [[nodiscard]] constexpr dynamic_modint operator-() const noexcept {
@@ -344,19 +344,19 @@ public:
     return value != rhs.value;
   }
   [[nodiscard]] constexpr bool operator<(const dynamic_modint rhs) const {
-    warn("operator< : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator< : Are you sure you want to do this?");
     return value < rhs.value;
   }
   [[nodiscard]] constexpr bool operator<=(const dynamic_modint rhs) const {
-    warn("operator<= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<= : Are you sure you want to do this?");
     return value <= rhs.value;
   }
   [[nodiscard]] constexpr bool operator>(const dynamic_modint rhs) const {
-    warn("operator> : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator> : Are you sure you want to do this?");
     return value > rhs.value;
   }
   [[nodiscard]] constexpr bool operator>=(const dynamic_modint rhs) const {
-    warn("operator>= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>= : Are you sure you want to do this?");
     return value >= rhs.value;
   }
 
@@ -370,22 +370,22 @@ public:
   }
   template <typename RhsType>
   [[nodiscard]] constexpr bool operator<(const RhsType rhs) const {
-    warn("operator< : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator< : Are you sure you want to do this?");
     return value < rhs;
   }
   template <typename RhsType>
   [[nodiscard]] constexpr bool operator<=(const RhsType rhs) const {
-    warn("operator<= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator<= : Are you sure you want to do this?");
     return value <= rhs;
   }
   template <typename RhsType>
   [[nodiscard]] constexpr bool operator>(const RhsType rhs) const {
-    warn("operator> : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator> : Are you sure you want to do this?");
     return value > rhs;
   }
   template <typename RhsType>
   [[nodiscard]] constexpr bool operator>=(const RhsType rhs) const {
-    warn("operator>= : Are you sure you want to do this?");
+    CP_LIBRARY_WARN("operator>= : Are you sure you want to do this?");
     return value >= rhs;
   }
 
@@ -491,18 +491,18 @@ template <typename LhsType, typename Tp, Tp* modulo_ptr>
 
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator%(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator% : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator% : Are you sure you want to do this?");
   return dynamic_modint<Tp, modulo_ptr>(lhs % (Tp) rhs, true);
 }
 
 template <typename LhsType, typename Tp, Tp* modulo_ptr, std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>
 [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator<<(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator<< : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator<< : Are you sure you want to do this?");
   return dynamic_modint<Tp, modulo_ptr>((internal::LongInt<Tp>) lhs << (Tp) rhs);
 }
 template <typename LhsType, typename Tp, Tp* modulo_ptr, std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>
 [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator>>(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator>> : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator>> : Are you sure you want to do this?");
   return dynamic_modint<Tp, modulo_ptr>(lhs >> (Tp) rhs);
 }
 
@@ -525,66 +525,65 @@ constexpr LhsType& operator/=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr>
 
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 constexpr LhsType& operator%=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator%= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator%= : Are you sure you want to do this?");
   return lhs %= (Tp) rhs;
 }
 
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 constexpr LhsType& operator&=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator&= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator&= : Are you sure you want to do this?");
   return lhs &= (Tp) rhs;
 }
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 constexpr LhsType& operator|=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator|= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator|= : Are you sure you want to do this?");
   return lhs |= (Tp) rhs;
 }
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 constexpr LhsType& operator^=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator^= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator^= : Are you sure you want to do this?");
   return lhs ^= (Tp) rhs;
 }
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 constexpr LhsType& operator<<=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator<<= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator<<= : Are you sure you want to do this?");
   return lhs <<= (Tp) rhs;
 }
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 constexpr LhsType& operator>>=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator>>= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator>>= : Are you sure you want to do this?");
   return lhs >>= (Tp) rhs;
 }
 
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 [[nodiscard]] constexpr bool operator<(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator< : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator< : Are you sure you want to do this?");
   return lhs < (Tp) rhs;
 }
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 [[nodiscard]] constexpr bool operator<=(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator<= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator<= : Are you sure you want to do this?");
   return lhs < (Tp) rhs;
 }
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 [[nodiscard]] constexpr bool operator>(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator> : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator> : Are you sure you want to do this?");
   return lhs < (Tp) rhs;
 }
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
 [[nodiscard]] constexpr bool operator>=(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
-  warn("operator>= : Are you sure you want to do this?");
+  CP_LIBRARY_WARN("operator>= : Are you sure you want to do this?");
   return lhs < (Tp) rhs;
 }
 
 }  // namespace lib
 
-#ifdef warn_not_defined
-#  undef warn
-#  undef warn_not_defined
-// warn may be defined 2 times (by uncommenting line 17)
-#  ifdef warn
-#    undef warn
+#ifdef CP_LIBRARY_WARN_NOT_DEFINED
+#  undef CP_LIBRARY_WARN
+#  undef CP_LIBRARY_WARN_NOT_DEFINED
+#  ifdef CP_LIBRARY_WARN
+#    undef CP_LIBRARY_WARN
 #  endif
 #endif
 
-#endif  // DYNAMIC_MODINT_HPP
+#endif  // CP_LIBRARY_DYNAMIC_MODINT_HPP

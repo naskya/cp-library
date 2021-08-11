@@ -1,18 +1,18 @@
 
 //! @file golden_section_search.hpp
 
-#ifndef GOLDEN_SECTION_SEARCH_HPP
-#define GOLDEN_SECTION_SEARCH_HPP
+#ifndef CP_LIBRARY_GOLDEN_SECTION_SEARCH_HPP
+#define CP_LIBRARY_GOLDEN_SECTION_SEARCH_HPP
 
 #include <cassert>
 #include <cmath>
 #include <type_traits>
 #include <utility>
 
-#ifndef O_assert
+#ifndef CP_LIBRARY_ASSERT
 //! @brief Assert macro
-#  define O_assert(...) assert(__VA_ARGS__)
-#  define O_assert_not_defined
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -30,7 +30,7 @@ namespace lib {
 template <bool minimize, typename RealType, typename Func>
 [[nodiscard]] auto golden_section_search(RealType low, RealType high, const Func& f, const RealType diff = 1e-9L) {
   using F_ResType = decltype(f(std::declval<RealType>()));
-  O_assert(low <= high);
+  CP_LIBRARY_ASSERT(low <= high);
 
   using std::sqrt;
   const RealType phi        = (1 + sqrt(RealType(5.0L))) / 2;
@@ -62,9 +62,9 @@ template <bool minimize, typename RealType, typename Func>
 
 }  // namespace lib
 
-#ifdef O_assert_not_defined
-#  undef O_assert
-#  undef O_assert_not_defined
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
-#endif  // GOLDEN_SECTION_SEARCH_HPP
+#endif  // CP_LIBRARY_GOLDEN_SECTION_SEARCH_HPP

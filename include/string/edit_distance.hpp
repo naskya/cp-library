@@ -1,8 +1,8 @@
 
 //! @file edit_distance.hpp
 
-#ifndef EDIT_DISTANCE_HPP
-#define EDIT_DISTANCE_HPP
+#ifndef CP_LIBRARY_EDIT_DISTANCE_HPP
+#define CP_LIBRARY_EDIT_DISTANCE_HPP
 
 #include <vector>
 
@@ -36,4 +36,4 @@ template <typename Container>
 
 }  // namespace lib
 
-#endif  // EDIT_DISTANCE_HPP
+#endif  // CP_LIBRARY_EDIT_DISTANCE_HPP

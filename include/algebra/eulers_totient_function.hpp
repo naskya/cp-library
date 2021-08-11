@@ -1,8 +1,8 @@
 
 //! @file eulers_totient_function.hpp
 
-#ifndef EULERS_TOTIENT_FUNCTION_HPP
-#define EULERS_TOTIENT_FUNCTION_HPP
+#ifndef CP_LIBRARY_EULERS_TOTIENT_FUNCTION_HPP
+#define CP_LIBRARY_EULERS_TOTIENT_FUNCTION_HPP
 
 #include <numeric>
 #include <type_traits>
@@ -60,4 +60,4 @@ template <typename Tp>
 
 }  // namespace lib
 
-#endif  // EULERS_TOTIENT_FUNCTION_HPP
+#endif  // CP_LIBRARY_EULERS_TOTIENT_FUNCTION_HPP

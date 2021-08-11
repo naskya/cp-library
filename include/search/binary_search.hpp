@@ -1,17 +1,17 @@
 
 //! @file binary_search.hpp
 
-#ifndef BINARY_SEARCH_HPP
-#define BINARY_SEARCH_HPP
+#ifndef CP_LIBRARY_BINARY_SEARCH_HPP
+#define CP_LIBRARY_BINARY_SEARCH_HPP
 
 #include <cassert>
 #include <type_traits>
 #include <utility>
 
-#ifndef O_assert
+#ifndef CP_LIBRARY_ASSERT
 //! @brief Assert macro
-#  define O_assert(...) assert(__VA_ARGS__)
-#  define O_assert_not_defined
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -29,7 +29,7 @@ namespace lib {
 template <typename Tp, typename Func>
 [[nodiscard]] Tp binary_search(Tp ok, Tp ng, const Func& f, const Tp diff = 1) {
   static_assert(std::is_same_v<decltype(std::declval<Func>()(std::declval<Tp>())), bool>);
-  O_assert(f(ok) && !f(ng));
+  CP_LIBRARY_ASSERT(f(ok) && !f(ng));
 
   if (ok < ng)
     while (ng - ok > diff) {
@@ -47,9 +47,9 @@ template <typename Tp, typename Func>
 
 }  // namespace lib
 
-#ifdef O_assert_not_defined
-#  undef O_assert
-#  undef O_assert_not_defined
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
-#endif  // BINARY_SEARCH_HPP
+#endif  // CP_LIBRARY_BINARY_SEARCH_HPP

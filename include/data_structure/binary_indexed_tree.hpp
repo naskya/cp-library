@@ -1,18 +1,18 @@
 
 //! @file binary_indexed_tree.hpp
 
-#ifndef BINARY_INDEXED_TREE_HPP
-#define BINARY_INDEXED_TREE_HPP
+#ifndef CP_LIBRARY_BINARY_INDEXED_TREE_HPP
+#define CP_LIBRARY_BINARY_INDEXED_TREE_HPP
 
 #include <cassert>
 #include <iostream>
 #include <string>
 #include <vector>
 
-#ifndef O_assert
+#ifndef CP_LIBRARY_ASSERT
 //! @brief Assert macro
-#  define O_assert(...) assert(__VA_ARGS__)
-#  define O_assert_not_defined
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -67,7 +67,7 @@ namespace internal {
     //! @param value value to be added
     //! @note Time complexity: O(log size)
     void add(int index, const Elem& value) {
-      O_assert(0 <= index && index < length);
+      CP_LIBRARY_ASSERT(0 <= index && index < length);
       for (++index; index <= length; index += (index & -index))
         data[index] += value;
     }
@@ -78,7 +78,7 @@ namespace internal {
     //! @return Sum of the elements within [left, right) (half-open interval)
     //! @note Time complexity: O(log size)
     [[nodiscard]] Elem sum(int left, int right) const {
-      O_assert(0 <= left && left <= right && right <= length);
+      CP_LIBRARY_ASSERT(0 <= left && left <= right && right <= length);
       if (left == 0)
         return partial_sum(right);
       else
@@ -149,7 +149,7 @@ public:
   //! @param value value to be added
   //! @note Time complexity: O(log size)
   void uniform_add(int left, int right, const Elem& value) {
-    O_assert(0 <= left && left <= right && right <= size());
+    CP_LIBRARY_ASSERT(0 <= left && left <= right && right <= size());
     if (left != size()) {
       bit_0.add(left, value * (-1) * (left - 1));
       bit_1.add(left, value);
@@ -213,9 +213,9 @@ public:
 
 }  // namespace lib
 
-#ifdef O_assert_not_defined
-#  undef O_assert
-#  undef O_assert_not_defined
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
-#endif  // BINARY_INDEXED_TREE_HPP
+#endif  // CP_LIBRARY_BINARY_INDEXED_TREE_HPP

@@ -2,8 +2,8 @@
 //! @file factorial.hpp
 //! @brief Factorial, Permutation, Combination, Multinomial coefficients
 
-#ifndef FACTORIAL_HPP
-#define FACTORIAL_HPP
+#ifndef CP_LIBRARY_FACTORIAL_HPP
+#define CP_LIBRARY_FACTORIAL_HPP
 
 #include <algorithm>
 #include <array>
@@ -11,16 +11,16 @@
 #include <numeric>
 #include <type_traits>
 
-#ifndef warn
+#ifndef CP_LIBRARY_WARN
 #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
 //! @note You can suppress the warning by uncommenting line 19
-#    define warn(msg) (std::cerr << (msg) << '\n')
-// #  define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\n')
+// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  else
-#    define warn(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  endif
-#  define warn_not_defined
+#  define CP_LIBRARY_WARN_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -50,7 +50,7 @@ namespace internal {
 template <typename Tp, typename ReturnType = Tp>
 [[nodiscard]] ReturnType factorial(const Tp n) {
   if (n < 0)
-    warn("n is negative.");
+    CP_LIBRARY_WARN("n is negative.");
 
   ReturnType res = 1;
   for (Tp i = 1; i <= n; ++i)
@@ -67,17 +67,17 @@ template <typename Tp, typename ReturnType = Tp>
 template <typename Tp, typename ReturnType = Tp>
 [[nodiscard]] ReturnType permutation(const Tp n, const Tp r) {
   if (n == 0)
-    warn("n is zero.");
+    CP_LIBRARY_WARN("n is zero.");
   if (n < 0) {
-    warn("n is negative.");
+    CP_LIBRARY_WARN("n is negative.");
     return 0;
   }
   if (r < 0) {
-    warn("r is negative.");
+    CP_LIBRARY_WARN("r is negative.");
     return 0;
   }
   if (n < r) {
-    warn("n is less than r.");
+    CP_LIBRARY_WARN("n is less than r.");
     return 0;
   }
   ReturnType res = 1;
@@ -95,17 +95,17 @@ template <typename Tp, typename ReturnType = Tp>
 template <typename Tp, typename ReturnType = Tp>
 [[nodiscard]] ReturnType combination(const Tp n, const Tp r) {
   if (n == 0)
-    warn("n is zero.");
+    CP_LIBRARY_WARN("n is zero.");
   if (n < 0) {
-    warn("n is negative.");
+    CP_LIBRARY_WARN("n is negative.");
     return 0;
   }
   if (r < 0) {
-    warn("r is negative.");
+    CP_LIBRARY_WARN("r is negative.");
     return 0;
   }
   if (n < r) {
-    warn("n is less than r.");
+    CP_LIBRARY_WARN("n is less than r.");
     return 0;
   }
   ReturnType res = 1;
@@ -128,17 +128,17 @@ template <typename Tp, typename ReturnType = Tp, typename... Ts>
   static_assert(internal::is_all_same_v<Ts...>);
 
   if (n == 0)
-    warn("n is zero.");
+    CP_LIBRARY_WARN("n is zero.");
   if (n < 0) {
-    warn("n is negative.");
+    CP_LIBRARY_WARN("n is negative.");
     return 0;
   }
   if (((r < 0) || ...)) {
-    warn("r... contains negative number.");
+    CP_LIBRARY_WARN("r... contains negative number.");
     return 0;
   }
   if ((r + ...) > n) {
-    warn("Sum of r... is greater than n.");
+    CP_LIBRARY_WARN("Sum of r... is greater than n.");
     return 0;
   }
   std::array<internal::first_type_t<Ts...>, sizeof...(Ts)> r_array {r...};
@@ -179,17 +179,17 @@ template <typename Tp, typename ReturnType = Tp, typename Container>
 [[nodiscard]] ReturnType multinomial(const Tp n, const Container& r) {
   using Elem = std::decay_t<decltype(*std::cbegin(r))>;
   if (n == 0)
-    warn("n is zero.");
+    CP_LIBRARY_WARN("n is zero.");
   if (n < 0) {
-    warn("n is negative.");
+    CP_LIBRARY_WARN("n is negative.");
     return 0;
   }
   if (std::any_of(std::cbegin(r), std::cend(r), [](const auto v) { return v < 0; })) {
-    warn("r contains negative number.");
+    CP_LIBRARY_WARN("r contains negative number.");
     return 0;
   }
   if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {
-    warn("Sum of r is greater than n.");
+    CP_LIBRARY_WARN("Sum of r is greater than n.");
     return 0;
   }
 
@@ -272,17 +272,17 @@ template <std::size_t Max, typename Modint>
 template <std::size_t Size, typename Modint, typename Tp>
 [[nodiscard]] Modint permutation(const Tp n, const Tp r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
   if (n == 0)
-    warn("n is zero.");
+    CP_LIBRARY_WARN("n is zero.");
   if (n < 0) {
-    warn("n is negative.");
+    CP_LIBRARY_WARN("n is negative.");
     return 0;
   }
   if (r < 0) {
-    warn("r is negative.");
+    CP_LIBRARY_WARN("r is negative.");
     return 0;
   }
   if (n < r) {
-    warn("n is less than r.");
+    CP_LIBRARY_WARN("n is less than r.");
     return 0;
   }
   return factorial_array[n] * factorial_modinv_array[n - r];
@@ -300,17 +300,17 @@ template <std::size_t Size, typename Modint, typename Tp>
 template <std::size_t Size, typename Modint, typename Tp>
 [[nodiscard]] constexpr Modint combination(const Tp n, const Tp r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
   if (n == 0)
-    warn("n is zero.");
+    CP_LIBRARY_WARN("n is zero.");
   if (n < 0) {
-    warn("n is negative.");
+    CP_LIBRARY_WARN("n is negative.");
     return 0;
   }
   if (r < 0) {
-    warn("r is negative.");
+    CP_LIBRARY_WARN("r is negative.");
     return 0;
   }
   if (n < r) {
-    warn("n is less than r.");
+    CP_LIBRARY_WARN("n is less than r.");
     return 0;
   }
   return factorial_array[n] * factorial_modinv_array[n - r] * factorial_modinv_array[r];
@@ -329,17 +329,17 @@ template <std::size_t Size, typename Modint, typename Tp>
 template <std::size_t Size, typename Modint, typename Tp, typename... Ts>
 [[nodiscard]] constexpr Modint multinomial(const Tp n, const Ts... r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
   if (n == 0)
-    warn("n is zero.");
+    CP_LIBRARY_WARN("n is zero.");
   if (n < 0) {
-    warn("n is negative.");
+    CP_LIBRARY_WARN("n is negative.");
     return 0;
   }
   if (((r < 0) || ...)) {
-    warn("r contains negative number.");
+    CP_LIBRARY_WARN("r contains negative number.");
     return 0;
   }
   if ((r + ...) > n) {
-    warn("Sum of r... is greater than n.");
+    CP_LIBRARY_WARN("Sum of r... is greater than n.");
     return 0;
   }
   return factorial_array[n] * ((factorial_modinv_array[r]) * ...);
@@ -359,17 +359,17 @@ template <std::size_t Size, typename Modint, typename Tp, typename Container>
 [[nodiscard]] constexpr Modint multinomial(const Tp n, const Container& r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
   using Elem = std::decay_t<decltype(*std::cbegin(r))>;
   if (n == 0)
-    warn("n is zero.");
+    CP_LIBRARY_WARN("n is zero.");
   if (n < 0) {
-    warn("n is negative.");
+    CP_LIBRARY_WARN("n is negative.");
     return 0;
   }
   if (std::any_of(std::cbegin(r), std::cend(r), [](const auto v) { return v < 0; })) {
-    warn("r contains negative number.");
+    CP_LIBRARY_WARN("r contains negative number.");
     return 0;
   }
   if (std::reduce(std::cbegin(r), std::cend(r), Elem(0)) > n) {
-    warn("Sum of r is greater than n.");
+    CP_LIBRARY_WARN("Sum of r is greater than n.");
     return 0;
   }
   return factorial_array[n] * std::reduce(std::cbegin(r), std::cend(r), Modint(1),
@@ -392,12 +392,11 @@ template <std::size_t Size, typename Modint, typename Tp>
 
 }  // namespace lib
 
-#ifdef warn_not_defined
-#  undef warn
-#  undef warn_not_defined
-// warn may be defined 2 times (by uncommenting line 19)
-#  ifdef warn
-#    undef warn
+#ifdef CP_LIBRARY_WARN_NOT_DEFINED
+#  undef CP_LIBRARY_WARN
+#  undef CP_LIBRARY_WARN_NOT_DEFINED
+#  ifdef CP_LIBRARY_WARN
+#    undef CP_LIBRARY_WARN
 #  endif
 #endif
 

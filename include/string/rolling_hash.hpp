@@ -2,13 +2,13 @@
 //! @file rolling_hash.hpp
 //! @note The implementation is based on this article https://qiita.com/keymoon/items/11fac5627672a6d6a9f6
 
-#ifndef ROLLING_HASH_HPP
-#define ROLLING_HASH_HPP
+#ifndef CP_LIBRARY_ROLLING_HASH_HPP
+#define CP_LIBRARY_ROLLING_HASH_HPP
 
-#ifndef ROLLING_HASH_MAX_LENGTH
-#  warning Please define ROLLING_HASH_MAX_LENGTH (default: 200000).
-#  define ROLLING_HASH_MAX_LENGTH 200000
-#  define ROLLING_HASH_MAX_LENGTH_not_defined
+#ifndef CP_LIBRARY_ROLLING_HASH_MAX_LENGTH
+#  warning Please define CP_LIBRARY_ROLLING_HASH_MAX_LENGTH (default: 200000).
+#  define CP_LIBRARY_ROLLING_HASH_MAX_LENGTH 200000
+#  define CP_LIBRARY_ROLLING_HASH_MAX_LENGTH_NOT_DEFINED
 #endif
 
 #include <algorithm>
@@ -21,24 +21,24 @@
 #include <tuple>
 #include <vector>
 
-#ifndef O_assert
+#ifndef CP_LIBRARY_ASSERT
 //! @brief Assert macro
-#  define O_assert(...) assert(__VA_ARGS__)
-#  define O_assert_not_defined
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
-#ifndef err_and_exit
+#ifndef CP_LIBRARY_ERROR
 #  if (CP_LIBRARY_DEBUG_LEVEL >= 2)
 //! @brief Print error message and exit
-#    define err_and_exit(...) \
-      do {                    \
-        __VA_ARGS__           \
-        O_assert(false);      \
+#    define CP_LIBRARY_ERROR(...) \
+      do {                        \
+        __VA_ARGS__               \
+        CP_LIBRARY_ASSERT(false); \
       } while (false)
 #  else
-#    define err_and_exit(msg) (static_cast<void>(0))
+#    define CP_LIBRARY_ERROR(msg) (static_cast<void>(0))
 #  endif
-#  define err_and_exit_not_defined
+#  define CP_LIBRARY_ERROR_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -71,12 +71,12 @@ namespace internal {
   template <u64 base>
   [[nodiscard]] u64 pow_mod_mersenne_61(unsigned index) {
     static bool first = true;
-    static std::array<u64, ROLLING_HASH_MAX_LENGTH + 1> res;
+    static std::array<u64, CP_LIBRARY_ROLLING_HASH_MAX_LENGTH + 1> res;
 
     if (__builtin_expect(first, 0)) {
       first  = false;
       res[0] = 1;
-      for (unsigned i = 1; i <= ROLLING_HASH_MAX_LENGTH; ++i)
+      for (unsigned i = 1; i <= CP_LIBRARY_ROLLING_HASH_MAX_LENGTH; ++i)
         res[i] = mod_mersenne_61(mult(res[i - 1], base));
     }
 
@@ -191,7 +191,7 @@ private:
       const bool res         = (val == rhs.val);
       const bool precise_res = (src == rhs.src);
       if (__builtin_expect(res != precise_res, 0)) {
-        err_and_exit(
+        CP_LIBRARY_ERROR(
           const std::ios_base::fmtflags prev_state = std::cerr.flags();
           std::cerr << "*** Hash collision detected ***\n"
                     << "Hash value: (" << std::hex;
@@ -461,19 +461,19 @@ using single_hash_t = decltype(get_single_hash(std::declval<Container>()));
 
 }  // namespace lib
 
-#ifdef err_and_exit_not_defined
-#  undef err_and_exit
-#  undef err_and_exit_not_defined
+#ifdef CP_LIBRARY_ERROR_NOT_DEFINED
+#  undef CP_LIBRARY_ERROR
+#  undef CP_LIBRARY_ERROR_NOT_DEFINED
 #endif
 
-#ifdef O_assert_not_defined
-#  undef O_assert
-#  undef O_assert_not_defined
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
-#ifdef ROLLING_HASH_MAX_LENGTH_not_defined
-#  undef ROLLING_HASH_MAX_LENGTH
-#  undef ROLLING_HASH_MAX_LENGTH_not_defined
+#ifdef CP_LIBRARY_ROLLING_HASH_MAX_LENGTH_NOT_DEFINED
+#  undef CP_LIBRARY_ROLLING_HASH_MAX_LENGTH
+#  undef CP_LIBRARY_ROLLING_HASH_MAX_LENGTH_NOT_DEFINED
 #endif
 
-#endif  // ROLLING_HASH_HPP
+#endif  // CP_LIBRARY_ROLLING_HASH_HPP
