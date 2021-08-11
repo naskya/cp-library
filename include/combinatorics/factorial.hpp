@@ -1,6 +1,6 @@
 
 //! @file factorial.hpp
-//! @brief Factorial, Permutation, Combination, Multinomial coefficients
+//! @brief Factorial, Permutation, Combination, Multinomial coefficient
 
 #ifndef CP_LIBRARY_FACTORIAL_HPP
 #define CP_LIBRARY_FACTORIAL_HPP
