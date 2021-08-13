@@ -23,46 +23,48 @@ data:
     links: []
   bundledCode: "#line 1 \"include/algebra/dynamic_modint.hpp\"\n\n//! @file dynamic_modint.hpp\n\
     \n#ifndef CP_LIBRARY_DYNAMIC_MODINT_HPP\n#define CP_LIBRARY_DYNAMIC_MODINT_HPP\n\
-    \n#include <cstdint>\n#include <iostream>\n#include <limits>\n#include <type_traits>\n\
-    \n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print\
-    \ warning message\n//! @note You can suppress the warning by uncommenting line\
-    \ 17\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\n')\n// #  define\
-    \ CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n#    define CP_LIBRARY_WARN(msg)\
-    \ (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\
-    \nnamespace lib {\n\nnamespace internal::dynamic_modint_hpp {\n  template <typename\
-    \ Tp, std::enable_if_t<std::is_integral_v<Tp>, std::nullptr_t> = nullptr>\n  using\
+    \n#include <cassert>\n#include <cstdint>\n#include <iostream>\n#include <limits>\n\
+    #include <type_traits>\n\n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL\
+    \ >= 1)\n//! @brief Print warning message\n//! @note You can suppress the warning\
+    \ by uncommenting line 18\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg)\
+    \ << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n\
+    #    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
+    #endif\n\n#ifndef CP_LIBRARY_ASSERT\n//! @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...)\
+    \ assert(__VA_ARGS__)\n#  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace\
+    \ lib {\n\nnamespace internal::dynamic_modint_hpp {\n  template <typename Tp,\
+    \ std::enable_if_t<std::is_integral_v<Tp>, std::nullptr_t> = nullptr>\n  using\
     \ LongInt = std::conditional_t<(64 <= std::numeric_limits<Tp>::digits), __int128_t,\
     \ std::int_least64_t>;\n}\n\n//! @brief modint (for runtime constant modulo)\n\
     //! @tparam Tp underlying integer type (e.g. int)\n//! @tparam modulo_ptr pointer\
     \ to modulo variable\ntemplate <typename Tp, Tp* modulo_ptr>\nstruct dynamic_modint\
     \ {\nprivate:\n  Tp value;\n\n  //! @param n non-zero integer\n  //! @return multiplicative\
     \ inverse of n\n  //! @note Time complexity: O(log(n))\n  template <typename Sp>\n\
-    \  [[nodiscard]] static constexpr Tp calc_inverse(Sp n) noexcept {\n    Tp b =\
-    \ *modulo_ptr, u = 1, v = 0, t;\n    while (b > 0) {\n      t = n / b;\n     \
-    \ // std::swap is not necessarily constexpr in C++17\n      // std::swap(n -=\
-    \ t * b, b);\n      Tp tmp = std::move(n -= t * b);\n      n      = std::move(b);\n\
-    \      b      = std::move(tmp);\n      // std::swap(u -= t * v, v);\n      tmp\
-    \ = std::move(u -= t * v);\n      u   = std::move(v);\n      v   = std::move(tmp);\n\
-    \    }\n    if (u < 0)\n      u += *modulo_ptr;\n    return static_cast<Tp>(u);\n\
-    \  }\n\n  //! @brief Calculate modulo and keep the value within [0, modulo)\n\
-    \  //! @param v integer\n  //! @return integer within [0, *modulo_ptr)\n  //!\
-    \ @note Time complexity: O(1)\n  template <typename Sp>\n  static constexpr Tp\
-    \ clamp(Sp v) noexcept {\n#pragma GCC diagnostic push\n#pragma GCC diagnostic\
-    \ ignored \"-Wsign-compare\"\n    if (*modulo_ptr <= v || v < -*modulo_ptr)\n\
-    \      v %= *modulo_ptr;\n#pragma GCC diagnostic pop\n    if (v < 0)\n      v\
-    \ += *modulo_ptr;\n    return static_cast<Tp>(v);\n  }\n\npublic:\n  //! @brief\
-    \ underlying integer type\n  using type = Tp;\n\n  //! @return reference to modulo\
-    \ (e.g. 1000000007)\n  [[nodiscard]] static type& mod() {\n    return *modulo_ptr;\n\
-    \  }\n\n  //! @brief Create a modint of value 0\n  constexpr dynamic_modint()\
-    \ noexcept : value(0) {}\n\n  //! @brief Create a modint without taking modulo\n\
-    \  constexpr dynamic_modint(const Tp v, bool) noexcept : value(v) {}\n\n  //!\
-    \ @brief Create a modint\n  template <typename ValueType>\n  constexpr dynamic_modint(const\
-    \ ValueType v) noexcept : value(clamp(v)) {}\n\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator+(const dynamic_modint rhs) const noexcept {\n    return dynamic_modint(value\
-    \ + rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator-(const\
-    \ dynamic_modint rhs) const noexcept {\n    return dynamic_modint(value - rhs.value);\n\
-    \  }\n  [[nodiscard]] constexpr dynamic_modint operator*(const dynamic_modint\
-    \ rhs) const noexcept {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
+    \  [[nodiscard]] static constexpr Tp calc_inverse(Sp n) noexcept {\n    CP_LIBRARY_ASSERT(n\
+    \ != 0);\n\n    Tp b = *modulo_ptr, u = 1, v = 0, t;\n    while (b > 0) {\n  \
+    \    t = n / b;\n      // std::swap is not necessarily constexpr in C++17\n  \
+    \    // std::swap(n -= t * b, b);\n      Tp tmp = std::move(n -= t * b);\n   \
+    \   n      = std::move(b);\n      b      = std::move(tmp);\n      // std::swap(u\
+    \ -= t * v, v);\n      tmp = std::move(u -= t * v);\n      u   = std::move(v);\n\
+    \      v   = std::move(tmp);\n    }\n    if (u < 0)\n      u += *modulo_ptr;\n\
+    \    return static_cast<Tp>(u);\n  }\n\n  //! @brief Calculate modulo and keep\
+    \ the value within [0, modulo)\n  //! @param v integer\n  //! @return integer\
+    \ within [0, *modulo_ptr)\n  //! @note Time complexity: O(1)\n  template <typename\
+    \ Sp>\n  static constexpr Tp clamp(Sp v) noexcept {\n#pragma GCC diagnostic push\n\
+    #pragma GCC diagnostic ignored \"-Wsign-compare\"\n    if (*modulo_ptr <= v ||\
+    \ v < -*modulo_ptr)\n      v %= *modulo_ptr;\n#pragma GCC diagnostic pop\n   \
+    \ if (v < 0)\n      v += *modulo_ptr;\n    return static_cast<Tp>(v);\n  }\n\n\
+    public:\n  //! @brief underlying integer type\n  using type = Tp;\n\n  //! @return\
+    \ reference to modulo (e.g. 1000000007)\n  [[nodiscard]] static type& mod() {\n\
+    \    return *modulo_ptr;\n  }\n\n  //! @brief Create a modint of value 0\n  constexpr\
+    \ dynamic_modint() noexcept : value(0) {}\n\n  //! @brief Create a modint without\
+    \ taking modulo\n  constexpr dynamic_modint(const Tp v, bool) noexcept : value(v)\
+    \ {}\n\n  //! @brief Create a modint\n  template <typename ValueType>\n  constexpr\
+    \ dynamic_modint(const ValueType v) noexcept : value(clamp(v)) {}\n\n  [[nodiscard]]\
+    \ constexpr dynamic_modint operator+(const dynamic_modint rhs) const noexcept\
+    \ {\n    return dynamic_modint(value + rhs.value);\n  }\n  [[nodiscard]] constexpr\
+    \ dynamic_modint operator-(const dynamic_modint rhs) const noexcept {\n    return\
+    \ dynamic_modint(value - rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint\
+    \ operator*(const dynamic_modint rhs) const noexcept {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
     \ value * rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator/(const\
     \ dynamic_modint rhs) const {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
     \ value * calc_inverse(rhs.value));\n  }\n\n  [[nodiscard]] constexpr dynamic_modint\
@@ -142,11 +144,11 @@ data:
     \ operator*=(const RhsType rhs) noexcept {\n    value = clamp(value * clamp(rhs));\n\
     \    return *this;\n  }\n  template <typename RhsType>\n  constexpr dynamic_modint&\
     \ operator/=(const RhsType rhs) {\n    internal::dynamic_modint_hpp::LongInt<Tp>\
-    \ mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);\n    value      \
-    \               = clamp(mul * value);\n    return *this;\n  }\n\n  template <typename\
-    \ RhsType>\n  constexpr dynamic_modint& operator%=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"\
-    operator%= : Are you sure you want to do this?\");\n    value %= rhs;\n    return\
-    \ *this;\n  }\n\n  template <typename RhsType>\n  constexpr dynamic_modint& operator&=(const\
+    \ mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);\n    value = clamp(mul\
+    \ * value);\n    return *this;\n  }\n\n  template <typename RhsType>\n  constexpr\
+    \ dynamic_modint& operator%=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator%=\
+    \ : Are you sure you want to do this?\");\n    value %= rhs;\n    return *this;\n\
+    \  }\n\n  template <typename RhsType>\n  constexpr dynamic_modint& operator&=(const\
     \ RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator&= : Are you sure you want to\
     \ do this?\");\n    value &= rhs;\n    return *this;\n  }\n  template <typename\
     \ RhsType>\n  constexpr dynamic_modint& operator|=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"\
@@ -300,48 +302,52 @@ data:
     \  CP_LIBRARY_WARN(\"operator>= : Are you sure you want to do this?\");\n  return\
     \ lhs < (Tp) rhs;\n}\n\n}  // namespace lib\n\n#ifdef CP_LIBRARY_WARN_NOT_DEFINED\n\
     #  undef CP_LIBRARY_WARN\n#  undef CP_LIBRARY_WARN_NOT_DEFINED\n#  ifdef CP_LIBRARY_WARN\n\
-    #    undef CP_LIBRARY_WARN\n#  endif\n#endif\n\n#endif  // CP_LIBRARY_DYNAMIC_MODINT_HPP\n"
+    #    undef CP_LIBRARY_WARN\n#  endif\n#endif\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n\
+    #  undef CP_LIBRARY_ASSERT\n#  undef CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\n\
+    #endif  // CP_LIBRARY_DYNAMIC_MODINT_HPP\n"
   code: "\n//! @file dynamic_modint.hpp\n\n#ifndef CP_LIBRARY_DYNAMIC_MODINT_HPP\n\
-    #define CP_LIBRARY_DYNAMIC_MODINT_HPP\n\n#include <cstdint>\n#include <iostream>\n\
-    #include <limits>\n#include <type_traits>\n\n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL\
-    \ >= 1)\n//! @brief Print warning message\n//! @note You can suppress the warning\
-    \ by uncommenting line 17\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg)\
-    \ << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n\
-    #    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
-    #endif\n\nnamespace lib {\n\nnamespace internal::dynamic_modint_hpp {\n  template\
-    \ <typename Tp, std::enable_if_t<std::is_integral_v<Tp>, std::nullptr_t> = nullptr>\n\
-    \  using LongInt = std::conditional_t<(64 <= std::numeric_limits<Tp>::digits),\
+    #define CP_LIBRARY_DYNAMIC_MODINT_HPP\n\n#include <cassert>\n#include <cstdint>\n\
+    #include <iostream>\n#include <limits>\n#include <type_traits>\n\n#ifndef CP_LIBRARY_WARN\n\
+    #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print warning message\n//! @note\
+    \ You can suppress the warning by uncommenting line 18\n#    define CP_LIBRARY_WARN(msg)\
+    \ (std::cerr << (msg) << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n\
+    #  else\n#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#\
+    \  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\n#ifndef CP_LIBRARY_ASSERT\n//!\
+    \ @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)\n\
+    #  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace lib {\n\nnamespace\
+    \ internal::dynamic_modint_hpp {\n  template <typename Tp, std::enable_if_t<std::is_integral_v<Tp>,\
+    \ std::nullptr_t> = nullptr>\n  using LongInt = std::conditional_t<(64 <= std::numeric_limits<Tp>::digits),\
     \ __int128_t, std::int_least64_t>;\n}\n\n//! @brief modint (for runtime constant\
     \ modulo)\n//! @tparam Tp underlying integer type (e.g. int)\n//! @tparam modulo_ptr\
     \ pointer to modulo variable\ntemplate <typename Tp, Tp* modulo_ptr>\nstruct dynamic_modint\
     \ {\nprivate:\n  Tp value;\n\n  //! @param n non-zero integer\n  //! @return multiplicative\
     \ inverse of n\n  //! @note Time complexity: O(log(n))\n  template <typename Sp>\n\
-    \  [[nodiscard]] static constexpr Tp calc_inverse(Sp n) noexcept {\n    Tp b =\
-    \ *modulo_ptr, u = 1, v = 0, t;\n    while (b > 0) {\n      t = n / b;\n     \
-    \ // std::swap is not necessarily constexpr in C++17\n      // std::swap(n -=\
-    \ t * b, b);\n      Tp tmp = std::move(n -= t * b);\n      n      = std::move(b);\n\
-    \      b      = std::move(tmp);\n      // std::swap(u -= t * v, v);\n      tmp\
-    \ = std::move(u -= t * v);\n      u   = std::move(v);\n      v   = std::move(tmp);\n\
-    \    }\n    if (u < 0)\n      u += *modulo_ptr;\n    return static_cast<Tp>(u);\n\
-    \  }\n\n  //! @brief Calculate modulo and keep the value within [0, modulo)\n\
-    \  //! @param v integer\n  //! @return integer within [0, *modulo_ptr)\n  //!\
-    \ @note Time complexity: O(1)\n  template <typename Sp>\n  static constexpr Tp\
-    \ clamp(Sp v) noexcept {\n#pragma GCC diagnostic push\n#pragma GCC diagnostic\
-    \ ignored \"-Wsign-compare\"\n    if (*modulo_ptr <= v || v < -*modulo_ptr)\n\
-    \      v %= *modulo_ptr;\n#pragma GCC diagnostic pop\n    if (v < 0)\n      v\
-    \ += *modulo_ptr;\n    return static_cast<Tp>(v);\n  }\n\npublic:\n  //! @brief\
-    \ underlying integer type\n  using type = Tp;\n\n  //! @return reference to modulo\
-    \ (e.g. 1000000007)\n  [[nodiscard]] static type& mod() {\n    return *modulo_ptr;\n\
-    \  }\n\n  //! @brief Create a modint of value 0\n  constexpr dynamic_modint()\
-    \ noexcept : value(0) {}\n\n  //! @brief Create a modint without taking modulo\n\
-    \  constexpr dynamic_modint(const Tp v, bool) noexcept : value(v) {}\n\n  //!\
-    \ @brief Create a modint\n  template <typename ValueType>\n  constexpr dynamic_modint(const\
-    \ ValueType v) noexcept : value(clamp(v)) {}\n\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator+(const dynamic_modint rhs) const noexcept {\n    return dynamic_modint(value\
-    \ + rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator-(const\
-    \ dynamic_modint rhs) const noexcept {\n    return dynamic_modint(value - rhs.value);\n\
-    \  }\n  [[nodiscard]] constexpr dynamic_modint operator*(const dynamic_modint\
-    \ rhs) const noexcept {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
+    \  [[nodiscard]] static constexpr Tp calc_inverse(Sp n) noexcept {\n    CP_LIBRARY_ASSERT(n\
+    \ != 0);\n\n    Tp b = *modulo_ptr, u = 1, v = 0, t;\n    while (b > 0) {\n  \
+    \    t = n / b;\n      // std::swap is not necessarily constexpr in C++17\n  \
+    \    // std::swap(n -= t * b, b);\n      Tp tmp = std::move(n -= t * b);\n   \
+    \   n      = std::move(b);\n      b      = std::move(tmp);\n      // std::swap(u\
+    \ -= t * v, v);\n      tmp = std::move(u -= t * v);\n      u   = std::move(v);\n\
+    \      v   = std::move(tmp);\n    }\n    if (u < 0)\n      u += *modulo_ptr;\n\
+    \    return static_cast<Tp>(u);\n  }\n\n  //! @brief Calculate modulo and keep\
+    \ the value within [0, modulo)\n  //! @param v integer\n  //! @return integer\
+    \ within [0, *modulo_ptr)\n  //! @note Time complexity: O(1)\n  template <typename\
+    \ Sp>\n  static constexpr Tp clamp(Sp v) noexcept {\n#pragma GCC diagnostic push\n\
+    #pragma GCC diagnostic ignored \"-Wsign-compare\"\n    if (*modulo_ptr <= v ||\
+    \ v < -*modulo_ptr)\n      v %= *modulo_ptr;\n#pragma GCC diagnostic pop\n   \
+    \ if (v < 0)\n      v += *modulo_ptr;\n    return static_cast<Tp>(v);\n  }\n\n\
+    public:\n  //! @brief underlying integer type\n  using type = Tp;\n\n  //! @return\
+    \ reference to modulo (e.g. 1000000007)\n  [[nodiscard]] static type& mod() {\n\
+    \    return *modulo_ptr;\n  }\n\n  //! @brief Create a modint of value 0\n  constexpr\
+    \ dynamic_modint() noexcept : value(0) {}\n\n  //! @brief Create a modint without\
+    \ taking modulo\n  constexpr dynamic_modint(const Tp v, bool) noexcept : value(v)\
+    \ {}\n\n  //! @brief Create a modint\n  template <typename ValueType>\n  constexpr\
+    \ dynamic_modint(const ValueType v) noexcept : value(clamp(v)) {}\n\n  [[nodiscard]]\
+    \ constexpr dynamic_modint operator+(const dynamic_modint rhs) const noexcept\
+    \ {\n    return dynamic_modint(value + rhs.value);\n  }\n  [[nodiscard]] constexpr\
+    \ dynamic_modint operator-(const dynamic_modint rhs) const noexcept {\n    return\
+    \ dynamic_modint(value - rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint\
+    \ operator*(const dynamic_modint rhs) const noexcept {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
     \ value * rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator/(const\
     \ dynamic_modint rhs) const {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
     \ value * calc_inverse(rhs.value));\n  }\n\n  [[nodiscard]] constexpr dynamic_modint\
@@ -421,11 +427,11 @@ data:
     \ operator*=(const RhsType rhs) noexcept {\n    value = clamp(value * clamp(rhs));\n\
     \    return *this;\n  }\n  template <typename RhsType>\n  constexpr dynamic_modint&\
     \ operator/=(const RhsType rhs) {\n    internal::dynamic_modint_hpp::LongInt<Tp>\
-    \ mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);\n    value      \
-    \               = clamp(mul * value);\n    return *this;\n  }\n\n  template <typename\
-    \ RhsType>\n  constexpr dynamic_modint& operator%=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"\
-    operator%= : Are you sure you want to do this?\");\n    value %= rhs;\n    return\
-    \ *this;\n  }\n\n  template <typename RhsType>\n  constexpr dynamic_modint& operator&=(const\
+    \ mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);\n    value = clamp(mul\
+    \ * value);\n    return *this;\n  }\n\n  template <typename RhsType>\n  constexpr\
+    \ dynamic_modint& operator%=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator%=\
+    \ : Are you sure you want to do this?\");\n    value %= rhs;\n    return *this;\n\
+    \  }\n\n  template <typename RhsType>\n  constexpr dynamic_modint& operator&=(const\
     \ RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator&= : Are you sure you want to\
     \ do this?\");\n    value &= rhs;\n    return *this;\n  }\n  template <typename\
     \ RhsType>\n  constexpr dynamic_modint& operator|=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"\
@@ -579,12 +585,14 @@ data:
     \  CP_LIBRARY_WARN(\"operator>= : Are you sure you want to do this?\");\n  return\
     \ lhs < (Tp) rhs;\n}\n\n}  // namespace lib\n\n#ifdef CP_LIBRARY_WARN_NOT_DEFINED\n\
     #  undef CP_LIBRARY_WARN\n#  undef CP_LIBRARY_WARN_NOT_DEFINED\n#  ifdef CP_LIBRARY_WARN\n\
-    #    undef CP_LIBRARY_WARN\n#  endif\n#endif\n\n#endif  // CP_LIBRARY_DYNAMIC_MODINT_HPP\n"
+    #    undef CP_LIBRARY_WARN\n#  endif\n#endif\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n\
+    #  undef CP_LIBRARY_ASSERT\n#  undef CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\n\
+    #endif  // CP_LIBRARY_DYNAMIC_MODINT_HPP\n"
   dependsOn: []
   isVerificationFile: false
   path: include/algebra/dynamic_modint.hpp
   requiredBy: []
-  timestamp: '2021-08-11 13:38:32+09:00'
+  timestamp: '2021-08-13 16:49:33+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/algebra/dynamic_modint/3.test.cpp
