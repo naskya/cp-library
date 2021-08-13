@@ -39,7 +39,7 @@ $i$ 番目 (0-indexed) の頂点と $j$ 番目 (0-indexed) の頂点が属する
 
 #### `groups()`
 
-グラフを連結成分に分け、その情報を返します(AtCoder Library の dsu.hpp と同じ内容です)。
+グラフを連結成分に分け、その情報を返します(AtCoder Library の [dsu.hpp](https://github.com/atcoder/ac-library/blob/master/atcoder/dsu.hpp) と同じ内容です)。
 
 #### `debug_print()`
 

@@ -56,15 +56,15 @@ lib::segment_tree tree_9(v, id_min, func_min);       // 9.
 //                           [](long long x, long long y) { return std::min(x, y); });
 ```
 
-1. 要素数 $N$ の、全ての要素が $0$ で初期化された、二項演算を加算とした Segment tree を構築します。
-1. 要素数 $N$ の、全ての要素が $10$ で初期化された、二項演算を加算とした Segment tree を構築します。
-1. $v$ の要素で初期化された、$v$ と同じ要素数の、二項演算を加算とした Segment tree を構築します。
-1. 要素数 $N$ の、全ての要素が $0$ で初期化された、二項演算を bitwise xor とした Segment tree を構築します。
-1. 要素数 $N$ の、全ての要素が $10$ で初期化された、二項演算を bitwise xor とした Segment tree を構築します。
-1. $v$ の要素で初期化された、$v$ と同じ要素数の、二項演算を bitwise xor とした Segment tree を構築します。
-1. 要素数 $N$ の、全ての要素が `id_min` で初期化された、二項演算を最小値をとる演算とした Segment tree を構築します。
-1. 要素数 $N$ の、全ての要素が $500$ で初期化された、二項演算を最小値をとる演算とした Segment tree を構築します。
-1. $v$ の要素で初期化された、$v$ と同じ要素数の、二項演算を最小値をとる演算とした Segment tree を構築します。
+1. 要素数 $N$ の、全ての要素が $0$ で初期化された、二項演算を加算とした [segment tree](https://en.wikipedia.org/wiki/Segment_tree) を構築します。
+1. 要素数 $N$ の、全ての要素が $10$ で初期化された、二項演算を加算とした [segment tree](https://en.wikipedia.org/wiki/Segment_tree) を構築します。
+1. $v$ の要素で初期化された、$v$ と同じ要素数の、二項演算を加算とした [segment tree](https://en.wikipedia.org/wiki/Segment_tree) を構築します。
+1. 要素数 $N$ の、全ての要素が $0$ で初期化された、二項演算を bitwise xor とした [segment tree](https://en.wikipedia.org/wiki/Segment_tree) を構築します。
+1. 要素数 $N$ の、全ての要素が $10$ で初期化された、二項演算を bitwise xor とした [segment tree](https://en.wikipedia.org/wiki/Segment_tree) を構築します。
+1. $v$ の要素で初期化された、$v$ と同じ要素数の、二項演算を bitwise xor とした [segment tree](https://en.wikipedia.org/wiki/Segment_tree) を構築します。
+1. 要素数 $N$ の、全ての要素が `id_min` で初期化された、二項演算を最小値をとる演算とした [segment tree](https://en.wikipedia.org/wiki/Segment_tree) を構築します。
+1. 要素数 $N$ の、全ての要素が $500$ で初期化された、二項演算を最小値をとる演算とした [segment tree](https://en.wikipedia.org/wiki/Segment_tree) を構築します。
+1. $v$ の要素で初期化された、$v$ と同じ要素数の、二項演算を最小値をとる演算とした [segment tree](https://en.wikipedia.org/wiki/Segment_tree) を構築します。
 
 二項演算として関数へのポインタを渡すこともできます。
 

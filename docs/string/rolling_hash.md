@@ -5,7 +5,7 @@ documentation_of: //include/string/rolling_hash.hpp
 
 ハッシュ値を前計算しておくことで文字列や配列の大量の比較を定数時間で行うための `rolling_hash` クラスと `single_hash` 構造体が定義されています。実装は[安全で爆速なRollingHashの話](https://qiita.com/keymoon/items/11fac5627672a6d6a9f6)を参考にしています。
 
-文字列(`std::string`)以外のコンテナ(`std::vector<int>` 等)でもハッシュ値を計算する事が可能です。以下では便宜上、計算の入力に用いるコンテナを文字列と呼びます。
+文字列([`std::string`](https://cpprefjp.github.io/reference/string/basic_string.html))以外のコンテナ([`std::vector<int>`](https://cpprefjp.github.io/reference/vector/vector.html) 等)でもハッシュ値を計算する事が可能です。以下では便宜上、計算の入力に用いるコンテナを文字列と呼びます。
 
 ---
 
@@ -43,7 +43,7 @@ const auto A_rhash = lib::get_rolling_hash(A);
 
 #### `substring(start, length)`
 
-C++ の標準ライブラリの `std::string` のメンバ関数 `substr` と同様に、連続部分文字列の開始位置 `start` と長さ `length` を指定することで元の文字列に含まれる連続部分文字列のハッシュ値を取得します。`length` を省略すると文字列の末尾までの連続部分文字列を指定したことになります。戻り値の型は `single_hash_t<コンテナの型>` と同じです。
+C++ の標準ライブラリの [`std::string`](https://cpprefjp.github.io/reference/string/basic_string.html) のメンバ関数 [`substr`](https://cpprefjp.github.io/reference/string/basic_string/substr.html) と同様に、連続部分文字列の開始位置 `start` と長さ `length` を指定することで元の文字列に含まれる連続部分文字列のハッシュ値を取得します。`length` を省略すると文字列の末尾までの連続部分文字列を指定したことになります。戻り値の型は `single_hash_t<コンテナの型>` と同じです。
 
 #### `whole_string()`
 
@@ -102,7 +102,7 @@ const std::string B = "is";
 const bool check = (lib::get_rolling_hash(A).substring(2) == lib::get_single_hash(B));  // true
 ```
 
-マクロ `CP_LIBRARY_DEBUG_LEVEL` が $2$ 以上の値として定義されている場合には線形時間を掛けて元の文字列を直接比較し、ハッシュ値が等しいのに文字列が異なっている状態(ハッシュ値の衝突)を検知した場合にそれを報告して異常終了します。
+[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $2$ 以上の値として定義されている場合には線形時間を掛けて元の文字列を直接比較し、ハッシュ値が等しいのに文字列が異なっている状態(ハッシュ値の衝突)を検知した場合にそれを報告して異常終了します。
 
 #### `operator!=`
 
@@ -150,7 +150,7 @@ const bool check = (A_hash == C_hash);  // true
 
 #### `hash_value()`
 
-ハッシュ値を返します。戻り値は `std::uint_least64_t` がいくつか入ったタプル (`std::tuple<std::uint_least64_t, std::uint_least64_t, ...>`) です。比較判定などはこの関数でハッシュ値を取得しなくても行えるので基本的には使用する必要の無い関数です。
+ハッシュ値を返します。戻り値は [`std::uint_least64_t`](https://cpprefjp.github.io/reference/cstdint/uint_least64_t.html) がいくつか入ったタプル ([`std::tuple<std::uint_least64_t, std::uint_least64_t, ...>`](https://cpprefjp.github.io/reference/tuple/tuple.html)) です。比較判定などはこの関数でハッシュ値を取得しなくても行えるので基本的には使用する必要の無い関数です。
 
 #### `debug_print()`
 

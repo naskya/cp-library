@@ -9,16 +9,16 @@ documentation_of: //include/algebra/static_modint.hpp
 
 ### クラステンプレート
 
-`static_modint` 構造体は 1 つの `std::int_least32_t` 型のテンプレート引数をとります。以下のように型エイリアスを宣言して使うとよいです。
+`static_modint` 構造体は 1 つの [`std::int_least32_t`](https://cpprefjp.github.io/reference/cstdint/int_least32_t.html) 型のテンプレート引数をとります。以下のように型エイリアスを宣言して使うとよいです。
 
 ```cpp
 using mint = lib::static_modint<1000000007>;
 ```
 
-計算の高速化のために、`static_modint<M>` 型の 2 つの値を足し合わせても(剰余を計算する前の時点で)オーバーフローが起きない事を仮定しています。そのため、`std::int_least32_t` の最大値の半分を超える値をテンプレート引数に取ることはできません。
+計算の高速化のために、`static_modint<M>` 型の 2 つの値を足し合わせても(剰余を計算する前の時点で)オーバーフローが起きない事を仮定しています。そのため、[`std::int_least32_t`](https://cpprefjp.github.io/reference/cstdint/int_least32_t.html) の最大値の半分を超える値をテンプレート引数に取ることはできません。
 
 ```cpp
-using mint = lib::static_modint<2000000000>;  // error
+using mint = lib::static_modint<2000000000>;  // 多くの環境ではエラー
 ```
 
 この仕様でも多くの競技プログラミングの問題では困らないはずです。
@@ -63,8 +63,8 @@ static_assert(d == (10000000000LL % mint::mod()));
 - `/=`
 - `==`
 - `!=`
-- `>>` (`std::istream&` からの入力)
-- `<<` (`std::ostream&` への出力)
+- `>>` ([`std::istream&` からの入力](https://cpprefjp.github.io/reference/istream/basic_istream/op_istream_free.html))
+- `<<` ([`std::ostream&` への出力](https://cpprefjp.github.io/reference/ostream/basic_ostream/op_ostream_free.html))
 
 以下の演算子もオーバーロードされていますが、[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、使用すると標準エラー出力に警告が出ます。この警告は 18 行目のコメントアウトを解除すると抑制できます。
 

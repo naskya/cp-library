@@ -9,9 +9,9 @@ documentation_of: //include/string/run_length_encoding.hpp
 
 ### `run_length_encoding(S)`
 
-`S` に対する連長圧縮の結果を返します。`S` として文字列だけではなく `std::vector<int>` 等のコンテナを渡すこともできます。
+`S` に対する連長圧縮の結果を返します。`S` として文字列だけではなく [`std::vector<int>`](https://cpprefjp.github.io/reference/vector/vector.html) 等のコンテナを渡すこともできます。
 
-例えば `std::string` 型の値 `S` が `"aabbbccccd"` の時、`run_length_encoding(S)` の値は `std::vector<std::pair<char, int>>` 型の値 `{ ('a', 2) ('b', 3) ('c', 4) ('d', 1) }` となります。
+例えば `std::string` 型の値 `S` が `"aabbbccccd"` の時、`run_length_encoding(S)` の値は [`std::vector<std::pair<char, int>>`](https://cpprefjp.github.io/reference/vector/vector.html) 型の値 `{ ('a', 2) ('b', 3) ('c', 4) ('d', 1) }` となります。
 
 空のコンテナを渡した場合、返り値の要素数は $0$ です。
 
