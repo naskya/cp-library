@@ -11,7 +11,7 @@ data:
       title: Euler's totient function
     - icon: ':heavy_check_mark:'
       path: include/algebra/pow.hpp
-      title: Binary exponentation
+      title: Binary exponentiation
     - icon: ':heavy_check_mark:'
       path: include/algebra/static_modint.hpp
       title: Modint (for compile-time constant modulo)

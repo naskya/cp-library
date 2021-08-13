@@ -295,12 +295,12 @@ $N$ 頂点の、`edge_list` に含まれる辺を持つグラフの最小全域�
 #### 引数
 
 - `N` - グラフの頂点数
-- `edge_list` - 辺のリスト
-  - `std::tuple` のリストです。頂点 $u$ と頂点 $v$ を繋ぐコスト $c$ の辺を `std::tuple(u, v, c)` として表します。
+- `edge_list` - 辺のリスト(1 次元配列)
+  - [`std::tuple`](https://cpprefjp.github.io/reference/tuple/tuple.html) のリストです。頂点 $u$ と頂点 $v$ を繋ぐコスト $c$ の辺を `std::tuple(u, v, c)` として表します。
 
 #### 戻り値
 
-最小全域木の辺のリスト(`edge_list` と同じ形式)と辺のコストの総和(`TotalCostType` 型)をこの順に保持した `std::pair` 型の値
+最小全域木の辺のリスト(`edge_list` と同じ形式)と辺のコストの総和(`TotalCostType` 型)をこの順に保持した [`std::pair`](https://cpprefjp.github.io/reference/utility/pair.html) 型の値
 
 ---
 
@@ -316,12 +316,12 @@ $N$ 頂点の、`edge_list` に含まれる辺を持つグラフの最小全域�
 #### 引数
 
 - `N` - グラフの頂点数
-- `adjacency_list` - 隣接リスト
+- `adjacency_list` - 隣接リスト(2 次元配列)
   - 頂点 $u$ と頂点 $v$ を繋ぐコスト $c$ の辺が有る場合、`adjacency_list[u]` の中に `std::pair(v, c)` が含まれるようにします。
 
 #### 戻り値
 
-最小全域木の隣接リスト(`adjacency_list` と同じ形式)と辺のコストの総和(`TotalCostType` 型)をこの順に保持した `std::pair` 型の値
+最小全域木の隣接リスト(`adjacency_list` と同じ形式)と辺のコストの総和(`TotalCostType` 型)をこの順に保持した [`std::pair`](https://cpprefjp.github.io/reference/utility/pair.html) 型の値
 
 ---
 
@@ -337,12 +337,12 @@ $N$ 頂点の、`edge_list` に含まれる辺を持つグラフの最小全域�
 #### 引数
 
 - `N` - グラフの頂点数
-- `adjacency_matrix` - 隣接リスト
+- `adjacency_matrix` - 隣接行列(2 次元配列)
   - 頂点 $u$ と頂点 $v$ を繋ぐコスト $c$ の辺が有る場合、`adjacency_matrix[u][v] = c` とし、辺が無い場合は `adjacency_matrix[u][v] = infinity` とします。
 - `infinity` - 辺が無いことを表す十分大きい値
 
 #### 戻り値
 
-最小全域木の隣接行列(`adjacency_matrix` と同じ形式)と辺のコストの総和(`TotalCostType` 型)をこの順に保持した `std::pair` 型の値
+最小全域木の隣接行列(`adjacency_matrix` と同じ形式)と辺のコストの総和(`TotalCostType` 型)をこの順に保持した [`std::pair`](https://cpprefjp.github.io/reference/utility/pair.html) 型の値
 
 ---

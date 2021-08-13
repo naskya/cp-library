@@ -82,7 +82,7 @@ $\varphi (n)$ の値、すなわち $n$ 以下の正整数のうち $n$ と互�
 
 ### `totient_function_sequence(n)`
 
-$0, \varphi(1), \varphi(2), \ldots, \varphi(n-1), \varphi(n)$ が格納された、要素数 $n + 1$ の配列 (`std::vector`) を返します。
+$0, \varphi(1), \varphi(2), \ldots, \varphi(n-1), \varphi(n)$ が格納された、要素数 $n + 1$ の配列 ([`std::vector`](https://cpprefjp.github.io/reference/vector/vector.html)) を返します。
 
 <!-- ToDo: totient_function_sum(n) \sum_{i = 1}^n \varphi(i) -->
 

@@ -93,10 +93,10 @@ data:
   - test/algebra/pow/1.test.cpp
 documentation_of: include/algebra/pow.hpp
 layout: document
-title: Binary exponentation
+title: Binary exponentiation
 ---
 
-二分累乗法によって冪乗を対数時間で計算する関数が定義されています。
+[二分累乗法](https://en.wikipedia.org/wiki/Exponentiation_by_squaring)によって冪乗を対数時間で計算する関数が定義されています。
 
 ---
 

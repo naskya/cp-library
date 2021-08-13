@@ -59,8 +59,8 @@ title: Z algorithm
 
 ### `z_algorithm(S)`
 
-`S` 内の各位置についての最長共通接頭辞の長さを格納した配列を返します。`S` として文字列だけではなく `std::vector<int>` 等のコンテナを渡すこともできます。
+`S` 内の各位置についての最長共通接頭辞の長さを格納した配列を返します。`S` として文字列だけではなく [`std::vector<int>`](https://cpprefjp.github.io/reference/vector/vector.html) 等のコンテナを渡すこともできます。
 
-例えば `std::string` 型の値 `S` が `"abcabcabc"` の時、`z_algorithm(S)` の値は `std::vector<int>` 型の値 `{ 9 0 0 6 0 0 3 0 0 }` となります。
+例えば [`std::string`](https://cpprefjp.github.io/reference/string/basic_string.html) 型の値 `S` が `"abcabcabc"` の時、`z_algorithm(S)` の値は [`std::vector<int>`](https://cpprefjp.github.io/reference/vector/vector.html) 型の値 `{ 9 0 0 6 0 0 3 0 0 }` となります。
 
 ---
