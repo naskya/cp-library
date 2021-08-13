@@ -66,7 +66,7 @@ static_assert(d == (10000000000LL % mint::mod()));
 - `>>` (`std::istream&` からの入力)
 - `<<` (`std::ostream&` への出力)
 
-以下の演算子もオーバーロードされていますが、[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、使用すると標準エラー出力に警告が出ます。この警告は 17 行目のコメントアウトを解除すると抑制できます。
+以下の演算子もオーバーロードされていますが、[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、使用すると標準エラー出力に警告が出ます。この警告は 18 行目のコメントアウトを解除すると抑制できます。
 
 - `%`
 - `|`
@@ -93,7 +93,7 @@ static_assert(d == (10000000000LL % mint::mod()));
 
 #### `inv()`
 
-$x$ の乗法の逆元 $x^{-1}$ を返します。$x = 0$ である時の動作は未定義です。
+$x$ の乗法の逆元 $x^{-1}$ を返します。$x = 0$ である時、[`CP_LIBRARY_ASSERT`](https://naskya.github.io/cp-library/about#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%9E%E3%82%AF%E3%83%AD) マクロによって異常終了します。
 
 #### `pow(n)`
 

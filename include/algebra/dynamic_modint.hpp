@@ -4,6 +4,7 @@
 #ifndef CP_LIBRARY_DYNAMIC_MODINT_HPP
 #define CP_LIBRARY_DYNAMIC_MODINT_HPP
 
+#include <cassert>
 #include <cstdint>
 #include <iostream>
 #include <limits>
@@ -12,13 +13,19 @@
 #ifndef CP_LIBRARY_WARN
 #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
-//! @note You can suppress the warning by uncommenting line 17
+//! @note You can suppress the warning by uncommenting line 18
 #    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\n')
 // #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  else
 #    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  endif
 #  define CP_LIBRARY_WARN_NOT_DEFINED
+#endif
+
+#ifndef CP_LIBRARY_ASSERT
+//! @brief Assert macro
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 namespace lib {
@@ -41,6 +48,8 @@ private:
   //! @note Time complexity: O(log(n))
   template <typename Sp>
   [[nodiscard]] static constexpr Tp calc_inverse(Sp n) noexcept {
+    CP_LIBRARY_ASSERT(n != 0);
+
     Tp b = *modulo_ptr, u = 1, v = 0, t;
     while (b > 0) {
       t = n / b;
@@ -259,7 +268,7 @@ public:
   template <typename RhsType>
   constexpr dynamic_modint& operator/=(const RhsType rhs) {
     internal::dynamic_modint_hpp::LongInt<Tp> mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
-    value                     = clamp(mul * value);
+    value = clamp(mul * value);
     return *this;
   }
 
@@ -584,6 +593,11 @@ template <typename LhsType, typename Tp, Tp* modulo_ptr>
 #  ifdef CP_LIBRARY_WARN
 #    undef CP_LIBRARY_WARN
 #  endif
+#endif
+
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 #endif  // CP_LIBRARY_DYNAMIC_MODINT_HPP

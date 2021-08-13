@@ -4,6 +4,7 @@
 #ifndef CP_LIBRARY_STATIC_MODINT_HPP
 #define CP_LIBRARY_STATIC_MODINT_HPP
 
+#include <cassert>
 #include <cstdint>
 #include <iostream>
 #include <limits>
@@ -21,6 +22,12 @@
 #  define CP_LIBRARY_WARN_NOT_DEFINED
 #endif
 
+#ifndef CP_LIBRARY_ASSERT
+//! @brief Assert macro
+#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)
+#  define CP_LIBRARY_ASSERT_NOT_DEFINED
+#endif
+
 namespace lib {
 
 //! @brief modint (for compile-time constant modulo)
@@ -36,6 +43,8 @@ private:
   //! @return multiplicative inverse of n
   template <typename Tp>
   [[nodiscard]] static constexpr std::int_least32_t calc_inverse(Tp n) noexcept {
+    CP_LIBRARY_ASSERT(n != 0);
+
     Tp b = modulo, u = 1, v = 0, t;
     while (b > 0) {
       t = n / b;
@@ -608,6 +617,11 @@ template <typename LhsType, std::int_least32_t modulo>
 #  ifdef CP_LIBRARY_WARN
 #    undef CP_LIBRARY_WARN
 #  endif
+#endif
+
+#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED
+#  undef CP_LIBRARY_ASSERT
+#  undef CP_LIBRARY_ASSERT_NOT_DEFINED
 #endif
 
 #endif  // CP_LIBRARY_STATIC_MODINT_HPP
