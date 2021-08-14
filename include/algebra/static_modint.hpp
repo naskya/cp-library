@@ -15,7 +15,7 @@
 #ifndef CP_LIBRARY_WARN
 #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)
 //! @brief Print warning message
-//! @note You can suppress the warning by uncommenting line 17
+//! @note You can suppress the warning by uncommenting the following line
 #    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\n')
 // #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))
 #  else
