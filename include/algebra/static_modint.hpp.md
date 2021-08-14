@@ -751,6 +751,7 @@ static_assert(d == (10000000000LL % mint::mod()));
 - `<=`
 - `!`
 - `~`
+- [`std::int_least32_t`](https://cpprefjp.github.io/reference/cstdint/int_least32_t.html) 型へのキャスト
 
 ### メンバ関数
 
