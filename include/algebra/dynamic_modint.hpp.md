@@ -24,11 +24,313 @@ data:
   bundledCode: "#line 1 \"include/algebra/dynamic_modint.hpp\"\n\n//! @file dynamic_modint.hpp\n\
     \n#ifndef CP_LIBRARY_DYNAMIC_MODINT_HPP\n#define CP_LIBRARY_DYNAMIC_MODINT_HPP\n\
     \n#include <cassert>\n#include <cstdint>\n#include <iostream>\n#include <limits>\n\
-    #include <type_traits>\n\n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL\
-    \ >= 1)\n//! @brief Print warning message\n//! @note You can suppress the warning\
-    \ by uncommenting line 18\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg)\
-    \ << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n\
-    #    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
+    #include <type_traits>\n\n#define CP_LIBRARY_USE_CONSTEXPR\n\n#ifndef CP_LIBRARY_WARN\n\
+    #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print warning message\n//! @note\
+    \ You can suppress the warning by uncommenting the following line\n#    define\
+    \ CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\n')\n// #  define CP_LIBRARY_WARN(msg)\
+    \ (static_cast<void>(0))\n#  else\n#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n\
+    #    undef CP_LIBRARY_USE_CONSTEXPR\n#    define CP_LIBRARY_USE_CONSTEXPR constexpr\n\
+    #  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\n#ifndef CP_LIBRARY_ASSERT\n\
+    //! @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)\n\
+    #  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace lib {\n\nnamespace\
+    \ internal::dynamic_modint_hpp {\n  template <typename Tp, std::enable_if_t<std::is_integral_v<Tp>,\
+    \ std::nullptr_t> = nullptr>\n  using LongInt = std::conditional_t<(64 <= std::numeric_limits<Tp>::digits),\
+    \ __int128_t, std::int_least64_t>;\n}\n\n//! @brief modint (for runtime constant\
+    \ modulo)\n//! @tparam Tp underlying integer type (e.g. int)\n//! @tparam modulo_ptr\
+    \ pointer to modulo variable\ntemplate <typename Tp, Tp* modulo_ptr>\nstruct dynamic_modint\
+    \ {\nprivate:\n  Tp value;\n\n  //! @param n non-zero integer\n  //! @return multiplicative\
+    \ inverse of n\n  //! @note Time complexity: O(log(n))\n  template <typename Sp>\n\
+    \  [[nodiscard]] static constexpr Tp calc_inverse(Sp n) {\n    CP_LIBRARY_ASSERT(n\
+    \ != 0);\n\n    Tp b = *modulo_ptr, u = 1, v = 0, t;\n    while (b > 0) {\n  \
+    \    t = n / b;\n      // std::swap is not necessarily constexpr in C++17\n  \
+    \    // std::swap(n -= t * b, b);\n      Tp tmp = std::move(n -= t * b);\n   \
+    \   n      = std::move(b);\n      b      = std::move(tmp);\n      // std::swap(u\
+    \ -= t * v, v);\n      tmp = std::move(u -= t * v);\n      u   = std::move(v);\n\
+    \      v   = std::move(tmp);\n    }\n    if (u < 0)\n      u += *modulo_ptr;\n\
+    \    return static_cast<Tp>(u);\n  }\n\n  //! @brief Calculate modulo and keep\
+    \ the value within [0, modulo)\n  //! @param v integer\n  //! @return integer\
+    \ within [0, *modulo_ptr)\n  //! @note Time complexity: O(1)\n  template <typename\
+    \ Sp>\n  static constexpr Tp clamp(Sp v) noexcept {\n#pragma GCC diagnostic push\n\
+    #pragma GCC diagnostic ignored \"-Wsign-compare\"\n    if (*modulo_ptr <= v ||\
+    \ v < -*modulo_ptr)\n      v %= *modulo_ptr;\n#pragma GCC diagnostic pop\n   \
+    \ if (v < 0)\n      v += *modulo_ptr;\n    return static_cast<Tp>(v);\n  }\n\n\
+    public:\n  //! @brief underlying integer type\n  using type = Tp;\n\n  //! @return\
+    \ reference to modulo (e.g. 1000000007)\n  [[nodiscard]] static type& mod() {\n\
+    \    return *modulo_ptr;\n  }\n\n  //! @brief Create a modint of value 0\n  constexpr\
+    \ dynamic_modint() noexcept : value(0) {}\n\n  //! @brief Create a modint without\
+    \ taking modulo\n  constexpr dynamic_modint(const Tp v, bool) noexcept : value(v)\
+    \ {}\n\n  //! @brief Create a modint\n  template <typename ValueType>\n  constexpr\
+    \ dynamic_modint(const ValueType v) noexcept : value(clamp(v)) {}\n\n  [[nodiscard]]\
+    \ constexpr dynamic_modint operator+(const dynamic_modint rhs) const noexcept\
+    \ {\n    return dynamic_modint(value + rhs.value);\n  }\n  [[nodiscard]] constexpr\
+    \ dynamic_modint operator-(const dynamic_modint rhs) const noexcept {\n    return\
+    \ dynamic_modint(value - rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint\
+    \ operator*(const dynamic_modint rhs) const noexcept {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
+    \ value * rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator/(const\
+    \ dynamic_modint rhs) const {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
+    \ value * calc_inverse(rhs.value));\n  }\n\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator%(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator% : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value % rhs.value, true);\n  }\n\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator&(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator& : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value & rhs.value, true);\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator|(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator| : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value | rhs.value);\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator^(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator^ : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value ^ rhs.value);\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator<<(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator<< : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value << rhs.value);\n\
+    \  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint operator>>(const\
+    \ dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator>>\
+    \ : Are you sure you want to do this?\");\n    return dynamic_modint(value >>\
+    \ rhs.value, true);\n  }\n\n  constexpr dynamic_modint& operator+=(const dynamic_modint\
+    \ rhs) noexcept {\n    value += rhs.value;\n    if (value >= *modulo_ptr)\n  \
+    \    value -= *modulo_ptr;\n    return *this;\n  }\n  constexpr dynamic_modint&\
+    \ operator-=(const dynamic_modint rhs) noexcept {\n    value -= rhs.value;\n \
+    \   if (value < 0)\n      value += *modulo_ptr;\n    return *this;\n  }\n  constexpr\
+    \ dynamic_modint& operator*=(const dynamic_modint rhs) noexcept {\n    value =\
+    \ clamp((internal::dynamic_modint_hpp::LongInt<Tp>) value * rhs.value);\n    return\
+    \ *this;\n  }\n  constexpr dynamic_modint& operator/=(const dynamic_modint rhs)\
+    \ {\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>) value * calc_inverse(rhs.value));\n\
+    \    return *this;\n  }\n\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint& operator%=(const\
+    \ dynamic_modint rhs) {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator%= : Are\
+    \ you sure you want to do this?\");\n\n    value %= rhs.value;\n    if (value\
+    \ < 0)\n      value += *modulo_ptr;\n    return *this;\n  }\n\n  CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint& operator&=(const dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator&= : Are you sure you want to do this?\");\n    value\
+    \ &= rhs.value;\n    return *this;\n  }\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint&\
+    \ operator|=(const dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator|=\
+    \ : Are you sure you want to do this?\");\n    value |= rhs.value;\n    clamp();\n\
+    \    return *this;\n  }\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint& operator^=(const\
+    \ dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator^=\
+    \ : Are you sure you want to do this?\");\n    value ^= rhs.value;\n    clamp();\n\
+    \    return *this;\n  }\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint& operator<<=(const\
+    \ dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"operator<<= : Are you\
+    \ sure you want to do this?\");\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
+    \ value << rhs.value);\n    return *this;\n  }\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint&\
+    \ operator>>=(const dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"operator>>=\
+    \ : Are you sure you want to do this?\");\n    value >>= rhs.value;\n    return\
+    \ *this;\n  }\n\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
+    \ operator+(const RhsType rhs) const noexcept {\n    return dynamic_modint(value\
+    \ + clamp(rhs));\n  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr\
+    \ dynamic_modint operator-(const RhsType rhs) const noexcept {\n    return dynamic_modint(value\
+    \ - clamp(rhs));\n  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr\
+    \ dynamic_modint operator*(const RhsType rhs) const noexcept {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
+    \ value * clamp(rhs));\n  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr\
+    \ dynamic_modint operator/(const RhsType rhs) const {\n    internal::dynamic_modint_hpp::LongInt<Tp>\
+    \ mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);\n    return dynamic_modint(mul\
+    \ * value);\n  }\n\n  template <typename RhsType>\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator%(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator% : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value % rhs, true);\n  }\n\n  template <typename RhsType>\n \
+    \ [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint operator&(const RhsType\
+    \ rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator& : Are you sure\
+    \ you want to do this?\");\n    return dynamic_modint(value & rhs, true);\n  }\n\
+    \  template <typename RhsType>\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint\
+    \ operator|(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator|\
+    \ : Are you sure you want to do this?\");\n    return dynamic_modint(value | rhs);\n\
+    \  }\n  template <typename RhsType>\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator^(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator^ : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value ^ rhs);\n  }\n  template <typename RhsType>\n  [[nodiscard]]\
+    \ CP_LIBRARY_USE_CONSTEXPR dynamic_modint operator<<(const RhsType rhs) const\
+    \ {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator<< : Are you sure you want\
+    \ to do this?\");\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
+    \ value << rhs);\n  }\n  template <typename RhsType>\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator>>(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator>> : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value >> rhs, true);\n  }\n\n  template <typename RhsType>\n\
+    \  constexpr dynamic_modint& operator+=(const RhsType rhs) noexcept {\n    value\
+    \ = clamp(value + clamp(rhs));\n    return *this;\n  }\n  template <typename RhsType>\n\
+    \  constexpr dynamic_modint& operator-=(const RhsType rhs) noexcept {\n    value\
+    \ = clamp(value - clamp(rhs));\n    return *this;\n  }\n  template <typename RhsType>\n\
+    \  constexpr dynamic_modint& operator*=(const RhsType rhs) noexcept {\n    value\
+    \ = clamp(value * clamp(rhs));\n    return *this;\n  }\n  template <typename RhsType>\n\
+    \  constexpr dynamic_modint& operator/=(const RhsType rhs) {\n    internal::dynamic_modint_hpp::LongInt<Tp>\
+    \ mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);\n    value = clamp(mul\
+    \ * value);\n    return *this;\n  }\n\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint& operator%=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator%=\
+    \ : Are you sure you want to do this?\");\n    value %= rhs;\n    return *this;\n\
+    \  }\n\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint&\
+    \ operator&=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator&=\
+    \ : Are you sure you want to do this?\");\n    value &= rhs;\n    return *this;\n\
+    \  }\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint&\
+    \ operator|=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator|=\
+    \ : Are you sure you want to do this?\");\n    value |= rhs;\n    clamp();\n \
+    \   return *this;\n  }\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint& operator^=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator^=\
+    \ : Are you sure you want to do this?\");\n    value ^= rhs;\n    clamp();\n \
+    \   return *this;\n  }\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint& operator<<=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator<<=\
+    \ : Are you sure you want to do this?\");\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
+    \ value << rhs);\n    return *this;\n  }\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint& operator>>=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator>>=\
+    \ : Are you sure you want to do this?\");\n    value >>= rhs;\n    return *this;\n\
+    \  }\n\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator!() const {\n  \
+    \  CP_LIBRARY_WARN(\"dynamic_modint::operator! : Are you sure you want to do this?\"\
+    );\n    return value == 0;\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint\
+    \ operator~() const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator~ : Are you\
+    \ sure you want to do this?\");\n    return dynamic_modint(~value);\n  }\n  [[nodiscard]]\
+    \ constexpr dynamic_modint operator-() const noexcept {\n    return dynamic_modint(value\
+    \ == 0 ? 0 : *modulo_ptr - value, true);\n  }\n  [[nodiscard]] constexpr dynamic_modint&\
+    \ operator+() const noexcept {\n    return *this;\n  }\n\n  constexpr dynamic_modint&\
+    \ operator++() noexcept {\n    value = ((value + 1 == *modulo_ptr) ? 0 : value\
+    \ + 1);\n    return *this;\n  }\n  constexpr dynamic_modint& operator--() noexcept\
+    \ {\n    value = ((value == 0) ? *modulo_ptr - 1 : value - 1);\n    return *this;\n\
+    \  }\n  constexpr dynamic_modint operator++(int) noexcept {\n    Tp res = value;\n\
+    \    ++(*this);\n    return dynamic_modint(res, true);\n  }\n  constexpr dynamic_modint\
+    \ operator--(int) noexcept {\n    Tp res = value;\n    --(*this);\n    return\
+    \ dynamic_modint(res, true);\n  }\n\n  [[nodiscard]] constexpr bool operator==(const\
+    \ dynamic_modint rhs) const noexcept {\n    return value == rhs.value;\n  }\n\
+    \  [[nodiscard]] constexpr bool operator!=(const dynamic_modint rhs) const noexcept\
+    \ {\n    return value != rhs.value;\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ bool operator<(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator<\
+    \ : Are you sure you want to do this?\");\n    return value < rhs.value;\n  }\n\
+    \  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator<=(const dynamic_modint\
+    \ rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator<= : Are you sure\
+    \ you want to do this?\");\n    return value <= rhs.value;\n  }\n  [[nodiscard]]\
+    \ CP_LIBRARY_USE_CONSTEXPR bool operator>(const dynamic_modint rhs) const {\n\
+    \    CP_LIBRARY_WARN(\"dynamic_modint::operator> : Are you sure you want to do\
+    \ this?\");\n    return value > rhs.value;\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ bool operator>=(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator>=\
+    \ : Are you sure you want to do this?\");\n    return value >= rhs.value;\n  }\n\
+    \n  template <typename RhsType>\n  [[nodiscard]] constexpr bool operator==(const\
+    \ RhsType rhs) const noexcept {\n    return value == rhs;\n  }\n  template <typename\
+    \ RhsType>\n  [[nodiscard]] constexpr bool operator!=(const RhsType rhs) const\
+    \ noexcept {\n    return value != rhs;\n  }\n  template <typename RhsType>\n \
+    \ [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator<(const RhsType rhs) const\
+    \ {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator< : Are you sure you want to\
+    \ do this?\");\n    return value < rhs;\n  }\n  template <typename RhsType>\n\
+    \  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator<=(const RhsType rhs) const\
+    \ {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator<= : Are you sure you want\
+    \ to do this?\");\n    return value <= rhs;\n  }\n  template <typename RhsType>\n\
+    \  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator>(const RhsType rhs) const\
+    \ {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator> : Are you sure you want to\
+    \ do this?\");\n    return value > rhs;\n  }\n  template <typename RhsType>\n\
+    \  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator>=(const RhsType rhs) const\
+    \ {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator>= : Are you sure you want\
+    \ to do this?\");\n    return value >= rhs;\n  }\n\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ operator Tp() const {\n    CP_LIBRARY_WARN(\"A value of type static_modint has\
+    \ been casted to a primitive integer type.\");\n    return value;\n  }\n\n  //!\
+    \ @brief Read value (64-bit signed integer) from std::istream& is, take modulo,\
+    \ and store it in rhs.\n  //! @return std::istream& is\n  friend std::istream&\
+    \ operator>>(std::istream& is, dynamic_modint& rhs) {\n    std::int_least64_t\
+    \ tmp;\n    is >> tmp;\n    if (tmp < -*modulo_ptr || *modulo_ptr <= tmp)\n  \
+    \    tmp %= *modulo_ptr;\n    if (tmp < 0)\n      tmp += *modulo_ptr;\n    rhs.value\
+    \ = static_cast<Tp>(tmp);\n    return is;\n  }\n  //! @brief Print value to std::ostream&\
+    \ os\n  //! @return std::ostream& os\n  friend std::ostream& operator<<(std::ostream&\
+    \ os, dynamic_modint& rhs) {\n    return os << rhs.value;\n  }\n\n  //! @return\
+    \ multiplicative inverse\n  [[nodiscard]] constexpr dynamic_modint inv() const\
+    \ {\n    return dynamic_modint(calc_inverse(value), true);\n  }\n  //! @tparam\
+    \ index_positive_guaranteed set true if and only if you can promise that index\
+    \ is positive\n  //! @tparam Tp integer type (deduced from parameter)\n  //! @param\
+    \ index index. This must be an integer, but doesn't have to be primitive.\n  //!\
+    \ @return index-th power of the value\n  //! @note Time complexity: O(log(index))\n\
+    \  template <bool index_positive_guaranteed = true, typename T = int>\n  [[nodiscard]]\
+    \ constexpr dynamic_modint pow(T index) const noexcept {\n    if constexpr (!index_positive_guaranteed)\
+    \ {\n      if (value == 0)\n        return dynamic_modint(0, true);\n      if\
+    \ (index == 0)\n        return dynamic_modint(1, true);\n      if (index < 0)\n\
+    \        return dynamic_modint(value, true).inv().pow<true>(-index);\n    }\n\
+    \    dynamic_modint res(1, true), base(value, true);\n    while (index > 0) {\n\
+    \      if (index & 1)\n        res *= base;\n      base *= base;\n      index\
+    \ >>= 1;\n    }\n    return res;\n  }\n  //! @return a pair (a, b) such that b\
+    \ > 0, value is equal to a * (mult inverse of b), and (a + b) is minimal\n  [[nodiscard]]\
+    \ constexpr std::pair<Tp, Tp> to_frac() const noexcept {\n    Tp x = (*modulo_ptr)\
+    \ - value, y = value, u = 1, v = 1;\n    std::pair<Tp, Tp> res {value, 1};\n\n\
+    \    Tp num = value, den = 1;\n    Tp cost = num + den;\n\n    while (x > 0) {\n\
+    \      if (x <= num) {\n        Tp q = num / x;\n        num  = num % x;\n   \
+    \     den += q * u;\n        if (num == 0)\n          break;\n        if (num\
+    \ + den < cost) {\n          cost       = num + den;\n          res.first  = num;\n\
+    \          res.second = den;\n        }\n      }\n      Tp q = y / x;\n      y\
+    \    = y % x;\n      v += q * u;\n      q = x / y;\n      x = x % y;\n      u\
+    \ += q * v;\n    }\n\n    return res;\n  }\n};\n\ntemplate <typename LhsType,\
+    \ typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
+    \ operator+(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept\
+    \ {\n  return rhs + lhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
+    [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator-(const LhsType\
+    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept {\n  return -rhs + lhs;\n\
+    }\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr\
+    \ dynamic_modint<Tp, modulo_ptr> operator*(const LhsType lhs, const dynamic_modint<Tp,\
+    \ modulo_ptr> rhs) noexcept {\n  return rhs * lhs;\n}\ntemplate <typename LhsType,\
+    \ typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
+    \ operator/(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n \
+    \ return rhs.inv() * lhs;\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
+    [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint<Tp, modulo_ptr>\noperator%(const\
+    \ LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator% : Are you sure you want to do this?\");\n  return dynamic_modint<Tp,\
+    \ modulo_ptr>(lhs % (Tp) rhs, true);\n}\n\ntemplate <typename LhsType, typename\
+    \ Tp, Tp* modulo_ptr, std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t>\
+    \ = nullptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint<Tp, modulo_ptr>\n\
+    operator<<(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator<< : Are you sure you want to do this?\");\n  return dynamic_modint<Tp,\
+    \ modulo_ptr>((internal::dynamic_modint_hpp::LongInt<Tp>) lhs << (Tp) rhs);\n\
+    }\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr, std::enable_if_t<std::is_integral_v<LhsType>,\
+    \ std::nullptr_t> = nullptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint<Tp,\
+    \ modulo_ptr>\noperator>>(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr>\
+    \ rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator>> : Are you sure you want\
+    \ to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>(lhs >> (Tp) rhs);\n\
+    }\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR\
+    \ LhsType& operator+=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs)\
+    \ {\n  return lhs += (Tp) rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp*\
+    \ modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType& operator-=(LhsType& lhs, const\
+    \ dynamic_modint<Tp, modulo_ptr> rhs) {\n  return lhs -= (Tp) rhs;\n}\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType&\
+    \ operator*=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  return\
+    \ lhs *= (Tp) rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
+    CP_LIBRARY_USE_CONSTEXPR LhsType& operator/=(LhsType& lhs, const dynamic_modint<Tp,\
+    \ modulo_ptr> rhs) {\n  return lhs /= (Tp) rhs;\n}\n\ntemplate <typename LhsType,\
+    \ typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType& operator%=(LhsType&\
+    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator%=\
+    \ : Are you sure you want to do this?\");\n  return lhs %= (Tp) rhs;\n}\n\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType&\
+    \ operator&=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator&= : Are you sure you want to do this?\");\n  return lhs\
+    \ &= (Tp) rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
+    CP_LIBRARY_USE_CONSTEXPR LhsType& operator|=(LhsType& lhs, const dynamic_modint<Tp,\
+    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator|= : Are you\
+    \ sure you want to do this?\");\n  return lhs |= (Tp) rhs;\n}\ntemplate <typename\
+    \ LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType& operator^=(LhsType&\
+    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator^=\
+    \ : Are you sure you want to do this?\");\n  return lhs ^= (Tp) rhs;\n}\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType&\
+    \ operator<<=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"\
+    operator<<= : Are you sure you want to do this?\");\n  return lhs <<= (Tp) rhs;\n\
+    }\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR\
+    \ LhsType& operator>>=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs)\
+    \ {\n  CP_LIBRARY_WARN(\"operator>>= : Are you sure you want to do this?\");\n\
+    \  return lhs >>= (Tp) rhs;\n}\n\ntemplate <typename LhsType, typename Tp, Tp*\
+    \ modulo_ptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator<(const LhsType\
+    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator<\
+    \ : Are you sure you want to do this?\");\n  return lhs < (Tp) rhs;\n}\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ bool operator<=(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs)\
+    \ {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator<= : Are you sure you want to\
+    \ do this?\");\n  return lhs < (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
+    \ Tp, Tp* modulo_ptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator>(const\
+    \ LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator> : Are you sure you want to do this?\");\n  return lhs\
+    \ < (Tp) rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]]\
+    \ CP_LIBRARY_USE_CONSTEXPR bool operator>=(const LhsType lhs, const dynamic_modint<Tp,\
+    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator>= : Are you\
+    \ sure you want to do this?\");\n  return lhs < (Tp) rhs;\n}\n\n}  // namespace\
+    \ lib\n\n#undef CP_LIBRARY_USE_CONSTEXPR\n\n#ifdef CP_LIBRARY_WARN_NOT_DEFINED\n\
+    #  undef CP_LIBRARY_WARN\n#  undef CP_LIBRARY_WARN_NOT_DEFINED\n#  ifdef CP_LIBRARY_WARN\n\
+    #    undef CP_LIBRARY_WARN\n#  endif\n#endif\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n\
+    #  undef CP_LIBRARY_ASSERT\n#  undef CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\n\
+    #endif  // CP_LIBRARY_DYNAMIC_MODINT_HPP\n"
+  code: "\n//! @file dynamic_modint.hpp\n\n#ifndef CP_LIBRARY_DYNAMIC_MODINT_HPP\n\
+    #define CP_LIBRARY_DYNAMIC_MODINT_HPP\n\n#include <cassert>\n#include <cstdint>\n\
+    #include <iostream>\n#include <limits>\n#include <type_traits>\n\n#define CP_LIBRARY_USE_CONSTEXPR\n\
+    \n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print\
+    \ warning message\n//! @note You can suppress the warning by uncommenting the\
+    \ following line\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\\
+    n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n#    define\
+    \ CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#    undef CP_LIBRARY_USE_CONSTEXPR\n\
+    #    define CP_LIBRARY_USE_CONSTEXPR constexpr\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
     #endif\n\n#ifndef CP_LIBRARY_ASSERT\n//! @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...)\
     \ assert(__VA_ARGS__)\n#  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace\
     \ lib {\n\nnamespace internal::dynamic_modint_hpp {\n  template <typename Tp,\
@@ -39,7 +341,7 @@ data:
     \ to modulo variable\ntemplate <typename Tp, Tp* modulo_ptr>\nstruct dynamic_modint\
     \ {\nprivate:\n  Tp value;\n\n  //! @param n non-zero integer\n  //! @return multiplicative\
     \ inverse of n\n  //! @note Time complexity: O(log(n))\n  template <typename Sp>\n\
-    \  [[nodiscard]] static constexpr Tp calc_inverse(Sp n) noexcept {\n    CP_LIBRARY_ASSERT(n\
+    \  [[nodiscard]] static constexpr Tp calc_inverse(Sp n) {\n    CP_LIBRARY_ASSERT(n\
     \ != 0);\n\n    Tp b = *modulo_ptr, u = 1, v = 0, t;\n    while (b > 0) {\n  \
     \    t = n / b;\n      // std::swap is not necessarily constexpr in C++17\n  \
     \    // std::swap(n -= t * b, b);\n      Tp tmp = std::move(n -= t * b);\n   \
@@ -67,49 +369,53 @@ data:
     \ operator*(const dynamic_modint rhs) const noexcept {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
     \ value * rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator/(const\
     \ dynamic_modint rhs) const {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value * calc_inverse(rhs.value));\n  }\n\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator%(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"operator%\
-    \ : Are you sure you want to do this?\");\n    return dynamic_modint(value % rhs.value,\
-    \ true);\n  }\n\n  [[nodiscard]] constexpr dynamic_modint operator&(const dynamic_modint\
-    \ rhs) const {\n    CP_LIBRARY_WARN(\"operator& : Are you sure you want to do\
-    \ this?\");\n    return dynamic_modint(value & rhs.value, true);\n  }\n  [[nodiscard]]\
-    \ constexpr dynamic_modint operator|(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator| : Are you sure you want to do this?\");\n    return dynamic_modint(value\
-    \ | rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator^(const\
-    \ dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"operator^ : Are you sure\
-    \ you want to do this?\");\n    return dynamic_modint(value ^ rhs.value);\n  }\n\
-    \  [[nodiscard]] constexpr dynamic_modint operator<<(const dynamic_modint rhs)\
-    \ const {\n    CP_LIBRARY_WARN(\"operator<< : Are you sure you want to do this?\"\
-    );\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value\
-    \ << rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator>>(const\
-    \ dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"operator>> : Are you sure\
-    \ you want to do this?\");\n    return dynamic_modint(value >> rhs.value, true);\n\
-    \  }\n\n  constexpr dynamic_modint& operator+=(const dynamic_modint rhs) noexcept\
-    \ {\n    value += rhs.value;\n    if (value >= *modulo_ptr)\n      value -= *modulo_ptr;\n\
-    \    return *this;\n  }\n  constexpr dynamic_modint& operator-=(const dynamic_modint\
-    \ rhs) noexcept {\n    value -= rhs.value;\n    if (value < 0)\n      value +=\
-    \ *modulo_ptr;\n    return *this;\n  }\n  constexpr dynamic_modint& operator*=(const\
-    \ dynamic_modint rhs) noexcept {\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value * rhs.value);\n    return *this;\n  }\n  constexpr dynamic_modint& operator/=(const\
-    \ dynamic_modint rhs) {\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value * calc_inverse(rhs.value));\n    return *this;\n  }\n\n  constexpr dynamic_modint&\
-    \ operator%=(const dynamic_modint rhs) {\n    CP_LIBRARY_WARN(\"operator%= : Are\
+    \ value * calc_inverse(rhs.value));\n  }\n\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator%(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator% : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value % rhs.value, true);\n  }\n\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator&(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator& : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value & rhs.value, true);\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator|(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator| : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value | rhs.value);\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator^(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator^ : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value ^ rhs.value);\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator<<(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator<< : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value << rhs.value);\n\
+    \  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint operator>>(const\
+    \ dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator>>\
+    \ : Are you sure you want to do this?\");\n    return dynamic_modint(value >>\
+    \ rhs.value, true);\n  }\n\n  constexpr dynamic_modint& operator+=(const dynamic_modint\
+    \ rhs) noexcept {\n    value += rhs.value;\n    if (value >= *modulo_ptr)\n  \
+    \    value -= *modulo_ptr;\n    return *this;\n  }\n  constexpr dynamic_modint&\
+    \ operator-=(const dynamic_modint rhs) noexcept {\n    value -= rhs.value;\n \
+    \   if (value < 0)\n      value += *modulo_ptr;\n    return *this;\n  }\n  constexpr\
+    \ dynamic_modint& operator*=(const dynamic_modint rhs) noexcept {\n    value =\
+    \ clamp((internal::dynamic_modint_hpp::LongInt<Tp>) value * rhs.value);\n    return\
+    \ *this;\n  }\n  constexpr dynamic_modint& operator/=(const dynamic_modint rhs)\
+    \ {\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>) value * calc_inverse(rhs.value));\n\
+    \    return *this;\n  }\n\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint& operator%=(const\
+    \ dynamic_modint rhs) {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator%= : Are\
     \ you sure you want to do this?\");\n\n    value %= rhs.value;\n    if (value\
-    \ < 0)\n      value += *modulo_ptr;\n    return *this;\n  }\n\n  constexpr dynamic_modint&\
-    \ operator&=(const dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"operator&=\
-    \ : Are you sure you want to do this?\");\n    value &= rhs.value;\n    return\
-    \ *this;\n  }\n  constexpr dynamic_modint& operator|=(const dynamic_modint rhs)\
-    \ noexcept {\n    CP_LIBRARY_WARN(\"operator|= : Are you sure you want to do this?\"\
-    );\n    value |= rhs.value;\n    clamp();\n    return *this;\n  }\n  constexpr\
-    \ dynamic_modint& operator^=(const dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"\
-    operator^= : Are you sure you want to do this?\");\n    value ^= rhs.value;\n\
-    \    clamp();\n    return *this;\n  }\n  constexpr dynamic_modint& operator<<=(const\
+    \ < 0)\n      value += *modulo_ptr;\n    return *this;\n  }\n\n  CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint& operator&=(const dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator&= : Are you sure you want to do this?\");\n    value\
+    \ &= rhs.value;\n    return *this;\n  }\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint&\
+    \ operator|=(const dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator|=\
+    \ : Are you sure you want to do this?\");\n    value |= rhs.value;\n    clamp();\n\
+    \    return *this;\n  }\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint& operator^=(const\
+    \ dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator^=\
+    \ : Are you sure you want to do this?\");\n    value ^= rhs.value;\n    clamp();\n\
+    \    return *this;\n  }\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint& operator<<=(const\
     \ dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"operator<<= : Are you\
     \ sure you want to do this?\");\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value << rhs.value);\n    return *this;\n  }\n  constexpr dynamic_modint& operator>>=(const\
-    \ dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"operator>>= : Are you\
-    \ sure you want to do this?\");\n    value >>= rhs.value;\n    return *this;\n\
-    \  }\n\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
+    \ value << rhs.value);\n    return *this;\n  }\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint&\
+    \ operator>>=(const dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"operator>>=\
+    \ : Are you sure you want to do this?\");\n    value >>= rhs.value;\n    return\
+    \ *this;\n  }\n\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
     \ operator+(const RhsType rhs) const noexcept {\n    return dynamic_modint(value\
     \ + clamp(rhs));\n  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr\
     \ dynamic_modint operator-(const RhsType rhs) const noexcept {\n    return dynamic_modint(value\
@@ -118,124 +424,132 @@ data:
     \ value * clamp(rhs));\n  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr\
     \ dynamic_modint operator/(const RhsType rhs) const {\n    internal::dynamic_modint_hpp::LongInt<Tp>\
     \ mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);\n    return dynamic_modint(mul\
-    \ * value);\n  }\n\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator%(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator% : Are\
-    \ you sure you want to do this?\");\n    return dynamic_modint(value % rhs, true);\n\
-    \  }\n\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator&(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator& : Are\
-    \ you sure you want to do this?\");\n    return dynamic_modint(value & rhs, true);\n\
-    \  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator|(const RhsType rhs) const noexcept {\n    CP_LIBRARY_WARN(\"operator|\
+    \ * value);\n  }\n\n  template <typename RhsType>\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator%(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator% : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value % rhs, true);\n  }\n\n  template <typename RhsType>\n \
+    \ [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint operator&(const RhsType\
+    \ rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator& : Are you sure\
+    \ you want to do this?\");\n    return dynamic_modint(value & rhs, true);\n  }\n\
+    \  template <typename RhsType>\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint\
+    \ operator|(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator|\
     \ : Are you sure you want to do this?\");\n    return dynamic_modint(value | rhs);\n\
-    \  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator^(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator^ : Are\
-    \ you sure you want to do this?\");\n    return dynamic_modint(value ^ rhs);\n\
-    \  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator<<(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator<< : Are\
-    \ you sure you want to do this?\");\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value << rhs);\n  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr\
+    \  }\n  template <typename RhsType>\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint operator^(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator^ : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value ^ rhs);\n  }\n  template <typename RhsType>\n  [[nodiscard]]\
+    \ CP_LIBRARY_USE_CONSTEXPR dynamic_modint operator<<(const RhsType rhs) const\
+    \ {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator<< : Are you sure you want\
+    \ to do this?\");\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
+    \ value << rhs);\n  }\n  template <typename RhsType>\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
     \ dynamic_modint operator>>(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator>> : Are you sure you want to do this?\");\n    return dynamic_modint(value\
-    \ >> rhs, true);\n  }\n\n  template <typename RhsType>\n  constexpr dynamic_modint&\
-    \ operator+=(const RhsType rhs) noexcept {\n    value = clamp(value + clamp(rhs));\n\
-    \    return *this;\n  }\n  template <typename RhsType>\n  constexpr dynamic_modint&\
-    \ operator-=(const RhsType rhs) noexcept {\n    value = clamp(value - clamp(rhs));\n\
-    \    return *this;\n  }\n  template <typename RhsType>\n  constexpr dynamic_modint&\
-    \ operator*=(const RhsType rhs) noexcept {\n    value = clamp(value * clamp(rhs));\n\
-    \    return *this;\n  }\n  template <typename RhsType>\n  constexpr dynamic_modint&\
-    \ operator/=(const RhsType rhs) {\n    internal::dynamic_modint_hpp::LongInt<Tp>\
+    dynamic_modint::operator>> : Are you sure you want to do this?\");\n    return\
+    \ dynamic_modint(value >> rhs, true);\n  }\n\n  template <typename RhsType>\n\
+    \  constexpr dynamic_modint& operator+=(const RhsType rhs) noexcept {\n    value\
+    \ = clamp(value + clamp(rhs));\n    return *this;\n  }\n  template <typename RhsType>\n\
+    \  constexpr dynamic_modint& operator-=(const RhsType rhs) noexcept {\n    value\
+    \ = clamp(value - clamp(rhs));\n    return *this;\n  }\n  template <typename RhsType>\n\
+    \  constexpr dynamic_modint& operator*=(const RhsType rhs) noexcept {\n    value\
+    \ = clamp(value * clamp(rhs));\n    return *this;\n  }\n  template <typename RhsType>\n\
+    \  constexpr dynamic_modint& operator/=(const RhsType rhs) {\n    internal::dynamic_modint_hpp::LongInt<Tp>\
     \ mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);\n    value = clamp(mul\
-    \ * value);\n    return *this;\n  }\n\n  template <typename RhsType>\n  constexpr\
-    \ dynamic_modint& operator%=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator%=\
+    \ * value);\n    return *this;\n  }\n\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint& operator%=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator%=\
     \ : Are you sure you want to do this?\");\n    value %= rhs;\n    return *this;\n\
-    \  }\n\n  template <typename RhsType>\n  constexpr dynamic_modint& operator&=(const\
-    \ RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator&= : Are you sure you want to\
-    \ do this?\");\n    value &= rhs;\n    return *this;\n  }\n  template <typename\
-    \ RhsType>\n  constexpr dynamic_modint& operator|=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"\
-    operator|= : Are you sure you want to do this?\");\n    value |= rhs;\n    clamp();\n\
-    \    return *this;\n  }\n  template <typename RhsType>\n  constexpr dynamic_modint&\
-    \ operator^=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator^= : Are you\
-    \ sure you want to do this?\");\n    value ^= rhs;\n    clamp();\n    return *this;\n\
-    \  }\n  template <typename RhsType>\n  constexpr dynamic_modint& operator<<=(const\
-    \ RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator<<= : Are you sure you want to\
-    \ do this?\");\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value << rhs);\n    return *this;\n  }\n  template <typename RhsType>\n  constexpr\
+    \  }\n\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint&\
+    \ operator&=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator&=\
+    \ : Are you sure you want to do this?\");\n    value &= rhs;\n    return *this;\n\
+    \  }\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR dynamic_modint&\
+    \ operator|=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator|=\
+    \ : Are you sure you want to do this?\");\n    value |= rhs;\n    clamp();\n \
+    \   return *this;\n  }\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint& operator^=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator^=\
+    \ : Are you sure you want to do this?\");\n    value ^= rhs;\n    clamp();\n \
+    \   return *this;\n  }\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint& operator<<=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator<<=\
+    \ : Are you sure you want to do this?\");\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
+    \ value << rhs);\n    return *this;\n  }\n  template <typename RhsType>\n  CP_LIBRARY_USE_CONSTEXPR\
     \ dynamic_modint& operator>>=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator>>=\
     \ : Are you sure you want to do this?\");\n    value >>= rhs;\n    return *this;\n\
-    \  }\n\n  [[nodiscard]] constexpr bool operator!() const {\n    CP_LIBRARY_WARN(\"\
-    operator! : Are you sure you want to do this?\");\n    return value == 0;\n  }\n\
-    \  [[nodiscard]] constexpr dynamic_modint operator~() const {\n    CP_LIBRARY_WARN(\"\
-    operator~ : Are you sure you want to do this?\");\n    return dynamic_modint(~value);\n\
-    \  }\n  [[nodiscard]] constexpr dynamic_modint operator-() const noexcept {\n\
-    \    return dynamic_modint(value == 0 ? 0 : *modulo_ptr - value, true);\n  }\n\
-    \  [[nodiscard]] constexpr dynamic_modint& operator+() const noexcept {\n    return\
-    \ *this;\n  }\n\n  constexpr dynamic_modint& operator++() noexcept {\n    value\
-    \ = ((value + 1 == *modulo_ptr) ? 0 : value + 1);\n    return *this;\n  }\n  constexpr\
-    \ dynamic_modint& operator--() noexcept {\n    value = ((value == 0) ? *modulo_ptr\
-    \ - 1 : value - 1);\n    return *this;\n  }\n  constexpr dynamic_modint operator++(int)\
-    \ noexcept {\n    Tp res = value;\n    ++(*this);\n    return dynamic_modint(res,\
-    \ true);\n  }\n  constexpr dynamic_modint operator--(int) noexcept {\n    Tp res\
-    \ = value;\n    --(*this);\n    return dynamic_modint(res, true);\n  }\n\n  [[nodiscard]]\
-    \ constexpr bool operator==(const dynamic_modint rhs) const noexcept {\n    return\
-    \ value == rhs.value;\n  }\n  [[nodiscard]] constexpr bool operator!=(const dynamic_modint\
-    \ rhs) const noexcept {\n    return value != rhs.value;\n  }\n  [[nodiscard]]\
-    \ constexpr bool operator<(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator< : Are you sure you want to do this?\");\n    return value < rhs.value;\n\
-    \  }\n  [[nodiscard]] constexpr bool operator<=(const dynamic_modint rhs) const\
-    \ {\n    CP_LIBRARY_WARN(\"operator<= : Are you sure you want to do this?\");\n\
-    \    return value <= rhs.value;\n  }\n  [[nodiscard]] constexpr bool operator>(const\
-    \ dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"operator> : Are you sure\
-    \ you want to do this?\");\n    return value > rhs.value;\n  }\n  [[nodiscard]]\
-    \ constexpr bool operator>=(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator>= : Are you sure you want to do this?\");\n    return value >= rhs.value;\n\
-    \  }\n\n  template <typename RhsType>\n  [[nodiscard]] constexpr bool operator==(const\
+    \  }\n\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator!() const {\n  \
+    \  CP_LIBRARY_WARN(\"dynamic_modint::operator! : Are you sure you want to do this?\"\
+    );\n    return value == 0;\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint\
+    \ operator~() const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator~ : Are you\
+    \ sure you want to do this?\");\n    return dynamic_modint(~value);\n  }\n  [[nodiscard]]\
+    \ constexpr dynamic_modint operator-() const noexcept {\n    return dynamic_modint(value\
+    \ == 0 ? 0 : *modulo_ptr - value, true);\n  }\n  [[nodiscard]] constexpr dynamic_modint&\
+    \ operator+() const noexcept {\n    return *this;\n  }\n\n  constexpr dynamic_modint&\
+    \ operator++() noexcept {\n    value = ((value + 1 == *modulo_ptr) ? 0 : value\
+    \ + 1);\n    return *this;\n  }\n  constexpr dynamic_modint& operator--() noexcept\
+    \ {\n    value = ((value == 0) ? *modulo_ptr - 1 : value - 1);\n    return *this;\n\
+    \  }\n  constexpr dynamic_modint operator++(int) noexcept {\n    Tp res = value;\n\
+    \    ++(*this);\n    return dynamic_modint(res, true);\n  }\n  constexpr dynamic_modint\
+    \ operator--(int) noexcept {\n    Tp res = value;\n    --(*this);\n    return\
+    \ dynamic_modint(res, true);\n  }\n\n  [[nodiscard]] constexpr bool operator==(const\
+    \ dynamic_modint rhs) const noexcept {\n    return value == rhs.value;\n  }\n\
+    \  [[nodiscard]] constexpr bool operator!=(const dynamic_modint rhs) const noexcept\
+    \ {\n    return value != rhs.value;\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ bool operator<(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator<\
+    \ : Are you sure you want to do this?\");\n    return value < rhs.value;\n  }\n\
+    \  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator<=(const dynamic_modint\
+    \ rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator<= : Are you sure\
+    \ you want to do this?\");\n    return value <= rhs.value;\n  }\n  [[nodiscard]]\
+    \ CP_LIBRARY_USE_CONSTEXPR bool operator>(const dynamic_modint rhs) const {\n\
+    \    CP_LIBRARY_WARN(\"dynamic_modint::operator> : Are you sure you want to do\
+    \ this?\");\n    return value > rhs.value;\n  }\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ bool operator>=(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator>=\
+    \ : Are you sure you want to do this?\");\n    return value >= rhs.value;\n  }\n\
+    \n  template <typename RhsType>\n  [[nodiscard]] constexpr bool operator==(const\
     \ RhsType rhs) const noexcept {\n    return value == rhs;\n  }\n  template <typename\
     \ RhsType>\n  [[nodiscard]] constexpr bool operator!=(const RhsType rhs) const\
     \ noexcept {\n    return value != rhs;\n  }\n  template <typename RhsType>\n \
-    \ [[nodiscard]] constexpr bool operator<(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator< : Are you sure you want to do this?\");\n    return value < rhs;\n \
-    \ }\n  template <typename RhsType>\n  [[nodiscard]] constexpr bool operator<=(const\
-    \ RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator<= : Are you sure you want\
+    \ [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator<(const RhsType rhs) const\
+    \ {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator< : Are you sure you want to\
+    \ do this?\");\n    return value < rhs;\n  }\n  template <typename RhsType>\n\
+    \  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator<=(const RhsType rhs) const\
+    \ {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator<= : Are you sure you want\
     \ to do this?\");\n    return value <= rhs;\n  }\n  template <typename RhsType>\n\
-    \  [[nodiscard]] constexpr bool operator>(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator> : Are you sure you want to do this?\");\n    return value > rhs;\n \
-    \ }\n  template <typename RhsType>\n  [[nodiscard]] constexpr bool operator>=(const\
-    \ RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator>= : Are you sure you want\
-    \ to do this?\");\n    return value >= rhs;\n  }\n\n  [[nodiscard]] constexpr\
-    \ operator Tp() const noexcept {\n    return value;\n  }\n\n  //! @brief Read\
-    \ value (64-bit signed integer) from std::istream& is, take modulo, and store\
-    \ it in rhs.\n  //! @return std::istream& is\n  friend std::istream& operator>>(std::istream&\
-    \ is, dynamic_modint& rhs) {\n    std::int_least64_t tmp;\n    is >> tmp;\n  \
-    \  if (tmp < -*modulo_ptr || *modulo_ptr <= tmp)\n      tmp %= *modulo_ptr;\n\
-    \    if (tmp < 0)\n      tmp += *modulo_ptr;\n    rhs.value = static_cast<Tp>(tmp);\n\
-    \    return is;\n  }\n  //! @brief Print value to std::ostream& os\n  //! @return\
-    \ std::ostream& os\n  friend std::ostream& operator<<(std::ostream& os, dynamic_modint&\
-    \ rhs) {\n    return os << rhs.value;\n  }\n\n  //! @return multiplicative inverse\n\
-    \  [[nodiscard]] constexpr dynamic_modint inv() const {\n    return dynamic_modint(calc_inverse(value),\
-    \ true);\n  }\n  //! @tparam index_positive_guaranteed set true if and only if\
-    \ you can promise that index is positive\n  //! @tparam Tp integer type (deduced\
-    \ from parameter)\n  //! @param index index. This must be an integer, but doesn't\
-    \ have to be primitive.\n  //! @return index-th power of the value\n  //! @note\
-    \ Time complexity: O(log(index))\n  template <bool index_positive_guaranteed =\
-    \ true, typename T = int>\n  [[nodiscard]] constexpr dynamic_modint pow(T index)\
-    \ const noexcept {\n    if constexpr (!index_positive_guaranteed) {\n      if\
-    \ (value == 0)\n        return dynamic_modint(0, true);\n      if (index == 0)\n\
-    \        return dynamic_modint(1, true);\n      if (index < 0)\n        return\
-    \ dynamic_modint(value, true).inv().pow<true>(-index);\n    }\n    dynamic_modint\
-    \ res(1, true), base(value, true);\n    while (index > 0) {\n      if (index &\
-    \ 1)\n        res *= base;\n      base *= base;\n      index >>= 1;\n    }\n \
-    \   return res;\n  }\n  //! @return a pair (a, b) such that b > 0, value is equal\
-    \ to a * (mult inverse of b), and (a + b) is minimal\n  [[nodiscard]] constexpr\
-    \ std::pair<Tp, Tp> to_frac() const noexcept {\n    Tp x = (*modulo_ptr) - value,\
-    \ y = value, u = 1, v = 1;\n    std::pair<Tp, Tp> res {value, 1};\n\n    Tp num\
-    \ = value, den = 1;\n    Tp cost = num + den;\n\n    while (x > 0) {\n      if\
-    \ (x <= num) {\n        Tp q = num / x;\n        num  = num % x;\n        den\
-    \ += q * u;\n        if (num == 0)\n          break;\n        if (num + den <\
-    \ cost) {\n          cost       = num + den;\n          res.first  = num;\n  \
-    \        res.second = den;\n        }\n      }\n      Tp q = y / x;\n      y \
-    \   = y % x;\n      v += q * u;\n      q = x / y;\n      x = x % y;\n      u +=\
-    \ q * v;\n    }\n\n    return res;\n  }\n};\n\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
+    \  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator>(const RhsType rhs) const\
+    \ {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator> : Are you sure you want to\
+    \ do this?\");\n    return value > rhs;\n  }\n  template <typename RhsType>\n\
+    \  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator>=(const RhsType rhs) const\
+    \ {\n    CP_LIBRARY_WARN(\"dynamic_modint::operator>= : Are you sure you want\
+    \ to do this?\");\n    return value >= rhs;\n  }\n\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ operator Tp() const {\n    CP_LIBRARY_WARN(\"A value of type static_modint has\
+    \ been casted to a primitive integer type.\");\n    return value;\n  }\n\n  //!\
+    \ @brief Read value (64-bit signed integer) from std::istream& is, take modulo,\
+    \ and store it in rhs.\n  //! @return std::istream& is\n  friend std::istream&\
+    \ operator>>(std::istream& is, dynamic_modint& rhs) {\n    std::int_least64_t\
+    \ tmp;\n    is >> tmp;\n    if (tmp < -*modulo_ptr || *modulo_ptr <= tmp)\n  \
+    \    tmp %= *modulo_ptr;\n    if (tmp < 0)\n      tmp += *modulo_ptr;\n    rhs.value\
+    \ = static_cast<Tp>(tmp);\n    return is;\n  }\n  //! @brief Print value to std::ostream&\
+    \ os\n  //! @return std::ostream& os\n  friend std::ostream& operator<<(std::ostream&\
+    \ os, dynamic_modint& rhs) {\n    return os << rhs.value;\n  }\n\n  //! @return\
+    \ multiplicative inverse\n  [[nodiscard]] constexpr dynamic_modint inv() const\
+    \ {\n    return dynamic_modint(calc_inverse(value), true);\n  }\n  //! @tparam\
+    \ index_positive_guaranteed set true if and only if you can promise that index\
+    \ is positive\n  //! @tparam Tp integer type (deduced from parameter)\n  //! @param\
+    \ index index. This must be an integer, but doesn't have to be primitive.\n  //!\
+    \ @return index-th power of the value\n  //! @note Time complexity: O(log(index))\n\
+    \  template <bool index_positive_guaranteed = true, typename T = int>\n  [[nodiscard]]\
+    \ constexpr dynamic_modint pow(T index) const noexcept {\n    if constexpr (!index_positive_guaranteed)\
+    \ {\n      if (value == 0)\n        return dynamic_modint(0, true);\n      if\
+    \ (index == 0)\n        return dynamic_modint(1, true);\n      if (index < 0)\n\
+    \        return dynamic_modint(value, true).inv().pow<true>(-index);\n    }\n\
+    \    dynamic_modint res(1, true), base(value, true);\n    while (index > 0) {\n\
+    \      if (index & 1)\n        res *= base;\n      base *= base;\n      index\
+    \ >>= 1;\n    }\n    return res;\n  }\n  //! @return a pair (a, b) such that b\
+    \ > 0, value is equal to a * (mult inverse of b), and (a + b) is minimal\n  [[nodiscard]]\
+    \ constexpr std::pair<Tp, Tp> to_frac() const noexcept {\n    Tp x = (*modulo_ptr)\
+    \ - value, y = value, u = 1, v = 1;\n    std::pair<Tp, Tp> res {value, 1};\n\n\
+    \    Tp num = value, den = 1;\n    Tp cost = num + den;\n\n    while (x > 0) {\n\
+    \      if (x <= num) {\n        Tp q = num / x;\n        num  = num % x;\n   \
+    \     den += q * u;\n        if (num == 0)\n          break;\n        if (num\
+    \ + den < cost) {\n          cost       = num + den;\n          res.first  = num;\n\
+    \          res.second = den;\n        }\n      }\n      Tp q = y / x;\n      y\
+    \    = y % x;\n      v += q * u;\n      q = x / y;\n      x = x % y;\n      u\
+    \ += q * v;\n    }\n\n    return res;\n  }\n};\n\ntemplate <typename LhsType,\
+    \ typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
     \ operator+(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept\
     \ {\n  return rhs + lhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
     [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator-(const LhsType\
@@ -246,344 +560,65 @@ data:
     \ typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
     \ operator/(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n \
     \ return rhs.inv() * lhs;\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
-    [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator%(const LhsType\
-    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator%\
-    \ : Are you sure you want to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>(lhs\
-    \ % (Tp) rhs, true);\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr,\
-    \ std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>\n[[nodiscard]]\
-    \ constexpr dynamic_modint<Tp, modulo_ptr> operator<<(const LhsType lhs, const\
-    \ dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator<< : Are\
-    \ you sure you want to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ lhs << (Tp) rhs);\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr,\
-    \ std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>\n[[nodiscard]]\
-    \ constexpr dynamic_modint<Tp, modulo_ptr> operator>>(const LhsType lhs, const\
-    \ dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator>> : Are\
-    \ you sure you want to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>(lhs\
-    \ >> (Tp) rhs);\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
-    constexpr LhsType& operator+=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr>\
-    \ rhs) noexcept {\n  return lhs += (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator-=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) noexcept {\n  return lhs -= (Tp) rhs;\n}\ntemplate <typename\
-    \ LhsType, typename Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator*=(LhsType&\
-    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept {\n  return lhs *= (Tp)\
-    \ rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\nconstexpr\
-    \ LhsType& operator/=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs)\
-    \ noexcept {\n  return lhs /= (Tp) rhs;\n}\n\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator%=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator%= : Are you sure you want to\
-    \ do this?\");\n  return lhs %= (Tp) rhs;\n}\n\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator&=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator&= : Are you sure you want to\
-    \ do this?\");\n  return lhs &= (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator|=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator|= : Are you sure you want to\
-    \ do this?\");\n  return lhs |= (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator^=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator^= : Are you sure you want to\
-    \ do this?\");\n  return lhs ^= (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator<<=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator<<= : Are you sure you want\
-    \ to do this?\");\n  return lhs <<= (Tp) rhs;\n}\ntemplate <typename LhsType,\
-    \ typename Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator>>=(LhsType& lhs, const\
-    \ dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator>>= : Are\
-    \ you sure you want to do this?\");\n  return lhs >>= (Tp) rhs;\n}\n\ntemplate\
-    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr bool\
-    \ operator<(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n \
-    \ CP_LIBRARY_WARN(\"operator< : Are you sure you want to do this?\");\n  return\
-    \ lhs < (Tp) rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
-    [[nodiscard]] constexpr bool operator<=(const LhsType lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator<= : Are you sure you want to\
+    [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint<Tp, modulo_ptr>\noperator%(const\
+    \ LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator% : Are you sure you want to do this?\");\n  return dynamic_modint<Tp,\
+    \ modulo_ptr>(lhs % (Tp) rhs, true);\n}\n\ntemplate <typename LhsType, typename\
+    \ Tp, Tp* modulo_ptr, std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t>\
+    \ = nullptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint<Tp, modulo_ptr>\n\
+    operator<<(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator<< : Are you sure you want to do this?\");\n  return dynamic_modint<Tp,\
+    \ modulo_ptr>((internal::dynamic_modint_hpp::LongInt<Tp>) lhs << (Tp) rhs);\n\
+    }\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr, std::enable_if_t<std::is_integral_v<LhsType>,\
+    \ std::nullptr_t> = nullptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR dynamic_modint<Tp,\
+    \ modulo_ptr>\noperator>>(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr>\
+    \ rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator>> : Are you sure you want\
+    \ to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>(lhs >> (Tp) rhs);\n\
+    }\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR\
+    \ LhsType& operator+=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs)\
+    \ {\n  return lhs += (Tp) rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp*\
+    \ modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType& operator-=(LhsType& lhs, const\
+    \ dynamic_modint<Tp, modulo_ptr> rhs) {\n  return lhs -= (Tp) rhs;\n}\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType&\
+    \ operator*=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  return\
+    \ lhs *= (Tp) rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
+    CP_LIBRARY_USE_CONSTEXPR LhsType& operator/=(LhsType& lhs, const dynamic_modint<Tp,\
+    \ modulo_ptr> rhs) {\n  return lhs /= (Tp) rhs;\n}\n\ntemplate <typename LhsType,\
+    \ typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType& operator%=(LhsType&\
+    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator%=\
+    \ : Are you sure you want to do this?\");\n  return lhs %= (Tp) rhs;\n}\n\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType&\
+    \ operator&=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator&= : Are you sure you want to do this?\");\n  return lhs\
+    \ &= (Tp) rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
+    CP_LIBRARY_USE_CONSTEXPR LhsType& operator|=(LhsType& lhs, const dynamic_modint<Tp,\
+    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator|= : Are you\
+    \ sure you want to do this?\");\n  return lhs |= (Tp) rhs;\n}\ntemplate <typename\
+    \ LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType& operator^=(LhsType&\
+    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator^=\
+    \ : Are you sure you want to do this?\");\n  return lhs ^= (Tp) rhs;\n}\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR LhsType&\
+    \ operator<<=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"\
+    operator<<= : Are you sure you want to do this?\");\n  return lhs <<= (Tp) rhs;\n\
+    }\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\nCP_LIBRARY_USE_CONSTEXPR\
+    \ LhsType& operator>>=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs)\
+    \ {\n  CP_LIBRARY_WARN(\"operator>>= : Are you sure you want to do this?\");\n\
+    \  return lhs >>= (Tp) rhs;\n}\n\ntemplate <typename LhsType, typename Tp, Tp*\
+    \ modulo_ptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator<(const LhsType\
+    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator<\
+    \ : Are you sure you want to do this?\");\n  return lhs < (Tp) rhs;\n}\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ bool operator<=(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs)\
+    \ {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator<= : Are you sure you want to\
     \ do this?\");\n  return lhs < (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr bool operator>(const LhsType lhs,\
-    \ const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator> :\
-    \ Are you sure you want to do this?\");\n  return lhs < (Tp) rhs;\n}\ntemplate\
-    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr bool\
-    \ operator>=(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n\
-    \  CP_LIBRARY_WARN(\"operator>= : Are you sure you want to do this?\");\n  return\
-    \ lhs < (Tp) rhs;\n}\n\n}  // namespace lib\n\n#ifdef CP_LIBRARY_WARN_NOT_DEFINED\n\
-    #  undef CP_LIBRARY_WARN\n#  undef CP_LIBRARY_WARN_NOT_DEFINED\n#  ifdef CP_LIBRARY_WARN\n\
-    #    undef CP_LIBRARY_WARN\n#  endif\n#endif\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n\
-    #  undef CP_LIBRARY_ASSERT\n#  undef CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\n\
-    #endif  // CP_LIBRARY_DYNAMIC_MODINT_HPP\n"
-  code: "\n//! @file dynamic_modint.hpp\n\n#ifndef CP_LIBRARY_DYNAMIC_MODINT_HPP\n\
-    #define CP_LIBRARY_DYNAMIC_MODINT_HPP\n\n#include <cassert>\n#include <cstdint>\n\
-    #include <iostream>\n#include <limits>\n#include <type_traits>\n\n#ifndef CP_LIBRARY_WARN\n\
-    #  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print warning message\n//! @note\
-    \ You can suppress the warning by uncommenting line 18\n#    define CP_LIBRARY_WARN(msg)\
-    \ (std::cerr << (msg) << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n\
-    #  else\n#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#\
-    \  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\n#ifndef CP_LIBRARY_ASSERT\n//!\
-    \ @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)\n\
-    #  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace lib {\n\nnamespace\
-    \ internal::dynamic_modint_hpp {\n  template <typename Tp, std::enable_if_t<std::is_integral_v<Tp>,\
-    \ std::nullptr_t> = nullptr>\n  using LongInt = std::conditional_t<(64 <= std::numeric_limits<Tp>::digits),\
-    \ __int128_t, std::int_least64_t>;\n}\n\n//! @brief modint (for runtime constant\
-    \ modulo)\n//! @tparam Tp underlying integer type (e.g. int)\n//! @tparam modulo_ptr\
-    \ pointer to modulo variable\ntemplate <typename Tp, Tp* modulo_ptr>\nstruct dynamic_modint\
-    \ {\nprivate:\n  Tp value;\n\n  //! @param n non-zero integer\n  //! @return multiplicative\
-    \ inverse of n\n  //! @note Time complexity: O(log(n))\n  template <typename Sp>\n\
-    \  [[nodiscard]] static constexpr Tp calc_inverse(Sp n) noexcept {\n    CP_LIBRARY_ASSERT(n\
-    \ != 0);\n\n    Tp b = *modulo_ptr, u = 1, v = 0, t;\n    while (b > 0) {\n  \
-    \    t = n / b;\n      // std::swap is not necessarily constexpr in C++17\n  \
-    \    // std::swap(n -= t * b, b);\n      Tp tmp = std::move(n -= t * b);\n   \
-    \   n      = std::move(b);\n      b      = std::move(tmp);\n      // std::swap(u\
-    \ -= t * v, v);\n      tmp = std::move(u -= t * v);\n      u   = std::move(v);\n\
-    \      v   = std::move(tmp);\n    }\n    if (u < 0)\n      u += *modulo_ptr;\n\
-    \    return static_cast<Tp>(u);\n  }\n\n  //! @brief Calculate modulo and keep\
-    \ the value within [0, modulo)\n  //! @param v integer\n  //! @return integer\
-    \ within [0, *modulo_ptr)\n  //! @note Time complexity: O(1)\n  template <typename\
-    \ Sp>\n  static constexpr Tp clamp(Sp v) noexcept {\n#pragma GCC diagnostic push\n\
-    #pragma GCC diagnostic ignored \"-Wsign-compare\"\n    if (*modulo_ptr <= v ||\
-    \ v < -*modulo_ptr)\n      v %= *modulo_ptr;\n#pragma GCC diagnostic pop\n   \
-    \ if (v < 0)\n      v += *modulo_ptr;\n    return static_cast<Tp>(v);\n  }\n\n\
-    public:\n  //! @brief underlying integer type\n  using type = Tp;\n\n  //! @return\
-    \ reference to modulo (e.g. 1000000007)\n  [[nodiscard]] static type& mod() {\n\
-    \    return *modulo_ptr;\n  }\n\n  //! @brief Create a modint of value 0\n  constexpr\
-    \ dynamic_modint() noexcept : value(0) {}\n\n  //! @brief Create a modint without\
-    \ taking modulo\n  constexpr dynamic_modint(const Tp v, bool) noexcept : value(v)\
-    \ {}\n\n  //! @brief Create a modint\n  template <typename ValueType>\n  constexpr\
-    \ dynamic_modint(const ValueType v) noexcept : value(clamp(v)) {}\n\n  [[nodiscard]]\
-    \ constexpr dynamic_modint operator+(const dynamic_modint rhs) const noexcept\
-    \ {\n    return dynamic_modint(value + rhs.value);\n  }\n  [[nodiscard]] constexpr\
-    \ dynamic_modint operator-(const dynamic_modint rhs) const noexcept {\n    return\
-    \ dynamic_modint(value - rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator*(const dynamic_modint rhs) const noexcept {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value * rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator/(const\
-    \ dynamic_modint rhs) const {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value * calc_inverse(rhs.value));\n  }\n\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator%(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"operator%\
-    \ : Are you sure you want to do this?\");\n    return dynamic_modint(value % rhs.value,\
-    \ true);\n  }\n\n  [[nodiscard]] constexpr dynamic_modint operator&(const dynamic_modint\
-    \ rhs) const {\n    CP_LIBRARY_WARN(\"operator& : Are you sure you want to do\
-    \ this?\");\n    return dynamic_modint(value & rhs.value, true);\n  }\n  [[nodiscard]]\
-    \ constexpr dynamic_modint operator|(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator| : Are you sure you want to do this?\");\n    return dynamic_modint(value\
-    \ | rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator^(const\
-    \ dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"operator^ : Are you sure\
-    \ you want to do this?\");\n    return dynamic_modint(value ^ rhs.value);\n  }\n\
-    \  [[nodiscard]] constexpr dynamic_modint operator<<(const dynamic_modint rhs)\
-    \ const {\n    CP_LIBRARY_WARN(\"operator<< : Are you sure you want to do this?\"\
-    );\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value\
-    \ << rhs.value);\n  }\n  [[nodiscard]] constexpr dynamic_modint operator>>(const\
-    \ dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"operator>> : Are you sure\
-    \ you want to do this?\");\n    return dynamic_modint(value >> rhs.value, true);\n\
-    \  }\n\n  constexpr dynamic_modint& operator+=(const dynamic_modint rhs) noexcept\
-    \ {\n    value += rhs.value;\n    if (value >= *modulo_ptr)\n      value -= *modulo_ptr;\n\
-    \    return *this;\n  }\n  constexpr dynamic_modint& operator-=(const dynamic_modint\
-    \ rhs) noexcept {\n    value -= rhs.value;\n    if (value < 0)\n      value +=\
-    \ *modulo_ptr;\n    return *this;\n  }\n  constexpr dynamic_modint& operator*=(const\
-    \ dynamic_modint rhs) noexcept {\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value * rhs.value);\n    return *this;\n  }\n  constexpr dynamic_modint& operator/=(const\
-    \ dynamic_modint rhs) {\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value * calc_inverse(rhs.value));\n    return *this;\n  }\n\n  constexpr dynamic_modint&\
-    \ operator%=(const dynamic_modint rhs) {\n    CP_LIBRARY_WARN(\"operator%= : Are\
-    \ you sure you want to do this?\");\n\n    value %= rhs.value;\n    if (value\
-    \ < 0)\n      value += *modulo_ptr;\n    return *this;\n  }\n\n  constexpr dynamic_modint&\
-    \ operator&=(const dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"operator&=\
-    \ : Are you sure you want to do this?\");\n    value &= rhs.value;\n    return\
-    \ *this;\n  }\n  constexpr dynamic_modint& operator|=(const dynamic_modint rhs)\
-    \ noexcept {\n    CP_LIBRARY_WARN(\"operator|= : Are you sure you want to do this?\"\
-    );\n    value |= rhs.value;\n    clamp();\n    return *this;\n  }\n  constexpr\
-    \ dynamic_modint& operator^=(const dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"\
-    operator^= : Are you sure you want to do this?\");\n    value ^= rhs.value;\n\
-    \    clamp();\n    return *this;\n  }\n  constexpr dynamic_modint& operator<<=(const\
-    \ dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"operator<<= : Are you\
-    \ sure you want to do this?\");\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value << rhs.value);\n    return *this;\n  }\n  constexpr dynamic_modint& operator>>=(const\
-    \ dynamic_modint rhs) noexcept {\n    CP_LIBRARY_WARN(\"operator>>= : Are you\
-    \ sure you want to do this?\");\n    value >>= rhs.value;\n    return *this;\n\
-    \  }\n\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator+(const RhsType rhs) const noexcept {\n    return dynamic_modint(value\
-    \ + clamp(rhs));\n  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr\
-    \ dynamic_modint operator-(const RhsType rhs) const noexcept {\n    return dynamic_modint(value\
-    \ - clamp(rhs));\n  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr\
-    \ dynamic_modint operator*(const RhsType rhs) const noexcept {\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value * clamp(rhs));\n  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr\
-    \ dynamic_modint operator/(const RhsType rhs) const {\n    internal::dynamic_modint_hpp::LongInt<Tp>\
-    \ mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);\n    return dynamic_modint(mul\
-    \ * value);\n  }\n\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator%(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator% : Are\
-    \ you sure you want to do this?\");\n    return dynamic_modint(value % rhs, true);\n\
-    \  }\n\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator&(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator& : Are\
-    \ you sure you want to do this?\");\n    return dynamic_modint(value & rhs, true);\n\
-    \  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator|(const RhsType rhs) const noexcept {\n    CP_LIBRARY_WARN(\"operator|\
-    \ : Are you sure you want to do this?\");\n    return dynamic_modint(value | rhs);\n\
-    \  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator^(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator^ : Are\
-    \ you sure you want to do this?\");\n    return dynamic_modint(value ^ rhs);\n\
-    \  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr dynamic_modint\
-    \ operator<<(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator<< : Are\
-    \ you sure you want to do this?\");\n    return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value << rhs);\n  }\n  template <typename RhsType>\n  [[nodiscard]] constexpr\
-    \ dynamic_modint operator>>(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator>> : Are you sure you want to do this?\");\n    return dynamic_modint(value\
-    \ >> rhs, true);\n  }\n\n  template <typename RhsType>\n  constexpr dynamic_modint&\
-    \ operator+=(const RhsType rhs) noexcept {\n    value = clamp(value + clamp(rhs));\n\
-    \    return *this;\n  }\n  template <typename RhsType>\n  constexpr dynamic_modint&\
-    \ operator-=(const RhsType rhs) noexcept {\n    value = clamp(value - clamp(rhs));\n\
-    \    return *this;\n  }\n  template <typename RhsType>\n  constexpr dynamic_modint&\
-    \ operator*=(const RhsType rhs) noexcept {\n    value = clamp(value * clamp(rhs));\n\
-    \    return *this;\n  }\n  template <typename RhsType>\n  constexpr dynamic_modint&\
-    \ operator/=(const RhsType rhs) {\n    internal::dynamic_modint_hpp::LongInt<Tp>\
-    \ mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);\n    value = clamp(mul\
-    \ * value);\n    return *this;\n  }\n\n  template <typename RhsType>\n  constexpr\
-    \ dynamic_modint& operator%=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator%=\
-    \ : Are you sure you want to do this?\");\n    value %= rhs;\n    return *this;\n\
-    \  }\n\n  template <typename RhsType>\n  constexpr dynamic_modint& operator&=(const\
-    \ RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator&= : Are you sure you want to\
-    \ do this?\");\n    value &= rhs;\n    return *this;\n  }\n  template <typename\
-    \ RhsType>\n  constexpr dynamic_modint& operator|=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"\
-    operator|= : Are you sure you want to do this?\");\n    value |= rhs;\n    clamp();\n\
-    \    return *this;\n  }\n  template <typename RhsType>\n  constexpr dynamic_modint&\
-    \ operator^=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator^= : Are you\
-    \ sure you want to do this?\");\n    value ^= rhs;\n    clamp();\n    return *this;\n\
-    \  }\n  template <typename RhsType>\n  constexpr dynamic_modint& operator<<=(const\
-    \ RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator<<= : Are you sure you want to\
-    \ do this?\");\n    value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ value << rhs);\n    return *this;\n  }\n  template <typename RhsType>\n  constexpr\
-    \ dynamic_modint& operator>>=(const RhsType rhs) {\n    CP_LIBRARY_WARN(\"operator>>=\
-    \ : Are you sure you want to do this?\");\n    value >>= rhs;\n    return *this;\n\
-    \  }\n\n  [[nodiscard]] constexpr bool operator!() const {\n    CP_LIBRARY_WARN(\"\
-    operator! : Are you sure you want to do this?\");\n    return value == 0;\n  }\n\
-    \  [[nodiscard]] constexpr dynamic_modint operator~() const {\n    CP_LIBRARY_WARN(\"\
-    operator~ : Are you sure you want to do this?\");\n    return dynamic_modint(~value);\n\
-    \  }\n  [[nodiscard]] constexpr dynamic_modint operator-() const noexcept {\n\
-    \    return dynamic_modint(value == 0 ? 0 : *modulo_ptr - value, true);\n  }\n\
-    \  [[nodiscard]] constexpr dynamic_modint& operator+() const noexcept {\n    return\
-    \ *this;\n  }\n\n  constexpr dynamic_modint& operator++() noexcept {\n    value\
-    \ = ((value + 1 == *modulo_ptr) ? 0 : value + 1);\n    return *this;\n  }\n  constexpr\
-    \ dynamic_modint& operator--() noexcept {\n    value = ((value == 0) ? *modulo_ptr\
-    \ - 1 : value - 1);\n    return *this;\n  }\n  constexpr dynamic_modint operator++(int)\
-    \ noexcept {\n    Tp res = value;\n    ++(*this);\n    return dynamic_modint(res,\
-    \ true);\n  }\n  constexpr dynamic_modint operator--(int) noexcept {\n    Tp res\
-    \ = value;\n    --(*this);\n    return dynamic_modint(res, true);\n  }\n\n  [[nodiscard]]\
-    \ constexpr bool operator==(const dynamic_modint rhs) const noexcept {\n    return\
-    \ value == rhs.value;\n  }\n  [[nodiscard]] constexpr bool operator!=(const dynamic_modint\
-    \ rhs) const noexcept {\n    return value != rhs.value;\n  }\n  [[nodiscard]]\
-    \ constexpr bool operator<(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator< : Are you sure you want to do this?\");\n    return value < rhs.value;\n\
-    \  }\n  [[nodiscard]] constexpr bool operator<=(const dynamic_modint rhs) const\
-    \ {\n    CP_LIBRARY_WARN(\"operator<= : Are you sure you want to do this?\");\n\
-    \    return value <= rhs.value;\n  }\n  [[nodiscard]] constexpr bool operator>(const\
-    \ dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"operator> : Are you sure\
-    \ you want to do this?\");\n    return value > rhs.value;\n  }\n  [[nodiscard]]\
-    \ constexpr bool operator>=(const dynamic_modint rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator>= : Are you sure you want to do this?\");\n    return value >= rhs.value;\n\
-    \  }\n\n  template <typename RhsType>\n  [[nodiscard]] constexpr bool operator==(const\
-    \ RhsType rhs) const noexcept {\n    return value == rhs;\n  }\n  template <typename\
-    \ RhsType>\n  [[nodiscard]] constexpr bool operator!=(const RhsType rhs) const\
-    \ noexcept {\n    return value != rhs;\n  }\n  template <typename RhsType>\n \
-    \ [[nodiscard]] constexpr bool operator<(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator< : Are you sure you want to do this?\");\n    return value < rhs;\n \
-    \ }\n  template <typename RhsType>\n  [[nodiscard]] constexpr bool operator<=(const\
-    \ RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator<= : Are you sure you want\
-    \ to do this?\");\n    return value <= rhs;\n  }\n  template <typename RhsType>\n\
-    \  [[nodiscard]] constexpr bool operator>(const RhsType rhs) const {\n    CP_LIBRARY_WARN(\"\
-    operator> : Are you sure you want to do this?\");\n    return value > rhs;\n \
-    \ }\n  template <typename RhsType>\n  [[nodiscard]] constexpr bool operator>=(const\
-    \ RhsType rhs) const {\n    CP_LIBRARY_WARN(\"operator>= : Are you sure you want\
-    \ to do this?\");\n    return value >= rhs;\n  }\n\n  [[nodiscard]] constexpr\
-    \ operator Tp() const noexcept {\n    return value;\n  }\n\n  //! @brief Read\
-    \ value (64-bit signed integer) from std::istream& is, take modulo, and store\
-    \ it in rhs.\n  //! @return std::istream& is\n  friend std::istream& operator>>(std::istream&\
-    \ is, dynamic_modint& rhs) {\n    std::int_least64_t tmp;\n    is >> tmp;\n  \
-    \  if (tmp < -*modulo_ptr || *modulo_ptr <= tmp)\n      tmp %= *modulo_ptr;\n\
-    \    if (tmp < 0)\n      tmp += *modulo_ptr;\n    rhs.value = static_cast<Tp>(tmp);\n\
-    \    return is;\n  }\n  //! @brief Print value to std::ostream& os\n  //! @return\
-    \ std::ostream& os\n  friend std::ostream& operator<<(std::ostream& os, dynamic_modint&\
-    \ rhs) {\n    return os << rhs.value;\n  }\n\n  //! @return multiplicative inverse\n\
-    \  [[nodiscard]] constexpr dynamic_modint inv() const {\n    return dynamic_modint(calc_inverse(value),\
-    \ true);\n  }\n  //! @tparam index_positive_guaranteed set true if and only if\
-    \ you can promise that index is positive\n  //! @tparam Tp integer type (deduced\
-    \ from parameter)\n  //! @param index index. This must be an integer, but doesn't\
-    \ have to be primitive.\n  //! @return index-th power of the value\n  //! @note\
-    \ Time complexity: O(log(index))\n  template <bool index_positive_guaranteed =\
-    \ true, typename T = int>\n  [[nodiscard]] constexpr dynamic_modint pow(T index)\
-    \ const noexcept {\n    if constexpr (!index_positive_guaranteed) {\n      if\
-    \ (value == 0)\n        return dynamic_modint(0, true);\n      if (index == 0)\n\
-    \        return dynamic_modint(1, true);\n      if (index < 0)\n        return\
-    \ dynamic_modint(value, true).inv().pow<true>(-index);\n    }\n    dynamic_modint\
-    \ res(1, true), base(value, true);\n    while (index > 0) {\n      if (index &\
-    \ 1)\n        res *= base;\n      base *= base;\n      index >>= 1;\n    }\n \
-    \   return res;\n  }\n  //! @return a pair (a, b) such that b > 0, value is equal\
-    \ to a * (mult inverse of b), and (a + b) is minimal\n  [[nodiscard]] constexpr\
-    \ std::pair<Tp, Tp> to_frac() const noexcept {\n    Tp x = (*modulo_ptr) - value,\
-    \ y = value, u = 1, v = 1;\n    std::pair<Tp, Tp> res {value, 1};\n\n    Tp num\
-    \ = value, den = 1;\n    Tp cost = num + den;\n\n    while (x > 0) {\n      if\
-    \ (x <= num) {\n        Tp q = num / x;\n        num  = num % x;\n        den\
-    \ += q * u;\n        if (num == 0)\n          break;\n        if (num + den <\
-    \ cost) {\n          cost       = num + den;\n          res.first  = num;\n  \
-    \        res.second = den;\n        }\n      }\n      Tp q = y / x;\n      y \
-    \   = y % x;\n      v += q * u;\n      q = x / y;\n      x = x % y;\n      u +=\
-    \ q * v;\n    }\n\n    return res;\n  }\n};\n\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
-    \ operator+(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept\
-    \ {\n  return rhs + lhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
-    [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator-(const LhsType\
-    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept {\n  return -rhs + lhs;\n\
-    }\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr\
-    \ dynamic_modint<Tp, modulo_ptr> operator*(const LhsType lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) noexcept {\n  return rhs * lhs;\n}\ntemplate <typename LhsType,\
-    \ typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
-    \ operator/(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n \
-    \ return rhs.inv() * lhs;\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
-    [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator%(const LhsType\
-    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator%\
-    \ : Are you sure you want to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>(lhs\
-    \ % (Tp) rhs, true);\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr,\
-    \ std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>\n[[nodiscard]]\
-    \ constexpr dynamic_modint<Tp, modulo_ptr> operator<<(const LhsType lhs, const\
-    \ dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator<< : Are\
-    \ you sure you want to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>((internal::dynamic_modint_hpp::LongInt<Tp>)\
-    \ lhs << (Tp) rhs);\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr,\
-    \ std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>\n[[nodiscard]]\
-    \ constexpr dynamic_modint<Tp, modulo_ptr> operator>>(const LhsType lhs, const\
-    \ dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator>> : Are\
-    \ you sure you want to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>(lhs\
-    \ >> (Tp) rhs);\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
-    constexpr LhsType& operator+=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr>\
-    \ rhs) noexcept {\n  return lhs += (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator-=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) noexcept {\n  return lhs -= (Tp) rhs;\n}\ntemplate <typename\
-    \ LhsType, typename Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator*=(LhsType&\
-    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept {\n  return lhs *= (Tp)\
-    \ rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\nconstexpr\
-    \ LhsType& operator/=(LhsType& lhs, const dynamic_modint<Tp, modulo_ptr> rhs)\
-    \ noexcept {\n  return lhs /= (Tp) rhs;\n}\n\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator%=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator%= : Are you sure you want to\
-    \ do this?\");\n  return lhs %= (Tp) rhs;\n}\n\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator&=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator&= : Are you sure you want to\
-    \ do this?\");\n  return lhs &= (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator|=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator|= : Are you sure you want to\
-    \ do this?\");\n  return lhs |= (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator^=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator^= : Are you sure you want to\
-    \ do this?\");\n  return lhs ^= (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator<<=(LhsType& lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator<<= : Are you sure you want\
-    \ to do this?\");\n  return lhs <<= (Tp) rhs;\n}\ntemplate <typename LhsType,\
-    \ typename Tp, Tp* modulo_ptr>\nconstexpr LhsType& operator>>=(LhsType& lhs, const\
-    \ dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator>>= : Are\
-    \ you sure you want to do this?\");\n  return lhs >>= (Tp) rhs;\n}\n\ntemplate\
-    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr bool\
-    \ operator<(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n \
-    \ CP_LIBRARY_WARN(\"operator< : Are you sure you want to do this?\");\n  return\
-    \ lhs < (Tp) rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
-    [[nodiscard]] constexpr bool operator<=(const LhsType lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator<= : Are you sure you want to\
-    \ do this?\");\n  return lhs < (Tp) rhs;\n}\ntemplate <typename LhsType, typename\
-    \ Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr bool operator>(const LhsType lhs,\
-    \ const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"operator> :\
-    \ Are you sure you want to do this?\");\n  return lhs < (Tp) rhs;\n}\ntemplate\
-    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr bool\
-    \ operator>=(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n\
-    \  CP_LIBRARY_WARN(\"operator>= : Are you sure you want to do this?\");\n  return\
-    \ lhs < (Tp) rhs;\n}\n\n}  // namespace lib\n\n#ifdef CP_LIBRARY_WARN_NOT_DEFINED\n\
+    \ Tp, Tp* modulo_ptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator>(const\
+    \ LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"\
+    dynamic_modint::operator> : Are you sure you want to do this?\");\n  return lhs\
+    \ < (Tp) rhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]]\
+    \ CP_LIBRARY_USE_CONSTEXPR bool operator>=(const LhsType lhs, const dynamic_modint<Tp,\
+    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator>= : Are you\
+    \ sure you want to do this?\");\n  return lhs < (Tp) rhs;\n}\n\n}  // namespace\
+    \ lib\n\n#undef CP_LIBRARY_USE_CONSTEXPR\n\n#ifdef CP_LIBRARY_WARN_NOT_DEFINED\n\
     #  undef CP_LIBRARY_WARN\n#  undef CP_LIBRARY_WARN_NOT_DEFINED\n#  ifdef CP_LIBRARY_WARN\n\
     #    undef CP_LIBRARY_WARN\n#  endif\n#endif\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n\
     #  undef CP_LIBRARY_ASSERT\n#  undef CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\n\
@@ -592,7 +627,7 @@ data:
   isVerificationFile: false
   path: include/algebra/dynamic_modint.hpp
   requiredBy: []
-  timestamp: '2021-08-13 16:49:33+09:00'
+  timestamp: '2021-08-14 12:12:32+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/algebra/dynamic_modint/3.test.cpp

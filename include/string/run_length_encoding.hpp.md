@@ -16,13 +16,13 @@ data:
     \n#ifndef CP_LIBRARY_RUN_LENGTH_ENCODING_HPP\n#define CP_LIBRARY_RUN_LENGTH_ENCODING_HPP\n\
     \n#include <iostream>\n#include <type_traits>\n#include <utility>\n#include <vector>\n\
     \n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print\
-    \ warning message\n//! @note You can suppress the warning by uncommenting line\
-    \ 17\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\n')\n// #  define\
-    \ CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n#    define CP_LIBRARY_WARN(msg)\
-    \ (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\
-    \nnamespace lib {\n\n//! @tparam Container container type (deduced from parameter)\n\
-    //! @param src source container (std::string, std::vector, std::deque, ...)\n\
-    //! @return A std::vector<std::pair<element type of src, int>> which contains\
+    \ warning message\n//! @note You can suppress the warning by uncommenting the\
+    \ following line\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\\
+    n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n#    define\
+    \ CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
+    #endif\n\nnamespace lib {\n\n//! @tparam Container container type (deduced from\
+    \ parameter)\n//! @param src source container (std::string, std::vector, std::deque,\
+    \ ...)\n//! @return A std::vector<std::pair<element type of src, int>> which contains\
     \ the RLE result.\n//! @note Time complexity: O(size(src))\ntemplate <typename\
     \ Container>\n[[nodiscard]] auto run_length_encoding(const Container& src) {\n\
     \  using Elem = std::decay_t<decltype(*std::cbegin(std::declval<Container>()))>;\n\
@@ -39,15 +39,15 @@ data:
     #define CP_LIBRARY_RUN_LENGTH_ENCODING_HPP\n\n#include <iostream>\n#include <type_traits>\n\
     #include <utility>\n#include <vector>\n\n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL\
     \ >= 1)\n//! @brief Print warning message\n//! @note You can suppress the warning\
-    \ by uncommenting line 17\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg)\
-    \ << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n\
-    #    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
-    #endif\n\nnamespace lib {\n\n//! @tparam Container container type (deduced from\
-    \ parameter)\n//! @param src source container (std::string, std::vector, std::deque,\
-    \ ...)\n//! @return A std::vector<std::pair<element type of src, int>> which contains\
-    \ the RLE result.\n//! @note Time complexity: O(size(src))\ntemplate <typename\
-    \ Container>\n[[nodiscard]] auto run_length_encoding(const Container& src) {\n\
-    \  using Elem = std::decay_t<decltype(*std::cbegin(std::declval<Container>()))>;\n\
+    \ by uncommenting the following line\n#    define CP_LIBRARY_WARN(msg) (std::cerr\
+    \ << (msg) << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n\
+    #  else\n#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#\
+    \  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\nnamespace lib {\n\n//! @tparam\
+    \ Container container type (deduced from parameter)\n//! @param src source container\
+    \ (std::string, std::vector, std::deque, ...)\n//! @return A std::vector<std::pair<element\
+    \ type of src, int>> which contains the RLE result.\n//! @note Time complexity:\
+    \ O(size(src))\ntemplate <typename Container>\n[[nodiscard]] auto run_length_encoding(const\
+    \ Container& src) {\n  using Elem = std::decay_t<decltype(*std::cbegin(std::declval<Container>()))>;\n\
     \  if (src.empty()) {\n    CP_LIBRARY_WARN(\"An empty container is provided.\"\
     );\n    return std::vector<std::pair<Elem, int>> {};\n  }\n  std::vector<std::pair<Elem,\
     \ int>> res {{*std::cbegin(src), 1}};\n\n  auto iter2 = std::cbegin(src);\n  auto\
@@ -61,7 +61,7 @@ data:
   isVerificationFile: false
   path: include/string/run_length_encoding.hpp
   requiredBy: []
-  timestamp: '2021-08-11 13:32:54+09:00'
+  timestamp: '2021-08-14 12:12:32+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/run_length_encoding/1.test.cpp

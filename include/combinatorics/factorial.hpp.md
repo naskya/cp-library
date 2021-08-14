@@ -20,11 +20,11 @@ data:
     \ CP_LIBRARY_FACTORIAL_HPP\n#define CP_LIBRARY_FACTORIAL_HPP\n\n#include <algorithm>\n\
     #include <array>\n#include <iostream>\n#include <numeric>\n#include <type_traits>\n\
     \n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print\
-    \ warning message\n//! @note You can suppress the warning by uncommenting line\
-    \ 19\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\n')\n// #  define\
-    \ CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n#    define CP_LIBRARY_WARN(msg)\
-    \ (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\
-    \nnamespace lib {\n\nnamespace internal::factorial_hpp {\n  template <typename...\
+    \ warning message\n//! @note You can suppress the warning by uncommenting the\
+    \ following line\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\\
+    n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n#    define\
+    \ CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
+    #endif\n\nnamespace lib {\n\nnamespace internal::factorial_hpp {\n  template <typename...\
     \ Ts>\n  struct is_all_same : std::false_type {};\n  template <>\n  struct is_all_same<>\
     \ : std::true_type {};\n  template <typename Tp>\n  struct is_all_same<Tp> : std::true_type\
     \ {};\n  template <typename Tp, typename... Ts>\n  struct is_all_same<Tp, Tp,\
@@ -215,14 +215,15 @@ data:
     \n#include <algorithm>\n#include <array>\n#include <iostream>\n#include <numeric>\n\
     #include <type_traits>\n\n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL\
     \ >= 1)\n//! @brief Print warning message\n//! @note You can suppress the warning\
-    \ by uncommenting line 19\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg)\
-    \ << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n\
-    #    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
-    #endif\n\nnamespace lib {\n\nnamespace internal::factorial_hpp {\n  template <typename...\
-    \ Ts>\n  struct is_all_same : std::false_type {};\n  template <>\n  struct is_all_same<>\
-    \ : std::true_type {};\n  template <typename Tp>\n  struct is_all_same<Tp> : std::true_type\
-    \ {};\n  template <typename Tp, typename... Ts>\n  struct is_all_same<Tp, Tp,\
-    \ Ts...> : is_all_same<Tp, Ts...> {};\n  template <typename... Ts>\n  [[maybe_unused]]\
+    \ by uncommenting the following line\n#    define CP_LIBRARY_WARN(msg) (std::cerr\
+    \ << (msg) << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n\
+    #  else\n#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#\
+    \  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\nnamespace lib {\n\nnamespace\
+    \ internal::factorial_hpp {\n  template <typename... Ts>\n  struct is_all_same\
+    \ : std::false_type {};\n  template <>\n  struct is_all_same<> : std::true_type\
+    \ {};\n  template <typename Tp>\n  struct is_all_same<Tp> : std::true_type {};\n\
+    \  template <typename Tp, typename... Ts>\n  struct is_all_same<Tp, Tp, Ts...>\
+    \ : is_all_same<Tp, Ts...> {};\n  template <typename... Ts>\n  [[maybe_unused]]\
     \ constexpr bool is_all_same_v = is_all_same<Ts...>::value;\n  template <class\
     \ Tp, class... Ts>\n  struct first_type { using type = Tp; };\n  template <class...\
     \ Ts>\n  using first_type_t = typename first_type<Ts...>::type;\n}  // namespace\
@@ -408,7 +409,7 @@ data:
   isVerificationFile: false
   path: include/combinatorics/factorial.hpp
   requiredBy: []
-  timestamp: '2021-08-11 13:40:43+09:00'
+  timestamp: '2021-08-14 12:12:32+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/combinatorics/factorial/1.test.cpp

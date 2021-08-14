@@ -38,11 +38,11 @@ data:
     #include <algorithm>\n#include <cassert>\n#include <functional>\n#include <iostream>\n\
     #include <limits>\n#include <string>\n#include <type_traits>\n#include <vector>\n\
     \n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print\
-    \ warning message\n//! @note You can suppress the warning by uncommenting line\
-    \ 21\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\n')\n// #  define\
-    \ CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n#    define CP_LIBRARY_WARN(msg)\
-    \ (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\
-    \n#ifndef CP_LIBRARY_ASSERT\n//! @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...)\
+    \ warning message\n//! @note You can suppress the warning by uncommenting the\
+    \ following line\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\\
+    n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n#    define\
+    \ CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
+    #endif\n\n#ifndef CP_LIBRARY_ASSERT\n//! @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...)\
     \ assert(__VA_ARGS__)\n#  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace\
     \ lib {\n\nnamespace internal::segment_tree_hpp {\n  template <typename Func,\
     \ typename Arg>\n  auto is_binary_op_of_impl(int) -> std::bool_constant<std::is_same_v<decltype(std::declval<Func>()(std::declval<Arg>(),\
@@ -219,13 +219,14 @@ data:
     \ <functional>\n#include <iostream>\n#include <limits>\n#include <string>\n#include\
     \ <type_traits>\n#include <vector>\n\n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL\
     \ >= 1)\n//! @brief Print warning message\n//! @note You can suppress the warning\
-    \ by uncommenting line 21\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg)\
-    \ << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n\
-    #    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
-    #endif\n\n#ifndef CP_LIBRARY_ASSERT\n//! @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...)\
-    \ assert(__VA_ARGS__)\n#  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace\
-    \ lib {\n\nnamespace internal::segment_tree_hpp {\n  template <typename Func,\
-    \ typename Arg>\n  auto is_binary_op_of_impl(int) -> std::bool_constant<std::is_same_v<decltype(std::declval<Func>()(std::declval<Arg>(),\
+    \ by uncommenting the following line\n#    define CP_LIBRARY_WARN(msg) (std::cerr\
+    \ << (msg) << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n\
+    #  else\n#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#\
+    \  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\n#ifndef CP_LIBRARY_ASSERT\n//!\
+    \ @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)\n\
+    #  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace lib {\n\nnamespace\
+    \ internal::segment_tree_hpp {\n  template <typename Func, typename Arg>\n  auto\
+    \ is_binary_op_of_impl(int) -> std::bool_constant<std::is_same_v<decltype(std::declval<Func>()(std::declval<Arg>(),\
     \ std::declval<Arg>())), Arg>>;\n  template <typename Func, typename Arg>\n  auto\
     \ is_binary_op_of_impl(...) -> std::false_type;\n\n  //! @brief Check if Func(Arg,\
     \ Arg) returns a value of type Arg.\n  template <typename Func, typename Arg>\n\
@@ -398,7 +399,7 @@ data:
   isVerificationFile: false
   path: include/data_structure/segment_tree.hpp
   requiredBy: []
-  timestamp: '2021-08-11 13:38:32+09:00'
+  timestamp: '2021-08-14 12:12:32+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/data_structure/segment_tree/3.test.cpp

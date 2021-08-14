@@ -26,13 +26,14 @@ data:
     \n#include <algorithm>\n#include <cassert>\n#include <queue>\n#include <tuple>\n\
     #include <vector>\n\n#ifndef CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL >=\
     \ 1)\n//! @brief Print warning message\n//! @note You can suppress the warning\
-    \ by uncommenting line 18\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg)\
-    \ << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n\
-    #    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n\
-    #endif\n\n#ifndef CP_LIBRARY_ASSERT\n//! @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...)\
-    \ assert(__VA_ARGS__)\n#  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace\
-    \ lib {\n\nnamespace internal::minimum_spanning_tree_hpp {\n  //! @note from union_find.hpp\n\
-    \  class simple_union_find {\n  private:\n    const int nodes;\n    mutable std::vector<int>\
+    \ by uncommenting the following line\n#    define CP_LIBRARY_WARN(msg) (std::cerr\
+    \ << (msg) << '\\n')\n// #  define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n\
+    #  else\n#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  endif\n#\
+    \  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\n#ifndef CP_LIBRARY_ASSERT\n//!\
+    \ @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)\n\
+    #  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace lib {\n\nnamespace\
+    \ internal::minimum_spanning_tree_hpp {\n  //! @note from union_find.hpp\n  class\
+    \ simple_union_find {\n  private:\n    const int nodes;\n    mutable std::vector<int>\
     \ par_or_size;\n\n  public:\n    simple_union_find(const int number_of_nodes)\n\
     \        : nodes(number_of_nodes), par_or_size(number_of_nodes, -1) {}\n\n   \
     \ [[nodiscard]] int parent(const int node) const {\n      CP_LIBRARY_ASSERT(0\
@@ -146,14 +147,14 @@ data:
     #define CP_LIBRARY_MINIMUM_SPANNING_TREE_HPP\n\n#include <algorithm>\n#include\
     \ <cassert>\n#include <queue>\n#include <tuple>\n#include <vector>\n\n#ifndef\
     \ CP_LIBRARY_WARN\n#  if (CP_LIBRARY_DEBUG_LEVEL >= 1)\n//! @brief Print warning\
-    \ message\n//! @note You can suppress the warning by uncommenting line 18\n# \
-    \   define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\n')\n// #  define CP_LIBRARY_WARN(msg)\
-    \ (static_cast<void>(0))\n#  else\n#    define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n\
-    #  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\n#ifndef CP_LIBRARY_ASSERT\n\
-    //! @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...) assert(__VA_ARGS__)\n\
-    #  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace lib {\n\nnamespace\
-    \ internal::minimum_spanning_tree_hpp {\n  //! @note from union_find.hpp\n  class\
-    \ simple_union_find {\n  private:\n    const int nodes;\n    mutable std::vector<int>\
+    \ message\n//! @note You can suppress the warning by uncommenting the following\
+    \ line\n#    define CP_LIBRARY_WARN(msg) (std::cerr << (msg) << '\\n')\n// # \
+    \ define CP_LIBRARY_WARN(msg) (static_cast<void>(0))\n#  else\n#    define CP_LIBRARY_WARN(msg)\
+    \ (static_cast<void>(0))\n#  endif\n#  define CP_LIBRARY_WARN_NOT_DEFINED\n#endif\n\
+    \n#ifndef CP_LIBRARY_ASSERT\n//! @brief Assert macro\n#  define CP_LIBRARY_ASSERT(...)\
+    \ assert(__VA_ARGS__)\n#  define CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\nnamespace\
+    \ lib {\n\nnamespace internal::minimum_spanning_tree_hpp {\n  //! @note from union_find.hpp\n\
+    \  class simple_union_find {\n  private:\n    const int nodes;\n    mutable std::vector<int>\
     \ par_or_size;\n\n  public:\n    simple_union_find(const int number_of_nodes)\n\
     \        : nodes(number_of_nodes), par_or_size(number_of_nodes, -1) {}\n\n   \
     \ [[nodiscard]] int parent(const int node) const {\n      CP_LIBRARY_ASSERT(0\
@@ -267,7 +268,7 @@ data:
   isVerificationFile: false
   path: include/graph/minimum_spanning_tree.hpp
   requiredBy: []
-  timestamp: '2021-08-11 13:38:32+09:00'
+  timestamp: '2021-08-14 12:12:32+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/graph/minimum_spanning_tree/3.test.cpp
