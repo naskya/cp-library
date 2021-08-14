@@ -234,7 +234,7 @@ template <typename Tp, typename ReturnType = Tp>
 //! @return std::array which contains 0!, 1!, ..., Max! (Max + 1 numbers)
 //! @note Time complexity: O(Max)
 template <std::size_t Max, typename ReturnType>
-[[nodiscard]] constexpr std::array<ReturnType, Max + 1> factorial_array() {
+[[nodiscard]] std::array<ReturnType, Max + 1> factorial_array() {
   std::array<ReturnType, Max + 1> res;
   res[0] = 1;
 
@@ -250,7 +250,7 @@ template <std::size_t Max, typename ReturnType>
 //! @return std::array which contains multiplicative inverse of 0!, 1!, ..., Max! (Max + 1 numbers)
 //! @note Time complexity: O(Max)
 template <std::size_t Max, typename Modint>
-[[nodiscard]] constexpr std::array<Modint, Max + 1> factorial_modinv_array(const Modint fact) {
+[[nodiscard]] std::array<Modint, Max + 1> factorial_modinv_array(const Modint fact) {
   std::array<Modint, Max + 1> res;
   res[Max] = fact.inv();
 
@@ -298,7 +298,7 @@ template <std::size_t Size, typename Modint, typename Tp>
 //! @return nCr, or number of ways to select r out of n distinguishable objects.
 //! @note Time complexity: O(1)
 template <std::size_t Size, typename Modint, typename Tp>
-[[nodiscard]] constexpr Modint combination(const Tp n, const Tp r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
+[[nodiscard]] Modint combination(const Tp n, const Tp r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
   if (n == 0)
     CP_LIBRARY_WARN("n is zero.");
   if (n < 0) {
@@ -327,7 +327,7 @@ template <std::size_t Size, typename Modint, typename Tp>
 //! @return Number of ways to arrange n objects when r_1, r_2, ... objects are indistinguishable.
 //! @note Time complexity: O(sizeof...(r))
 template <std::size_t Size, typename Modint, typename Tp, typename... Ts>
-[[nodiscard]] constexpr Modint multinomial(const Tp n, const Ts... r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
+[[nodiscard]] Modint multinomial(const Tp n, const Ts... r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
   if (n == 0)
     CP_LIBRARY_WARN("n is zero.");
   if (n < 0) {
@@ -356,7 +356,7 @@ template <std::size_t Size, typename Modint, typename Tp, typename... Ts>
 //! @return Number of ways to arrange n objects when r[0], r[1], ... objects are indistinguishable.
 //! @note Time complexity: O(size(r))
 template <std::size_t Size, typename Modint, typename Tp, typename Container>
-[[nodiscard]] constexpr Modint multinomial(const Tp n, const Container& r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
+[[nodiscard]] Modint multinomial(const Tp n, const Container& r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
   using Elem = std::decay_t<decltype(*std::cbegin(r))>;
   if (n == 0)
     CP_LIBRARY_WARN("n is zero.");
@@ -386,7 +386,7 @@ template <std::size_t Size, typename Modint, typename Tp, typename Container>
 //! @return nHr, or number of ways to put n indistinguishable balls into r distinguishable bins.
 //! @note Time complexity: O(1)
 template <std::size_t Size, typename Modint, typename Tp>
-[[nodiscard]] constexpr Modint stars_and_bars(const Tp n, const Tp r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
+[[nodiscard]] Modint stars_and_bars(const Tp n, const Tp r, const std::array<Modint, Size>& factorial_array, const std::array<Modint, Size>& factorial_modinv_array) {
   return combination(n + r - 1, r, factorial_array, factorial_modinv_array);
 }
 
