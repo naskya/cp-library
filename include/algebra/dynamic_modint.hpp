@@ -51,21 +51,18 @@ private:
   //! @return multiplicative inverse of n
   //! @note Time complexity: O(log(n))
   template <typename Sp>
-  [[nodiscard]] static constexpr Tp calc_inverse(Sp n) {
+  [[nodiscard]] static Tp calc_inverse(Sp n) {
     CP_LIBRARY_ASSERT(n != 0);
 
     Tp b = *modulo_ptr, u = 1, v = 0, t;
     while (b > 0) {
-      t = n / b;
-      // std::swap is not necessarily constexpr in C++17
-      // std::swap(n -= t * b, b);
-      Tp tmp = std::move(n -= t * b);
-      n      = std::move(b);
-      b      = std::move(tmp);
-      // std::swap(u -= t * v, v);
-      tmp = std::move(u -= t * v);
-      u   = std::move(v);
-      v   = std::move(tmp);
+      t      = n / b;
+      Tp tmp = (n -= t * b);
+      n      = b;
+      b      = tmp;
+      tmp    = (u -= t * v);
+      u      = v;
+      v      = tmp;
     }
     if (u < 0)
       u += *modulo_ptr;
@@ -116,7 +113,7 @@ public:
   [[nodiscard]] constexpr dynamic_modint operator*(const dynamic_modint rhs) const noexcept {
     return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value * rhs.value);
   }
-  [[nodiscard]] constexpr dynamic_modint operator/(const dynamic_modint rhs) const {
+  [[nodiscard]] dynamic_modint operator/(const dynamic_modint rhs) const {
     return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value * calc_inverse(rhs.value));
   }
 
@@ -162,7 +159,7 @@ public:
     value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>) value * rhs.value);
     return *this;
   }
-  constexpr dynamic_modint& operator/=(const dynamic_modint rhs) {
+  dynamic_modint& operator/=(const dynamic_modint rhs) {
     value = clamp((internal::dynamic_modint_hpp::LongInt<Tp>) value * calc_inverse(rhs.value));
     return *this;
   }
@@ -217,7 +214,7 @@ public:
     return dynamic_modint((internal::dynamic_modint_hpp::LongInt<Tp>) value * clamp(rhs));
   }
   template <typename RhsType>
-  [[nodiscard]] constexpr dynamic_modint operator/(const RhsType rhs) const {
+  [[nodiscard]] dynamic_modint operator/(const RhsType rhs) const {
     internal::dynamic_modint_hpp::LongInt<Tp> mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
     return dynamic_modint(mul * value);
   }
@@ -270,7 +267,7 @@ public:
     return *this;
   }
   template <typename RhsType>
-  constexpr dynamic_modint& operator/=(const RhsType rhs) {
+  dynamic_modint& operator/=(const RhsType rhs) {
     internal::dynamic_modint_hpp::LongInt<Tp> mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
     value = clamp(mul * value);
     return *this;
@@ -426,7 +423,7 @@ public:
   }
 
   //! @return multiplicative inverse
-  [[nodiscard]] constexpr dynamic_modint inv() const {
+  [[nodiscard]] dynamic_modint inv() const {
     return dynamic_modint(calc_inverse(value), true);
   }
   //! @tparam index_positive_guaranteed set true if and only if you can promise that index is positive
@@ -435,7 +432,7 @@ public:
   //! @return index-th power of the value
   //! @note Time complexity: O(log(index))
   template <bool index_positive_guaranteed = true, typename T = int>
-  [[nodiscard]] constexpr dynamic_modint pow(T index) const noexcept {
+  [[nodiscard]] dynamic_modint pow(T index) const {
     if constexpr (!index_positive_guaranteed) {
       if (value == 0)
         return dynamic_modint(0, true);
@@ -499,7 +496,7 @@ template <typename LhsType, typename Tp, Tp* modulo_ptr>
   return rhs * lhs;
 }
 template <typename LhsType, typename Tp, Tp* modulo_ptr>
-[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator/(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
+[[nodiscard]] dynamic_modint<Tp, modulo_ptr> operator/(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {
   return rhs.inv() * lhs;
 }
 

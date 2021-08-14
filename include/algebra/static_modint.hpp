@@ -46,7 +46,7 @@ private:
   //! @param n non-zero integer
   //! @return multiplicative inverse of n
   template <typename Tp>
-  [[nodiscard]] static CP_LIBRARY_USE_CONSTEXPR std::int_least32_t calc_inverse(Tp n) {
+  [[nodiscard]] static std::int_least32_t calc_inverse(Tp n) {
     CP_LIBRARY_ASSERT(n != 0);
 
     Tp b = modulo, u = 1, v = 0, t;
@@ -141,7 +141,7 @@ public:
   [[nodiscard]] constexpr static_modint operator*(const static_modint rhs) const noexcept {
     return static_modint(static_cast<std::int_least64_t>(value) * rhs.value);
   }
-  [[nodiscard]] constexpr static_modint operator/(const static_modint rhs) const {
+  [[nodiscard]] static_modint operator/(const static_modint rhs) const {
     return static_modint(static_cast<std::int_least64_t>(value) * calc_inverse(rhs.value));
   }
 
@@ -187,7 +187,7 @@ public:
     value = clamp_ll(static_cast<std::int_least64_t>(value) * rhs.value);
     return *this;
   }
-  constexpr static_modint& operator/=(const static_modint rhs) {
+  static_modint& operator/=(const static_modint rhs) {
     value = clamp_ll(static_cast<std::int_least64_t>(value) * calc_inverse(rhs.value));
     return *this;
   }
@@ -241,7 +241,7 @@ public:
     return static_modint(static_cast<std::int_least64_t>(value) * clamp_ll(rhs));
   }
   template <typename RhsType>
-  [[nodiscard]] constexpr static_modint operator/(const RhsType rhs) const {
+  [[nodiscard]] static_modint operator/(const RhsType rhs) const {
     std::int_least64_t mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
     return static_modint(value * mul);
   }
@@ -294,9 +294,9 @@ public:
     return *this;
   }
   template <typename RhsType>
-  constexpr static_modint& operator/=(const RhsType rhs) {
+  static_modint& operator/=(const RhsType rhs) {
     std::int_least64_t mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
-    value                  = clamp_ll(value * mul);
+    value = clamp_ll(value * mul);
     return *this;
   }
 
@@ -450,7 +450,7 @@ public:
   }
 
   //! @return multiplicative inverse
-  [[nodiscard]] constexpr static_modint inv() const {
+  [[nodiscard]] static_modint inv() const {
     return static_modint(calc_inverse(value), true);
   }
   //! @tparam index_positive_guaranteed set true if and only if you can promise that index is positive
@@ -459,7 +459,7 @@ public:
   //! @return index-th power of the value
   //! @note Time complexity: O(log(index))
   template <bool index_positive_guaranteed = true, typename Tp = std::int_least32_t>
-  [[nodiscard]] constexpr static_modint pow(Tp index) const noexcept {
+  [[nodiscard]] static_modint pow(Tp index) const noexcept {
     if constexpr (!index_positive_guaranteed) {
       if (value == 0)
         return static_modint(0, true);
@@ -523,7 +523,7 @@ template <typename LhsType, std::int_least32_t modulo>
   return rhs * lhs;
 }
 template <typename LhsType, std::int_least32_t modulo>
-[[nodiscard]] constexpr static_modint<modulo> operator/(const LhsType lhs, const static_modint<modulo> rhs) {
+[[nodiscard]] static_modint<modulo> operator/(const LhsType lhs, const static_modint<modulo> rhs) {
   return rhs.inv() * lhs;
 }
 
