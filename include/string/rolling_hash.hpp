@@ -36,7 +36,8 @@
         CP_LIBRARY_ASSERT(false); \
       } while (false)
 #  else
-#    define CP_LIBRARY_ERROR(...) (static_cast<void>(0))
+//! @brief Abort the program
+#    define CP_LIBRARY_ERROR(...) CP_LIBRARY_ASSERT(false)
 #  endif
 #  define CP_LIBRARY_ERROR_NOT_DEFINED
 #endif
