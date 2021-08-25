@@ -231,4 +231,5 @@ layout: toppage
 ## Template Files
 
 - [デバッグ出力](https://naskya.github.io/cp-library/debug_print)
+- [テストケース生成](https://github.com/naskya/testcase-generator)
 - [AtCoder Heuristic Contest のテンプレート](https://github.com/naskya/heuristic-contest)
