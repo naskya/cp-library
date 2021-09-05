@@ -407,9 +407,7 @@ public:
   //! @brief Read value (64-bit signed integer) from std::istream& is, take modulo, and store it in rhs.
   //! @return std::istream& is
   friend std::istream& operator>>(std::istream& is, dynamic_modint& rhs) {
-    std::conditional_t<std::conjunction_v<std::is_integral_v<Tp>, (std::numeric_limits<Tp>::digits < 32)>,
-                       long long, Tp>
-      tmp;
+    std::conditional_t<std::is_integral_v<Tp>, long long, Tp> tmp;
     is >> tmp;
     if (tmp < -*modulo_ptr || *modulo_ptr <= tmp)
       tmp %= *modulo_ptr;
