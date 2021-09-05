@@ -9,7 +9,7 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/algebra/dynamic_modint/2.test.cpp
     title: test/algebra/dynamic_modint/2.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/algebra/dynamic_modint/3.test.cpp
     title: test/algebra/dynamic_modint/3.test.cpp
   - icon: ':heavy_check_mark:'
@@ -217,10 +217,9 @@ data:
     \ been casted to a primitive integer type.\");\n    return value;\n  }\n\n  //!\
     \ @brief Read value (64-bit signed integer) from std::istream& is, take modulo,\
     \ and store it in rhs.\n  //! @return std::istream& is\n  friend std::istream&\
-    \ operator>>(std::istream& is, dynamic_modint& rhs) {\n    std::conditional_t<std::conjunction_v<std::is_integral_v<Tp>,\
-    \ (std::numeric_limits<Tp>::digits < 32)>,\n                       long long,\
-    \ Tp>\n      tmp;\n    is >> tmp;\n    if (tmp < -*modulo_ptr || *modulo_ptr <=\
-    \ tmp)\n      tmp %= *modulo_ptr;\n    if (tmp < 0)\n      tmp += *modulo_ptr;\n\
+    \ operator>>(std::istream& is, dynamic_modint& rhs) {\n    std::conditional_t<std::is_integral_v<Tp>,\
+    \ long long, Tp> tmp;\n    is >> tmp;\n    if (tmp < -*modulo_ptr || *modulo_ptr\
+    \ <= tmp)\n      tmp %= *modulo_ptr;\n    if (tmp < 0)\n      tmp += *modulo_ptr;\n\
     \    rhs.value = static_cast<Tp>(tmp);\n    return is;\n  }\n  //! @brief Print\
     \ value to std::ostream& os\n  //! @return std::ostream& os\n  friend std::ostream&\
     \ operator<<(std::ostream& os, dynamic_modint& rhs) {\n    return os << rhs.value;\n\
@@ -517,10 +516,9 @@ data:
     \ been casted to a primitive integer type.\");\n    return value;\n  }\n\n  //!\
     \ @brief Read value (64-bit signed integer) from std::istream& is, take modulo,\
     \ and store it in rhs.\n  //! @return std::istream& is\n  friend std::istream&\
-    \ operator>>(std::istream& is, dynamic_modint& rhs) {\n    std::conditional_t<std::conjunction_v<std::is_integral_v<Tp>,\
-    \ (std::numeric_limits<Tp>::digits < 32)>,\n                       long long,\
-    \ Tp>\n      tmp;\n    is >> tmp;\n    if (tmp < -*modulo_ptr || *modulo_ptr <=\
-    \ tmp)\n      tmp %= *modulo_ptr;\n    if (tmp < 0)\n      tmp += *modulo_ptr;\n\
+    \ operator>>(std::istream& is, dynamic_modint& rhs) {\n    std::conditional_t<std::is_integral_v<Tp>,\
+    \ long long, Tp> tmp;\n    is >> tmp;\n    if (tmp < -*modulo_ptr || *modulo_ptr\
+    \ <= tmp)\n      tmp %= *modulo_ptr;\n    if (tmp < 0)\n      tmp += *modulo_ptr;\n\
     \    rhs.value = static_cast<Tp>(tmp);\n    return is;\n  }\n  //! @brief Print\
     \ value to std::ostream& os\n  //! @return std::ostream& os\n  friend std::ostream&\
     \ operator<<(std::ostream& os, dynamic_modint& rhs) {\n    return os << rhs.value;\n\
@@ -625,7 +623,7 @@ data:
   isVerificationFile: false
   path: include/algebra/dynamic_modint.hpp
   requiredBy: []
-  timestamp: '2021-09-05 11:56:39+09:00'
+  timestamp: '2021-09-05 13:43:09+09:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/algebra/dynamic_modint/3.test.cpp
