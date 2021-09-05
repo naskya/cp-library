@@ -73,7 +73,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/algebra/dynamic_modint/2.test.cpp
       title: test/algebra/dynamic_modint/2.test.cpp
-    - icon: ':heavy_check_mark:'
+    - icon: ':x:'
       path: test/algebra/dynamic_modint/3.test.cpp
       title: test/algebra/dynamic_modint/3.test.cpp
     - icon: ':heavy_check_mark:'
