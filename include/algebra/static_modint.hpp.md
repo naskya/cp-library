@@ -655,12 +655,12 @@ data:
   timestamp: '2021-08-14 12:25:27+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/combinatorics/factorial/1.test.cpp
-  - test/combinatorics/factorial/2.test.cpp
-  - test/algebra/pow/1.test.cpp
   - test/algebra/static_modint/3.test.cpp
   - test/algebra/static_modint/1.test.cpp
   - test/algebra/static_modint/2.test.cpp
+  - test/algebra/pow/1.test.cpp
+  - test/combinatorics/factorial/1.test.cpp
+  - test/combinatorics/factorial/2.test.cpp
   - test/data_structure/binary_indexed_tree/1.test.cpp
   - test/data_structure/binary_indexed_tree/2.test.cpp
 documentation_of: include/algebra/static_modint.hpp
