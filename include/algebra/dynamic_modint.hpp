@@ -269,7 +269,7 @@ public:
   template <typename RhsType>
   dynamic_modint& operator/=(const RhsType rhs) {
     internal::dynamic_modint_hpp::LongInt<Tp> mul = (rhs > 0) ? calc_inverse(rhs) : -calc_inverse(-rhs);
-    value = clamp(mul * value);
+    value                                         = clamp(mul * value);
     return *this;
   }
 
@@ -407,7 +407,9 @@ public:
   //! @brief Read value (64-bit signed integer) from std::istream& is, take modulo, and store it in rhs.
   //! @return std::istream& is
   friend std::istream& operator>>(std::istream& is, dynamic_modint& rhs) {
-    Tp tmp;
+    std::conditional_t<std::conjunction_v<std::is_integral_v<Tp>, (std::numeric_limits<Tp>::digits < 32)>,
+                       long long, Tp>
+      tmp;
     is >> tmp;
     if (tmp < -*modulo_ptr || *modulo_ptr <= tmp)
       tmp %= *modulo_ptr;
