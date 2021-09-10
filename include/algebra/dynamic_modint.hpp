@@ -413,7 +413,7 @@ public:
       tmp %= *modulo_ptr;
     if (tmp < 0)
       tmp += *modulo_ptr;
-    rhs.value = static_cast<Tp>(tmp);
+    rhs.value = Tp(tmp);
     return is;
   }
   //! @brief Print value to std::ostream& os
