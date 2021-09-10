@@ -3,7 +3,7 @@ data:
   _extendedDependsOn: []
   _extendedRequiredBy: []
   _extendedVerifiedWith:
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/algebra/dynamic_modint/1.test.cpp
     title: test/algebra/dynamic_modint/1.test.cpp
   - icon: ':heavy_check_mark:'
@@ -15,9 +15,9 @@ data:
   - icon: ':heavy_check_mark:'
     path: test/algebra/dynamic_modint/4.test.cpp
     title: test/algebra/dynamic_modint/4.test.cpp
-  _isVerificationFailed: true
+  _isVerificationFailed: false
   _pathExtension: hpp
-  _verificationStatusIcon: ':question:'
+  _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
     document_title: Print warning message
     links: []
@@ -220,48 +220,48 @@ data:
     \ operator>>(std::istream& is, dynamic_modint& rhs) {\n    std::conditional_t<std::is_integral_v<Tp>,\
     \ long long, Tp> tmp;\n    is >> tmp;\n    if (tmp < -*modulo_ptr || *modulo_ptr\
     \ <= tmp)\n      tmp %= *modulo_ptr;\n    if (tmp < 0)\n      tmp += *modulo_ptr;\n\
-    \    rhs.value = static_cast<Tp>(tmp);\n    return is;\n  }\n  //! @brief Print\
-    \ value to std::ostream& os\n  //! @return std::ostream& os\n  friend std::ostream&\
-    \ operator<<(std::ostream& os, dynamic_modint& rhs) {\n    return os << rhs.value;\n\
-    \  }\n\n  //! @return multiplicative inverse\n  [[nodiscard]] dynamic_modint inv()\
-    \ const {\n    return dynamic_modint(calc_inverse(value), true);\n  }\n  //! @tparam\
-    \ index_positive_guaranteed set true if and only if you can promise that index\
-    \ is positive\n  //! @tparam Tp integer type (deduced from parameter)\n  //! @param\
-    \ index index. This must be an integer, but doesn't have to be primitive.\n  //!\
-    \ @return index-th power of the value\n  //! @note Time complexity: O(log(index))\n\
-    \  template <bool index_positive_guaranteed = true, typename T = int>\n  [[nodiscard]]\
-    \ dynamic_modint pow(T index) const {\n    if constexpr (!index_positive_guaranteed)\
-    \ {\n      if (value == 0)\n        return dynamic_modint(0, true);\n      if\
-    \ (index == 0)\n        return dynamic_modint(1, true);\n      if (index < 0)\n\
-    \        return dynamic_modint(value, true).inv().pow<true>(-index);\n    }\n\
-    \    dynamic_modint res(1, true), base(value, true);\n    while (index > 0) {\n\
-    \      if (index & 1)\n        res *= base;\n      base *= base;\n      index\
-    \ >>= 1;\n    }\n    return res;\n  }\n  //! @return a pair (a, b) such that b\
-    \ > 0, value is equal to a * (mult inverse of b), and (a + b) is minimal\n  [[nodiscard]]\
-    \ constexpr std::pair<Tp, Tp> to_frac() const noexcept {\n    Tp x = (*modulo_ptr)\
-    \ - value, y = value, u = 1, v = 1;\n    std::pair<Tp, Tp> res {value, 1};\n\n\
-    \    Tp num = value, den = 1;\n    Tp cost = num + den;\n\n    while (x > 0) {\n\
-    \      if (x <= num) {\n        Tp q = num / x;\n        num  = num % x;\n   \
-    \     den += q * u;\n        if (num == 0)\n          break;\n        if (num\
-    \ + den < cost) {\n          cost       = num + den;\n          res.first  = num;\n\
-    \          res.second = den;\n        }\n      }\n      Tp q = y / x;\n      y\
-    \    = y % x;\n      v += q * u;\n      q = x / y;\n      x = x % y;\n      u\
-    \ += q * v;\n    }\n\n    return res;\n  }\n};\n\ntemplate <typename LhsType,\
-    \ typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
-    \ operator+(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept\
-    \ {\n  return rhs + lhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
-    [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator-(const LhsType\
-    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept {\n  return -rhs + lhs;\n\
-    }\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr\
-    \ dynamic_modint<Tp, modulo_ptr> operator*(const LhsType lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) noexcept {\n  return rhs * lhs;\n}\ntemplate <typename LhsType,\
-    \ typename Tp, Tp* modulo_ptr>\n[[nodiscard]] dynamic_modint<Tp, modulo_ptr> operator/(const\
-    \ LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  return rhs.inv()\
-    \ * lhs;\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]]\
-    \ CP_LIBRARY_USE_CONSTEXPR dynamic_modint<Tp, modulo_ptr>\noperator%(const LhsType\
-    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator%\
-    \ : Are you sure you want to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>(lhs\
-    \ % (Tp) rhs, true);\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr,\
+    \    rhs.value = Tp(tmp);\n    return is;\n  }\n  //! @brief Print value to std::ostream&\
+    \ os\n  //! @return std::ostream& os\n  friend std::ostream& operator<<(std::ostream&\
+    \ os, dynamic_modint& rhs) {\n    return os << rhs.value;\n  }\n\n  //! @return\
+    \ multiplicative inverse\n  [[nodiscard]] dynamic_modint inv() const {\n    return\
+    \ dynamic_modint(calc_inverse(value), true);\n  }\n  //! @tparam index_positive_guaranteed\
+    \ set true if and only if you can promise that index is positive\n  //! @tparam\
+    \ Tp integer type (deduced from parameter)\n  //! @param index index. This must\
+    \ be an integer, but doesn't have to be primitive.\n  //! @return index-th power\
+    \ of the value\n  //! @note Time complexity: O(log(index))\n  template <bool index_positive_guaranteed\
+    \ = true, typename T = int>\n  [[nodiscard]] dynamic_modint pow(T index) const\
+    \ {\n    if constexpr (!index_positive_guaranteed) {\n      if (value == 0)\n\
+    \        return dynamic_modint(0, true);\n      if (index == 0)\n        return\
+    \ dynamic_modint(1, true);\n      if (index < 0)\n        return dynamic_modint(value,\
+    \ true).inv().pow<true>(-index);\n    }\n    dynamic_modint res(1, true), base(value,\
+    \ true);\n    while (index > 0) {\n      if (index & 1)\n        res *= base;\n\
+    \      base *= base;\n      index >>= 1;\n    }\n    return res;\n  }\n  //! @return\
+    \ a pair (a, b) such that b > 0, value is equal to a * (mult inverse of b), and\
+    \ (a + b) is minimal\n  [[nodiscard]] constexpr std::pair<Tp, Tp> to_frac() const\
+    \ noexcept {\n    Tp x = (*modulo_ptr) - value, y = value, u = 1, v = 1;\n   \
+    \ std::pair<Tp, Tp> res {value, 1};\n\n    Tp num = value, den = 1;\n    Tp cost\
+    \ = num + den;\n\n    while (x > 0) {\n      if (x <= num) {\n        Tp q = num\
+    \ / x;\n        num  = num % x;\n        den += q * u;\n        if (num == 0)\n\
+    \          break;\n        if (num + den < cost) {\n          cost       = num\
+    \ + den;\n          res.first  = num;\n          res.second = den;\n        }\n\
+    \      }\n      Tp q = y / x;\n      y    = y % x;\n      v += q * u;\n      q\
+    \ = x / y;\n      x = x % y;\n      u += q * v;\n    }\n\n    return res;\n  }\n\
+    };\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]]\
+    \ constexpr dynamic_modint<Tp, modulo_ptr> operator+(const LhsType lhs, const\
+    \ dynamic_modint<Tp, modulo_ptr> rhs) noexcept {\n  return rhs + lhs;\n}\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp,\
+    \ modulo_ptr> operator-(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr>\
+    \ rhs) noexcept {\n  return -rhs + lhs;\n}\ntemplate <typename LhsType, typename\
+    \ Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
+    \ operator*(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept\
+    \ {\n  return rhs * lhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
+    [[nodiscard]] dynamic_modint<Tp, modulo_ptr> operator/(const LhsType lhs, const\
+    \ dynamic_modint<Tp, modulo_ptr> rhs) {\n  return rhs.inv() * lhs;\n}\n\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint<Tp, modulo_ptr>\noperator%(const LhsType lhs, const dynamic_modint<Tp,\
+    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator% : Are you\
+    \ sure you want to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>(lhs %\
+    \ (Tp) rhs, true);\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr,\
     \ std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>\n[[nodiscard]]\
     \ CP_LIBRARY_USE_CONSTEXPR dynamic_modint<Tp, modulo_ptr>\noperator<<(const LhsType\
     \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator<<\
@@ -519,48 +519,48 @@ data:
     \ operator>>(std::istream& is, dynamic_modint& rhs) {\n    std::conditional_t<std::is_integral_v<Tp>,\
     \ long long, Tp> tmp;\n    is >> tmp;\n    if (tmp < -*modulo_ptr || *modulo_ptr\
     \ <= tmp)\n      tmp %= *modulo_ptr;\n    if (tmp < 0)\n      tmp += *modulo_ptr;\n\
-    \    rhs.value = static_cast<Tp>(tmp);\n    return is;\n  }\n  //! @brief Print\
-    \ value to std::ostream& os\n  //! @return std::ostream& os\n  friend std::ostream&\
-    \ operator<<(std::ostream& os, dynamic_modint& rhs) {\n    return os << rhs.value;\n\
-    \  }\n\n  //! @return multiplicative inverse\n  [[nodiscard]] dynamic_modint inv()\
-    \ const {\n    return dynamic_modint(calc_inverse(value), true);\n  }\n  //! @tparam\
-    \ index_positive_guaranteed set true if and only if you can promise that index\
-    \ is positive\n  //! @tparam Tp integer type (deduced from parameter)\n  //! @param\
-    \ index index. This must be an integer, but doesn't have to be primitive.\n  //!\
-    \ @return index-th power of the value\n  //! @note Time complexity: O(log(index))\n\
-    \  template <bool index_positive_guaranteed = true, typename T = int>\n  [[nodiscard]]\
-    \ dynamic_modint pow(T index) const {\n    if constexpr (!index_positive_guaranteed)\
-    \ {\n      if (value == 0)\n        return dynamic_modint(0, true);\n      if\
-    \ (index == 0)\n        return dynamic_modint(1, true);\n      if (index < 0)\n\
-    \        return dynamic_modint(value, true).inv().pow<true>(-index);\n    }\n\
-    \    dynamic_modint res(1, true), base(value, true);\n    while (index > 0) {\n\
-    \      if (index & 1)\n        res *= base;\n      base *= base;\n      index\
-    \ >>= 1;\n    }\n    return res;\n  }\n  //! @return a pair (a, b) such that b\
-    \ > 0, value is equal to a * (mult inverse of b), and (a + b) is minimal\n  [[nodiscard]]\
-    \ constexpr std::pair<Tp, Tp> to_frac() const noexcept {\n    Tp x = (*modulo_ptr)\
-    \ - value, y = value, u = 1, v = 1;\n    std::pair<Tp, Tp> res {value, 1};\n\n\
-    \    Tp num = value, den = 1;\n    Tp cost = num + den;\n\n    while (x > 0) {\n\
-    \      if (x <= num) {\n        Tp q = num / x;\n        num  = num % x;\n   \
-    \     den += q * u;\n        if (num == 0)\n          break;\n        if (num\
-    \ + den < cost) {\n          cost       = num + den;\n          res.first  = num;\n\
-    \          res.second = den;\n        }\n      }\n      Tp q = y / x;\n      y\
-    \    = y % x;\n      v += q * u;\n      q = x / y;\n      x = x % y;\n      u\
-    \ += q * v;\n    }\n\n    return res;\n  }\n};\n\ntemplate <typename LhsType,\
-    \ typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
-    \ operator+(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept\
-    \ {\n  return rhs + lhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
-    [[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr> operator-(const LhsType\
-    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept {\n  return -rhs + lhs;\n\
-    }\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr\
-    \ dynamic_modint<Tp, modulo_ptr> operator*(const LhsType lhs, const dynamic_modint<Tp,\
-    \ modulo_ptr> rhs) noexcept {\n  return rhs * lhs;\n}\ntemplate <typename LhsType,\
-    \ typename Tp, Tp* modulo_ptr>\n[[nodiscard]] dynamic_modint<Tp, modulo_ptr> operator/(const\
-    \ LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  return rhs.inv()\
-    \ * lhs;\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]]\
-    \ CP_LIBRARY_USE_CONSTEXPR dynamic_modint<Tp, modulo_ptr>\noperator%(const LhsType\
-    \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator%\
-    \ : Are you sure you want to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>(lhs\
-    \ % (Tp) rhs, true);\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr,\
+    \    rhs.value = Tp(tmp);\n    return is;\n  }\n  //! @brief Print value to std::ostream&\
+    \ os\n  //! @return std::ostream& os\n  friend std::ostream& operator<<(std::ostream&\
+    \ os, dynamic_modint& rhs) {\n    return os << rhs.value;\n  }\n\n  //! @return\
+    \ multiplicative inverse\n  [[nodiscard]] dynamic_modint inv() const {\n    return\
+    \ dynamic_modint(calc_inverse(value), true);\n  }\n  //! @tparam index_positive_guaranteed\
+    \ set true if and only if you can promise that index is positive\n  //! @tparam\
+    \ Tp integer type (deduced from parameter)\n  //! @param index index. This must\
+    \ be an integer, but doesn't have to be primitive.\n  //! @return index-th power\
+    \ of the value\n  //! @note Time complexity: O(log(index))\n  template <bool index_positive_guaranteed\
+    \ = true, typename T = int>\n  [[nodiscard]] dynamic_modint pow(T index) const\
+    \ {\n    if constexpr (!index_positive_guaranteed) {\n      if (value == 0)\n\
+    \        return dynamic_modint(0, true);\n      if (index == 0)\n        return\
+    \ dynamic_modint(1, true);\n      if (index < 0)\n        return dynamic_modint(value,\
+    \ true).inv().pow<true>(-index);\n    }\n    dynamic_modint res(1, true), base(value,\
+    \ true);\n    while (index > 0) {\n      if (index & 1)\n        res *= base;\n\
+    \      base *= base;\n      index >>= 1;\n    }\n    return res;\n  }\n  //! @return\
+    \ a pair (a, b) such that b > 0, value is equal to a * (mult inverse of b), and\
+    \ (a + b) is minimal\n  [[nodiscard]] constexpr std::pair<Tp, Tp> to_frac() const\
+    \ noexcept {\n    Tp x = (*modulo_ptr) - value, y = value, u = 1, v = 1;\n   \
+    \ std::pair<Tp, Tp> res {value, 1};\n\n    Tp num = value, den = 1;\n    Tp cost\
+    \ = num + den;\n\n    while (x > 0) {\n      if (x <= num) {\n        Tp q = num\
+    \ / x;\n        num  = num % x;\n        den += q * u;\n        if (num == 0)\n\
+    \          break;\n        if (num + den < cost) {\n          cost       = num\
+    \ + den;\n          res.first  = num;\n          res.second = den;\n        }\n\
+    \      }\n      Tp q = y / x;\n      y    = y % x;\n      v += q * u;\n      q\
+    \ = x / y;\n      x = x % y;\n      u += q * v;\n    }\n\n    return res;\n  }\n\
+    };\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]]\
+    \ constexpr dynamic_modint<Tp, modulo_ptr> operator+(const LhsType lhs, const\
+    \ dynamic_modint<Tp, modulo_ptr> rhs) noexcept {\n  return rhs + lhs;\n}\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp,\
+    \ modulo_ptr> operator-(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr>\
+    \ rhs) noexcept {\n  return -rhs + lhs;\n}\ntemplate <typename LhsType, typename\
+    \ Tp, Tp* modulo_ptr>\n[[nodiscard]] constexpr dynamic_modint<Tp, modulo_ptr>\
+    \ operator*(const LhsType lhs, const dynamic_modint<Tp, modulo_ptr> rhs) noexcept\
+    \ {\n  return rhs * lhs;\n}\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr>\n\
+    [[nodiscard]] dynamic_modint<Tp, modulo_ptr> operator/(const LhsType lhs, const\
+    \ dynamic_modint<Tp, modulo_ptr> rhs) {\n  return rhs.inv() * lhs;\n}\n\ntemplate\
+    \ <typename LhsType, typename Tp, Tp* modulo_ptr>\n[[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
+    \ dynamic_modint<Tp, modulo_ptr>\noperator%(const LhsType lhs, const dynamic_modint<Tp,\
+    \ modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator% : Are you\
+    \ sure you want to do this?\");\n  return dynamic_modint<Tp, modulo_ptr>(lhs %\
+    \ (Tp) rhs, true);\n}\n\ntemplate <typename LhsType, typename Tp, Tp* modulo_ptr,\
     \ std::enable_if_t<std::is_integral_v<LhsType>, std::nullptr_t> = nullptr>\n[[nodiscard]]\
     \ CP_LIBRARY_USE_CONSTEXPR dynamic_modint<Tp, modulo_ptr>\noperator<<(const LhsType\
     \ lhs, const dynamic_modint<Tp, modulo_ptr> rhs) {\n  CP_LIBRARY_WARN(\"dynamic_modint::operator<<\
@@ -623,8 +623,8 @@ data:
   isVerificationFile: false
   path: include/algebra/dynamic_modint.hpp
   requiredBy: []
-  timestamp: '2021-09-05 13:43:09+09:00'
-  verificationStatus: LIBRARY_SOME_WA
+  timestamp: '2021-09-10 21:58:31+09:00'
+  verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/algebra/dynamic_modint/3.test.cpp
   - test/algebra/dynamic_modint/4.test.cpp

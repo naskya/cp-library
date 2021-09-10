@@ -3,7 +3,7 @@ data:
   libraryCategories:
   - name: include/algebra
     pages:
-    - icon: ':question:'
+    - icon: ':heavy_check_mark:'
       path: include/algebra/dynamic_modint.hpp
       title: Modint (for runtime constant modulo)
     - icon: ':heavy_check_mark:'
@@ -67,7 +67,7 @@ data:
   verificationCategories:
   - name: test/algebra/dynamic_modint
     pages:
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/algebra/dynamic_modint/1.test.cpp
       title: test/algebra/dynamic_modint/1.test.cpp
     - icon: ':heavy_check_mark:'
