@@ -39,6 +39,9 @@ data:
     - icon: ':heavy_check_mark:'
       path: include/graph/minimum_spanning_tree.hpp
       title: Minimum spanning tree
+    - icon: ':x:'
+      path: include/graph/topological_sort.hpp
+      title: Sort the vertices in the given directed graph in topological order.
   - name: include/search
     pages:
     - icon: ':heavy_check_mark:'
@@ -172,6 +175,14 @@ data:
     - icon: ':heavy_check_mark:'
       path: test/graph/minimum_spanning_tree/4.test.cpp
       title: test/graph/minimum_spanning_tree/4.test.cpp
+  - name: test/graph/topological_sort
+    pages:
+    - icon: ':x:'
+      path: test/graph/topological_sort/1.test.cpp
+      title: test/graph/topological_sort/1.test.cpp
+    - icon: ':x:'
+      path: test/graph/topological_sort/2.test.cpp
+      title: test/graph/topological_sort/2.test.cpp
   - name: test/search/binary_search
     pages:
     - icon: ':heavy_check_mark:'

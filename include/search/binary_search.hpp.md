@@ -72,9 +72,9 @@ data:
   timestamp: '2021-08-11 13:32:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/search/binary_search/3.test.cpp
   - test/search/binary_search/1.test.cpp
   - test/search/binary_search/2.test.cpp
+  - test/search/binary_search/3.test.cpp
 documentation_of: include/search/binary_search.hpp
 layout: document
 title: Binary search
