@@ -41,7 +41,7 @@ data:
       title: Minimum spanning tree
     - icon: ':x:'
       path: include/graph/topological_sort.hpp
-      title: Sort the vertices in the given directed graph in topological order.
+      title: Topological sort
   - name: include/search
     pages:
     - icon: ':heavy_check_mark:'
