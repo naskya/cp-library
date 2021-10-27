@@ -399,8 +399,8 @@ public:
     return value >= rhs;
   }
 
-  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR operator Tp() const {
-    CP_LIBRARY_WARN("A value of type static_modint has been casted to a primitive integer type.");
+  [[nodiscard]] constexpr operator Tp() const {
+    CP_LIBRARY_WARN("A value of type static_modint has been cast to a primitive integer type.");
     return value;
   }
 

@@ -426,8 +426,8 @@ public:
     return value >= rhs;
   }
 
-  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR operator std::int_least32_t() const {
-    CP_LIBRARY_WARN("A value of type static_modint has been casted to type std::int_lease32_t.");
+  [[nodiscard]] constexpr operator std::int_least32_t() const {
+    CP_LIBRARY_WARN("A value of type static_modint has been cast to type std::int_lease32_t.");
     return value;
   }
 
