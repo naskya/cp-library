@@ -29,7 +29,8 @@ namespace lib {
 template <typename Tp, typename Func>
 [[nodiscard]] Tp binary_search(Tp ok, Tp ng, const Func& f, const Tp diff = 1) {
   static_assert(std::is_same_v<decltype(std::declval<Func>()(std::declval<Tp>())), bool>);
-  CP_LIBRARY_ASSERT(f(ok) && !f(ng));
+  CP_LIBRARY_ASSERT(f(ok));
+  CP_LIBRARY_ASSERT(!f(ng));
 
   if (ok < ng)
     while (ng - ok > diff) {
