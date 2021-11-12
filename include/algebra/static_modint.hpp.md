@@ -231,14 +231,14 @@ data:
     \ do this?\");\n    return value > rhs;\n  }\n  template <typename RhsType>\n\
     \  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator>=(const RhsType rhs) const\
     \ {\n    CP_LIBRARY_WARN(\"static_modint::operator>= : Are you sure you want to\
-    \ do this?\");\n    return value >= rhs;\n  }\n\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
-    \ operator std::int_least32_t() const {\n    CP_LIBRARY_WARN(\"A value of type\
-    \ static_modint has been casted to type std::int_lease32_t.\");\n    return value;\n\
-    \  }\n\n  //! @brief Read value (64-bit signed integer) from std::istream& is,\
-    \ take modulo, and store it in rhs.\n  //! @return std::istream& is\n  friend\
-    \ std::istream& operator>>(std::istream& is, static_modint& rhs) {\n    std::int_least64_t\
-    \ tmp;\n    is >> tmp;\n    if (tmp < -modulo || modulo <= tmp)\n      tmp %=\
-    \ modulo;\n    if (tmp < 0)\n      tmp += modulo;\n    rhs.value = static_cast<std::int_least32_t>(tmp);\n\
+    \ do this?\");\n    return value >= rhs;\n  }\n\n  [[nodiscard]] constexpr operator\
+    \ std::int_least32_t() const {\n    CP_LIBRARY_WARN(\"A value of type static_modint\
+    \ has been cast to type std::int_lease32_t.\");\n    return value;\n  }\n\n  //!\
+    \ @brief Read value (64-bit signed integer) from std::istream& is, take modulo,\
+    \ and store it in rhs.\n  //! @return std::istream& is\n  friend std::istream&\
+    \ operator>>(std::istream& is, static_modint& rhs) {\n    std::int_least64_t tmp;\n\
+    \    is >> tmp;\n    if (tmp < -modulo || modulo <= tmp)\n      tmp %= modulo;\n\
+    \    if (tmp < 0)\n      tmp += modulo;\n    rhs.value = static_cast<std::int_least32_t>(tmp);\n\
     \    return is;\n  }\n  //! @brief Print value to std::ostream& os\n  //! @return\
     \ std::ostream& os\n  friend std::ostream& operator<<(std::ostream& os, static_modint&\
     \ rhs) {\n    return os << rhs.value;\n  }\n\n  //! @return multiplicative inverse\n\
@@ -538,14 +538,14 @@ data:
     \ do this?\");\n    return value > rhs;\n  }\n  template <typename RhsType>\n\
     \  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR bool operator>=(const RhsType rhs) const\
     \ {\n    CP_LIBRARY_WARN(\"static_modint::operator>= : Are you sure you want to\
-    \ do this?\");\n    return value >= rhs;\n  }\n\n  [[nodiscard]] CP_LIBRARY_USE_CONSTEXPR\
-    \ operator std::int_least32_t() const {\n    CP_LIBRARY_WARN(\"A value of type\
-    \ static_modint has been casted to type std::int_lease32_t.\");\n    return value;\n\
-    \  }\n\n  //! @brief Read value (64-bit signed integer) from std::istream& is,\
-    \ take modulo, and store it in rhs.\n  //! @return std::istream& is\n  friend\
-    \ std::istream& operator>>(std::istream& is, static_modint& rhs) {\n    std::int_least64_t\
-    \ tmp;\n    is >> tmp;\n    if (tmp < -modulo || modulo <= tmp)\n      tmp %=\
-    \ modulo;\n    if (tmp < 0)\n      tmp += modulo;\n    rhs.value = static_cast<std::int_least32_t>(tmp);\n\
+    \ do this?\");\n    return value >= rhs;\n  }\n\n  [[nodiscard]] constexpr operator\
+    \ std::int_least32_t() const {\n    CP_LIBRARY_WARN(\"A value of type static_modint\
+    \ has been cast to type std::int_lease32_t.\");\n    return value;\n  }\n\n  //!\
+    \ @brief Read value (64-bit signed integer) from std::istream& is, take modulo,\
+    \ and store it in rhs.\n  //! @return std::istream& is\n  friend std::istream&\
+    \ operator>>(std::istream& is, static_modint& rhs) {\n    std::int_least64_t tmp;\n\
+    \    is >> tmp;\n    if (tmp < -modulo || modulo <= tmp)\n      tmp %= modulo;\n\
+    \    if (tmp < 0)\n      tmp += modulo;\n    rhs.value = static_cast<std::int_least32_t>(tmp);\n\
     \    return is;\n  }\n  //! @brief Print value to std::ostream& os\n  //! @return\
     \ std::ostream& os\n  friend std::ostream& operator<<(std::ostream& os, static_modint&\
     \ rhs) {\n    return os << rhs.value;\n  }\n\n  //! @return multiplicative inverse\n\
@@ -652,17 +652,17 @@ data:
   isVerificationFile: false
   path: include/algebra/static_modint.hpp
   requiredBy: []
-  timestamp: '2021-08-14 12:25:27+09:00'
+  timestamp: '2021-10-28 01:58:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/algebra/static_modint/1.test.cpp
   - test/algebra/static_modint/2.test.cpp
+  - test/algebra/static_modint/1.test.cpp
   - test/algebra/static_modint/3.test.cpp
   - test/algebra/pow/1.test.cpp
-  - test/combinatorics/factorial/1.test.cpp
   - test/combinatorics/factorial/2.test.cpp
-  - test/data_structure/binary_indexed_tree/1.test.cpp
+  - test/combinatorics/factorial/1.test.cpp
   - test/data_structure/binary_indexed_tree/2.test.cpp
+  - test/data_structure/binary_indexed_tree/1.test.cpp
 documentation_of: include/algebra/static_modint.hpp
 layout: document
 title: Modint (for compile-time constant modulo)

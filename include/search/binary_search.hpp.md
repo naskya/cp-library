@@ -35,11 +35,11 @@ data:
     //! @note Time complexity: O(log(|ok - ng|))\ntemplate <typename Tp, typename\
     \ Func>\n[[nodiscard]] Tp binary_search(Tp ok, Tp ng, const Func& f, const Tp\
     \ diff = 1) {\n  static_assert(std::is_same_v<decltype(std::declval<Func>()(std::declval<Tp>())),\
-    \ bool>);\n  CP_LIBRARY_ASSERT(f(ok) && !f(ng));\n\n  if (ok < ng)\n    while\
-    \ (ng - ok > diff) {\n      const Tp mid       = ok + (ng - ok) / 2;\n      (f(mid)\
-    \ ? ok : ng) = mid;\n    }\n  else\n    while (ok - ng > diff) {\n      const\
-    \ Tp mid       = ng + (ok - ng) / 2;\n      (f(mid) ? ok : ng) = mid;\n    }\n\
-    \n  return ok;\n}\n\n}  // namespace lib\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n\
+    \ bool>);\n  CP_LIBRARY_ASSERT(f(ok));\n  CP_LIBRARY_ASSERT(!f(ng));\n\n  if (ok\
+    \ < ng)\n    while (ng - ok > diff) {\n      const Tp mid       = ok + (ng - ok)\
+    \ / 2;\n      (f(mid) ? ok : ng) = mid;\n    }\n  else\n    while (ok - ng > diff)\
+    \ {\n      const Tp mid       = ng + (ok - ng) / 2;\n      (f(mid) ? ok : ng)\
+    \ = mid;\n    }\n\n  return ok;\n}\n\n}  // namespace lib\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n\
     #  undef CP_LIBRARY_ASSERT\n#  undef CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\n\
     #endif  // CP_LIBRARY_BINARY_SEARCH_HPP\n"
   code: "\n//! @file binary_search.hpp\n\n#ifndef CP_LIBRARY_BINARY_SEARCH_HPP\n#define\
@@ -58,22 +58,22 @@ data:
     \ boundary value between ok and ng must exist.\n//! @note Time complexity: O(log(|ok\
     \ - ng|))\ntemplate <typename Tp, typename Func>\n[[nodiscard]] Tp binary_search(Tp\
     \ ok, Tp ng, const Func& f, const Tp diff = 1) {\n  static_assert(std::is_same_v<decltype(std::declval<Func>()(std::declval<Tp>())),\
-    \ bool>);\n  CP_LIBRARY_ASSERT(f(ok) && !f(ng));\n\n  if (ok < ng)\n    while\
-    \ (ng - ok > diff) {\n      const Tp mid       = ok + (ng - ok) / 2;\n      (f(mid)\
-    \ ? ok : ng) = mid;\n    }\n  else\n    while (ok - ng > diff) {\n      const\
-    \ Tp mid       = ng + (ok - ng) / 2;\n      (f(mid) ? ok : ng) = mid;\n    }\n\
-    \n  return ok;\n}\n\n}  // namespace lib\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n\
+    \ bool>);\n  CP_LIBRARY_ASSERT(f(ok));\n  CP_LIBRARY_ASSERT(!f(ng));\n\n  if (ok\
+    \ < ng)\n    while (ng - ok > diff) {\n      const Tp mid       = ok + (ng - ok)\
+    \ / 2;\n      (f(mid) ? ok : ng) = mid;\n    }\n  else\n    while (ok - ng > diff)\
+    \ {\n      const Tp mid       = ng + (ok - ng) / 2;\n      (f(mid) ? ok : ng)\
+    \ = mid;\n    }\n\n  return ok;\n}\n\n}  // namespace lib\n\n#ifdef CP_LIBRARY_ASSERT_NOT_DEFINED\n\
     #  undef CP_LIBRARY_ASSERT\n#  undef CP_LIBRARY_ASSERT_NOT_DEFINED\n#endif\n\n\
     #endif  // CP_LIBRARY_BINARY_SEARCH_HPP\n"
   dependsOn: []
   isVerificationFile: false
   path: include/search/binary_search.hpp
   requiredBy: []
-  timestamp: '2021-08-11 13:32:54+09:00'
+  timestamp: '2021-11-12 22:57:03+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/search/binary_search/1.test.cpp
   - test/search/binary_search/2.test.cpp
+  - test/search/binary_search/1.test.cpp
   - test/search/binary_search/3.test.cpp
 documentation_of: include/search/binary_search.hpp
 layout: document

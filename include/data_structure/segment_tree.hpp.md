@@ -402,14 +402,14 @@ data:
   timestamp: '2021-08-14 12:12:32+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/data_structure/segment_tree/5.test.cpp
-  - test/data_structure/segment_tree/4.test.cpp
-  - test/data_structure/segment_tree/8.test.cpp
-  - test/data_structure/segment_tree/1.test.cpp
   - test/data_structure/segment_tree/2.test.cpp
+  - test/data_structure/segment_tree/4.test.cpp
+  - test/data_structure/segment_tree/1.test.cpp
+  - test/data_structure/segment_tree/5.test.cpp
+  - test/data_structure/segment_tree/8.test.cpp
+  - test/data_structure/segment_tree/6.test.cpp
   - test/data_structure/segment_tree/7.test.cpp
   - test/data_structure/segment_tree/3.test.cpp
-  - test/data_structure/segment_tree/6.test.cpp
 documentation_of: include/data_structure/segment_tree.hpp
 layout: document
 title: Segment tree

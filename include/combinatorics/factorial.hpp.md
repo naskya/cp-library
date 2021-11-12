@@ -410,8 +410,8 @@ data:
   timestamp: '2021-08-14 12:29:15+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/combinatorics/factorial/1.test.cpp
   - test/combinatorics/factorial/2.test.cpp
+  - test/combinatorics/factorial/1.test.cpp
 documentation_of: include/combinatorics/factorial.hpp
 layout: document
 title: Factorial, Permutation, Combination, Multinomial coefficient

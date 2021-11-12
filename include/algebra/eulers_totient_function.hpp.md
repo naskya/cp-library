@@ -65,8 +65,8 @@ data:
   timestamp: '2021-08-11 13:32:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/algebra/eulers_totient_function/1.test.cpp
   - test/algebra/eulers_totient_function/2.test.cpp
+  - test/algebra/eulers_totient_function/1.test.cpp
 documentation_of: include/algebra/eulers_totient_function.hpp
 layout: document
 title: Euler's totient function
