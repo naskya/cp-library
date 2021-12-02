@@ -3,7 +3,7 @@ title: Segment tree
 documentation_of: //include/data_structure/segment_tree.hpp
 ---
 
-配列に対して以下のクエリが対数時間で行えるデータ構造である `segment_tree` クラスと、その制御に用いる `no_range_query_in_this_scope` クラスが定義されています。[`binary_indexed_tree`](https://naskya.github.io/cp-library/include/data_structure/binary_indexed_tree.hpp) や [`sparse_table`](https://naskya.github.io/cp-library/include/data_structure/sparse_table.hpp) が利用できる場合、そちらを利用した方が高速に動作することが期待できます。
+配列に対して以下のクエリが対数時間で行えるデータ構造である `segment_tree` クラスと、その制御に用いる `no_range_query_in_this_scope` クラスが定義されています。[`binary_indexed_tree`](https://naskya.github.io/cp-library-cpp/include/data_structure/binary_indexed_tree.hpp) や [`sparse_table`](https://naskya.github.io/cp-library-cpp/include/data_structure/sparse_table.hpp) が利用できる場合、そちらを利用した方が高速に動作することが期待できます。
 
 - 配列の一つの要素の値を更新する
 - 配列の一つの要素の値を取得する
@@ -26,7 +26,7 @@ lib::segment_tree<int, std::bit_xor<>>  // 4.
 
 1. テンプレート引数を省略した場合、要素の型は long long で二項演算は加算 (+) となります。
 1. 第一引数で要素の型を指定できます。この場合要素の型は int で二項演算は加算 (+) となります。
-1. 要素の型は組み込み型でなくてもよいです。この場合要素の型は [`lib::static_modint<1000000007>`](https://naskya.github.io/cp-library/include/algebra/static_modint.hpp) で二項演算は加算 (+) となります。
+1. 要素の型は組み込み型でなくてもよいです。この場合要素の型は [`lib::static_modint<1000000007>`](https://naskya.github.io/cp-library-cpp/include/algebra/static_modint.hpp) で二項演算は加算 (+) となります。
 1. 第二引数で二項演算を指定できます。この場合要素の型は int で二項演算は bitwise xor (^) となります。後述の通り他にも二項演算を変更する方法があります。
 
 ### コンストラクタ
@@ -110,21 +110,21 @@ $i$ 番目 (0-indexed) の要素の値を $x$ にします。
 
 #### `debug_print()`
 
-[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、標準エラー出力にデバッグ情報(配列の内容)を出力します。
+[デバッグレベル](https://naskya.github.io/cp-library-cpp/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、標準エラー出力にデバッグ情報(配列の内容)を出力します。
 
 ---
 
-以下は処理をほんのり高速化させるためのメンバ関数です。使い方を間違えると [`CP_LIBRARY_ASSERT`](https://naskya.github.io/cp-library/about#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%9E%E3%82%AF%E3%83%AD) マクロによって異常終了するか、正しくない計算結果が返ります。
+以下は処理をほんのり高速化させるためのメンバ関数です。使い方を間違えると [`CP_LIBRARY_ASSERT`](https://naskya.github.io/cp-library-cpp/about#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%9E%E3%82%AF%E3%83%AD) マクロによって異常終了するか、正しくない計算結果が返ります。
 
 これらの関数の使用を検討する場合、他に適したデータ構造が無いかを考えてください。
 
 #### `lock()`
 
-`set` 関数や `add` 関数で要素を変更した時に、その変更が自動的に親ノードに**伝播されない**ようにします。そのため `lock()` を行った後には (`unlock()` を行うまでは) 区間積は取得できなくなります。この関数を呼び、`unlock()` を行わずにもう一度この関数を呼ぶと [`CP_LIBRARY_ASSERT`](https://naskya.github.io/cp-library/about#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%9E%E3%82%AF%E3%83%AD) マクロによって異常終了します。
+`set` 関数や `add` 関数で要素を変更した時に、その変更が自動的に親ノードに**伝播されない**ようにします。そのため `lock()` を行った後には (`unlock()` を行うまでは) 区間積は取得できなくなります。この関数を呼び、`unlock()` を行わずにもう一度この関数を呼ぶと [`CP_LIBRARY_ASSERT`](https://naskya.github.io/cp-library-cpp/about#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%9E%E3%82%AF%E3%83%AD) マクロによって異常終了します。
 
 #### `unlock()`
 
-`set` 関数や `add` 関数で要素を変更した時に、その変更が自動的に親ノードに**伝播される**ようにします。`lock()` を呼んでいない状態でこの関数を呼ぶと [`CP_LIBRARY_ASSERT`](https://naskya.github.io/cp-library/about#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%9E%E3%82%AF%E3%83%AD) マクロによって異常終了します。
+`set` 関数や `add` 関数で要素を変更した時に、その変更が自動的に親ノードに**伝播される**ようにします。`lock()` を呼んでいない状態でこの関数を呼ぶと [`CP_LIBRARY_ASSERT`](https://naskya.github.io/cp-library-cpp/about#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%9E%E3%82%AF%E3%83%AD) マクロによって異常終了します。
 
 この関数は内部に保持されている `locked` という変数の値を `false` にセットするだけなので、この関数を呼んだだけでは変更が親ノードへ伝播されないことに注意してください。
 
