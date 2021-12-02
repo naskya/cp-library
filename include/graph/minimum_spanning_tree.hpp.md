@@ -271,10 +271,10 @@ data:
   timestamp: '2021-08-14 12:12:32+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/graph/minimum_spanning_tree/2.test.cpp
   - test/graph/minimum_spanning_tree/4.test.cpp
-  - test/graph/minimum_spanning_tree/1.test.cpp
   - test/graph/minimum_spanning_tree/3.test.cpp
+  - test/graph/minimum_spanning_tree/2.test.cpp
+  - test/graph/minimum_spanning_tree/1.test.cpp
 documentation_of: include/graph/minimum_spanning_tree.hpp
 layout: document
 title: Minimum spanning tree

@@ -235,7 +235,7 @@ title: Binary indexed tree
 lib::binary_indexed_tree<int>  // int 型の要素を持つ binary indexed tree
 ```
 
-要素の型には `int`, `long long` 等の整数型の他に、`double` 等の浮動小数点数型や [`__int128`](https://gcc.gnu.org/onlinedocs/gcc/_005f_005fint128.html), [`cpp_int`](https://www.boost.org/doc/libs/1_76_0/libs/multiprecision/doc/html/boost_multiprecision/tut/ints/cpp_int.html), [`static_modint`](https://naskya.github.io/cp-library/include/algebra/static_modint.hpp) 等の加減算の演算子が適切に定義された型を用いることができます。
+要素の型には `int`, `long long` 等の整数型の他に、`double` 等の浮動小数点数型や [`__int128`](https://gcc.gnu.org/onlinedocs/gcc/_005f_005fint128.html), [`cpp_int`](https://www.boost.org/doc/libs/1_76_0/libs/multiprecision/doc/html/boost_multiprecision/tut/ints/cpp_int.html), [`static_modint`](https://naskya.github.io/cp-library-cpp/include/algebra/static_modint.hpp) 等の加減算の演算子が適切に定義された型を用いることができます。
 
 ### コンストラクタ
 
@@ -279,6 +279,6 @@ $i$ 番目 (0-indexed) の要素の値を $x$ にします。
 
 #### `debug_print()`
 
-[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、標準エラー出力にデバッグ情報(配列の内容)を出力します。
+[デバッグレベル](https://naskya.github.io/cp-library-cpp/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、標準エラー出力にデバッグ情報(配列の内容)を出力します。
 
 ---

@@ -447,11 +447,11 @@ $0$ から $N$ までの階乗が入った長さ $N + 1$ の `type` 型の配列
 
 ### `factorial_modinv_array<N, modint_type>(x)`
 
-`modint_type` には [`static_modint`](https://naskya.github.io/cp-library/include/algebra/static_modint.hpp) または [`dynamic_modint`](https://naskya.github.io/cp-library/include/algebra/dynamic_modint.hpp) が指定できます。$x$ として $N$ の階乗 ($N!$) を与えると、$0$ から $N$ までの階乗の `modint_type` 型における乗法の逆元が入った長さ $N + 1$ の `modint_type` 型の配列 ([`std::array`](https://cpprefjp.github.io/reference/array/array.html)) を返します。
+`modint_type` には [`static_modint`](https://naskya.github.io/cp-library-cpp/include/algebra/static_modint.hpp) または [`dynamic_modint`](https://naskya.github.io/cp-library-cpp/include/algebra/dynamic_modint.hpp) が指定できます。$x$ として $N$ の階乗 ($N!$) を与えると、$0$ から $N$ までの階乗の `modint_type` 型における乗法の逆元が入った長さ $N + 1$ の `modint_type` 型の配列 ([`std::array`](https://cpprefjp.github.io/reference/array/array.html)) を返します。
 
 ---
 
-[`static_modint`](https://naskya.github.io/cp-library/include/algebra/static_modint.hpp) または [`dynamic_modint`](https://naskya.github.io/cp-library/include/algebra/dynamic_modint.hpp) を用いた組み合わせの計算では、`factorial_array` 関数と `factorial_modinv_array` 関数で行った前計算の結果を関数の引数の末尾に与えると定数時間で値を計算できるようになります。
+[`static_modint`](https://naskya.github.io/cp-library-cpp/include/algebra/static_modint.hpp) または [`dynamic_modint`](https://naskya.github.io/cp-library-cpp/include/algebra/dynamic_modint.hpp) を用いた組み合わせの計算では、`factorial_array` 関数と `factorial_modinv_array` 関数で行った前計算の結果を関数の引数の末尾に与えると定数時間で値を計算できるようになります。
 
 ```cpp
 using mint = lib::static_modint<1000000007>;

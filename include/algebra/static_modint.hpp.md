@@ -655,20 +655,20 @@ data:
   timestamp: '2021-10-28 01:58:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/algebra/static_modint/2.test.cpp
-  - test/algebra/static_modint/1.test.cpp
-  - test/algebra/static_modint/3.test.cpp
-  - test/algebra/pow/1.test.cpp
   - test/combinatorics/factorial/2.test.cpp
   - test/combinatorics/factorial/1.test.cpp
   - test/data_structure/binary_indexed_tree/2.test.cpp
   - test/data_structure/binary_indexed_tree/1.test.cpp
+  - test/algebra/pow/1.test.cpp
+  - test/algebra/static_modint/3.test.cpp
+  - test/algebra/static_modint/2.test.cpp
+  - test/algebra/static_modint/1.test.cpp
 documentation_of: include/algebra/static_modint.hpp
 layout: document
 title: Modint (for compile-time constant modulo)
 ---
 
-「1000000007 で割った余りを求めよ」等の要求がある問題で使える `static_modint` 構造体が定義されています。演算子オーバーロードによって四則演算を行った時に指定された数で割った余りが自動的に計算されます。何で割った余りを求めるかがコンパイル時に確定しない場合(標準入力から与えられる等)には [`dynamic_modint`](https://naskya.github.io/cp-library/include/algebra/dynamic_modint.hpp) を使用してください。
+「1000000007 で割った余りを求めよ」等の要求がある問題で使える `static_modint` 構造体が定義されています。演算子オーバーロードによって四則演算を行った時に指定された数で割った余りが自動的に計算されます。何で割った余りを求めるかがコンパイル時に確定しない場合(標準入力から与えられる等)には [`dynamic_modint`](https://naskya.github.io/cp-library-cpp/include/algebra/dynamic_modint.hpp) を使用してください。
 
 ---
 
@@ -731,7 +731,7 @@ static_assert(d == (10000000000LL % mint::mod()));
 - `>>` ([`std::istream&` からの入力](https://cpprefjp.github.io/reference/istream/basic_istream/op_istream_free.html))
 - `<<` ([`std::ostream&` への出力](https://cpprefjp.github.io/reference/ostream/basic_ostream/op_ostream_free.html))
 
-以下の演算子もオーバーロードされていますが、[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、使用すると標準エラー出力に警告が出ます。この警告は 18 行目のコメントアウトを解除すると抑制できます。
+以下の演算子もオーバーロードされていますが、[デバッグレベル](https://naskya.github.io/cp-library-cpp/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、使用すると標準エラー出力に警告が出ます。この警告は 18 行目のコメントアウトを解除すると抑制できます。
 
 - `%`
 - `|`
@@ -759,7 +759,7 @@ static_assert(d == (10000000000LL % mint::mod()));
 
 #### `inv()`
 
-$x$ の乗法の逆元 $x^{-1}$ を返します。$x = 0$ である時、[`CP_LIBRARY_ASSERT`](https://naskya.github.io/cp-library/about#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%9E%E3%82%AF%E3%83%AD) マクロによって異常終了します。
+$x$ の乗法の逆元 $x^{-1}$ を返します。$x = 0$ である時、[`CP_LIBRARY_ASSERT`](https://naskya.github.io/cp-library-cpp/about#%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E3%83%9E%E3%82%AF%E3%83%AD) マクロによって異常終了します。
 
 #### `pow(n)`
 

@@ -551,9 +551,9 @@ data:
   timestamp: '2021-08-15 20:56:58+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
+  - test/string/rolling_hash/3.test.cpp
   - test/string/rolling_hash/2.test.cpp
   - test/string/rolling_hash/1.test.cpp
-  - test/string/rolling_hash/3.test.cpp
 documentation_of: include/string/rolling_hash.hpp
 layout: document
 title: Rolling hash
@@ -571,7 +571,7 @@ title: Rolling hash
 
 以下「ハッシュ値」は `single_hash` 型のオブジェクトを指します。
 
-つまり `rolling_hash` 型のオブジェクトは様々な情報を保持した「未分化な状態」で、そこから連続部分文字列の情報を取り出すことで特定の文字列に対するハッシュ値を取得します。連続部分文字列のハッシュ値を計算する必要が無い場合、[後述](https://naskya.github.io/cp-library/include/string/rolling_hash.hpp#single_hash-%E6%A7%8B%E9%80%A0%E4%BD%93)の方法で直接ハッシュ値を取得するとよいです。
+つまり `rolling_hash` 型のオブジェクトは様々な情報を保持した「未分化な状態」で、そこから連続部分文字列の情報を取り出すことで特定の文字列に対するハッシュ値を取得します。連続部分文字列のハッシュ値を計算する必要が無い場合、[後述](https://naskya.github.io/cp-library-cpp/include/string/rolling_hash.hpp#single_hash-%E6%A7%8B%E9%80%A0%E4%BD%93)の方法で直接ハッシュ値を取得するとよいです。
 
 ### 構築
 
@@ -658,7 +658,7 @@ const std::string B = "is";
 const bool check = (lib::get_rolling_hash(A).substring(2) == lib::get_single_hash(B));  // true
 ```
 
-[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $2$ 以上の値として定義されている場合には線形時間を掛けて元の文字列を直接比較し、ハッシュ値が等しいのに文字列が異なっている状態(ハッシュ値の衝突)を検知した場合にそれを報告して異常終了します。
+[デバッグレベル](https://naskya.github.io/cp-library-cpp/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $2$ 以上の値として定義されている場合には線形時間を掛けて元の文字列を直接比較し、ハッシュ値が等しいのに文字列が異なっている状態(ハッシュ値の衝突)を検知した場合にそれを報告して異常終了します。
 
 #### `operator!=`
 
@@ -710,7 +710,7 @@ const bool check = (A_hash == C_hash);  // true
 
 #### `debug_print()`
 
-[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、標準エラー出力にデバッグ情報(`hash_value()` の返す値)を出力します。
-[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $2$ 以上のとき、文字列の内容も加えて出力します。
+[デバッグレベル](https://naskya.github.io/cp-library-cpp/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、標準エラー出力にデバッグ情報(`hash_value()` の返す値)を出力します。
+[デバッグレベル](https://naskya.github.io/cp-library-cpp/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $2$ 以上のとき、文字列の内容も加えて出力します。
 
 ---

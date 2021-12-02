@@ -177,6 +177,6 @@ $i$ 番目 (0-indexed) の頂点と $j$ 番目 (0-indexed) の頂点が属する
 
 #### `debug_print()`
 
-[デバッグレベル](https://naskya.github.io/cp-library/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、標準エラー出力にデバッグ情報(`groups()` の内容)を出力します。
+[デバッグレベル](https://naskya.github.io/cp-library-cpp/about#cp_library_debug_level-%E3%83%9E%E3%82%AF%E3%83%AD)が $1$ 以上のとき、標準エラー出力にデバッグ情報(`groups()` の内容)を出力します。
 
 ---
