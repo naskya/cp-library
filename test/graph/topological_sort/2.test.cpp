@@ -1,8 +1,3 @@
-// ToDo: remove this line
-// The problem is not available for testing since the test cases have not been uploaded yet.
-// However, we can get AC by submitting the program manually.
-#define IGNORE
-
 #define PROBLEM "https://atcoder.jp/contests/abc223/tasks/abc223_d"
 #include <functional>
 #include <iostream>
