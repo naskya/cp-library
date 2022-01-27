@@ -6,12 +6,12 @@ data:
   - icon: ':x:'
     path: test/graph/topological_sort/1.test.cpp
     title: test/graph/topological_sort/1.test.cpp
-  - icon: ':x:'
+  - icon: ':heavy_check_mark:'
     path: test/graph/topological_sort/2.test.cpp
     title: test/graph/topological_sort/2.test.cpp
   _isVerificationFailed: true
   _pathExtension: hpp
-  _verificationStatusIcon: ':x:'
+  _verificationStatusIcon: ':question:'
   attributes:
     document_title: Sort the vertices in the given directed graph in topological order.
     links: []
@@ -95,7 +95,7 @@ data:
   path: include/graph/topological_sort.hpp
   requiredBy: []
   timestamp: '2021-10-21 19:21:04+09:00'
-  verificationStatus: LIBRARY_ALL_WA
+  verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
   - test/graph/topological_sort/2.test.cpp
   - test/graph/topological_sort/1.test.cpp

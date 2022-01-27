@@ -655,10 +655,10 @@ data:
   timestamp: '2021-10-28 01:58:02+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/combinatorics/factorial/2.test.cpp
-  - test/combinatorics/factorial/1.test.cpp
   - test/data_structure/binary_indexed_tree/2.test.cpp
   - test/data_structure/binary_indexed_tree/1.test.cpp
+  - test/combinatorics/factorial/2.test.cpp
+  - test/combinatorics/factorial/1.test.cpp
   - test/algebra/pow/1.test.cpp
   - test/algebra/static_modint/3.test.cpp
   - test/algebra/static_modint/2.test.cpp

@@ -39,7 +39,7 @@ data:
     - icon: ':heavy_check_mark:'
       path: include/graph/minimum_spanning_tree.hpp
       title: Minimum spanning tree
-    - icon: ':x:'
+    - icon: ':question:'
       path: include/graph/topological_sort.hpp
       title: Topological sort
   - name: include/search
@@ -180,7 +180,7 @@ data:
     - icon: ':x:'
       path: test/graph/topological_sort/1.test.cpp
       title: test/graph/topological_sort/1.test.cpp
-    - icon: ':x:'
+    - icon: ':heavy_check_mark:'
       path: test/graph/topological_sort/2.test.cpp
       title: test/graph/topological_sort/2.test.cpp
   - name: test/search/binary_search
