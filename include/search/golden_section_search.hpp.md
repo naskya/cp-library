@@ -79,8 +79,8 @@ data:
   timestamp: '2021-08-11 13:32:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/search/golden_section_search/2.test.cpp
   - test/search/golden_section_search/1.test.cpp
+  - test/search/golden_section_search/2.test.cpp
 documentation_of: include/search/golden_section_search.hpp
 layout: document
 title: Golden section search

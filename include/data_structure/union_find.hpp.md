@@ -130,8 +130,8 @@ data:
   timestamp: '2021-08-11 13:32:54+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/data_structure/union_find/2.test.cpp
   - test/data_structure/union_find/1.test.cpp
+  - test/data_structure/union_find/2.test.cpp
 documentation_of: include/data_structure/union_find.hpp
 layout: document
 title: Union find

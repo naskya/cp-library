@@ -272,9 +272,9 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/graph/minimum_spanning_tree/4.test.cpp
-  - test/graph/minimum_spanning_tree/3.test.cpp
-  - test/graph/minimum_spanning_tree/2.test.cpp
   - test/graph/minimum_spanning_tree/1.test.cpp
+  - test/graph/minimum_spanning_tree/2.test.cpp
+  - test/graph/minimum_spanning_tree/3.test.cpp
 documentation_of: include/graph/minimum_spanning_tree.hpp
 layout: document
 title: Minimum spanning tree

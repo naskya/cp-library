@@ -211,8 +211,8 @@ data:
   timestamp: '2021-08-11 13:38:32+09:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
-  - test/data_structure/binary_indexed_tree/2.test.cpp
   - test/data_structure/binary_indexed_tree/1.test.cpp
+  - test/data_structure/binary_indexed_tree/2.test.cpp
 documentation_of: include/data_structure/binary_indexed_tree.hpp
 layout: document
 title: Binary indexed tree

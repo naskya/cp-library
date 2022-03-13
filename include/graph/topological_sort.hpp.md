@@ -97,8 +97,8 @@ data:
   timestamp: '2021-10-21 19:21:04+09:00'
   verificationStatus: LIBRARY_SOME_WA
   verifiedWith:
-  - test/graph/topological_sort/2.test.cpp
   - test/graph/topological_sort/1.test.cpp
+  - test/graph/topological_sort/2.test.cpp
 documentation_of: include/graph/topological_sort.hpp
 layout: document
 title: Topological sort
