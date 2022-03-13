@@ -45,7 +45,7 @@ constexpr int N = 500000;
 
 // 階乗と階乗の逆元を前計算
 const auto fact_array     = lib::factorial_array<N, mint>();
-const auto fact_inv_array = lib::factorial_array<N, mint>(fact_array.back());
+const auto fact_inv_array = lib::factorial_modinv_array<N, mint>(fact_array.back());
 
 // 以下の計算は全て定数時間で行われる
 const mint a = fact_array[n];  // factorial(n) は fact_array[n]
