@@ -8,7 +8,7 @@
 
 namespace lib {
 
-//! @brief Compute the length of the palindrome centered at each position using Manacher's Algorithm.
+//! @brief Compute the longest palindrome lengths centered at each position using Manacher's Algorithm.
 //! @tparam Container container type (deduced from parameter)
 //! @param src source container (std::string, std::vector, std::deque, ...)
 //! @return std::deque<int> containing palindrome lengths ("abbba" -> {1 0 1 2 5 2 1 0 1})
