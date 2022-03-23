@@ -10,17 +10,17 @@ data:
   _pathExtension: hpp
   _verificationStatusIcon: ':heavy_check_mark:'
   attributes:
-    document_title: Compute the length of the palindrome centered at each position
+    document_title: Compute the longest palindrome lengths centered at each position
       using Manacher's Algorithm.
     links: []
   bundledCode: "#line 1 \"include/string/manachers_algorithm.hpp\"\n\n//! @file manachers_algorithm.hpp\n\
     \n#ifndef CP_LIBRARY_MANACHERS_ALGORITHM_HPP\n#define CP_LIBRARY_MANACHERS_ALGORITHM_HPP\n\
-    \n#include <deque>\n\nnamespace lib {\n\n//! @brief Compute the length of the\
-    \ palindrome centered at each position using Manacher's Algorithm.\n//! @tparam\
-    \ Container container type (deduced from parameter)\n//! @param src source container\
-    \ (std::string, std::vector, std::deque, ...)\n//! @return std::deque<int> containing\
-    \ palindrome lengths (\"abbba\" -> {1 0 1 2 5 2 1 0 1})\n//! @note Time complexity:\
-    \ O(size(src))\ntemplate <typename Container>\n[[nodiscard]] std::deque<int> palindrome_length_array(const\
+    \n#include <deque>\n\nnamespace lib {\n\n//! @brief Compute the longest palindrome\
+    \ lengths centered at each position using Manacher's Algorithm.\n//! @tparam Container\
+    \ container type (deduced from parameter)\n//! @param src source container (std::string,\
+    \ std::vector, std::deque, ...)\n//! @return std::deque<int> containing palindrome\
+    \ lengths (\"abbba\" -> {1 0 1 2 5 2 1 0 1})\n//! @note Time complexity: O(size(src))\n\
+    template <typename Container>\n[[nodiscard]] std::deque<int> palindrome_length_array(const\
     \ Container& src) {\n  const int N = 2 * static_cast<int>(std::size(src)) + 1;\n\
     \  std::deque<int> res(N);\n  int i = 0, j = 0;\n  while (i < N) {\n    while\
     \ (i - j >= 0 && i + j < N && ((((i + j) % 2) == 0) || src[(i - j) / 2] == src[(i\
@@ -30,7 +30,7 @@ data:
     \  return res;\n}\n\n}  // namespace lib\n\n#endif  // CP_LIBRARY_MANACHERS_ALGORITHM_HPP\n"
   code: "\n//! @file manachers_algorithm.hpp\n\n#ifndef CP_LIBRARY_MANACHERS_ALGORITHM_HPP\n\
     #define CP_LIBRARY_MANACHERS_ALGORITHM_HPP\n\n#include <deque>\n\nnamespace lib\
-    \ {\n\n//! @brief Compute the length of the palindrome centered at each position\
+    \ {\n\n//! @brief Compute the longest palindrome lengths centered at each position\
     \ using Manacher's Algorithm.\n//! @tparam Container container type (deduced from\
     \ parameter)\n//! @param src source container (std::string, std::vector, std::deque,\
     \ ...)\n//! @return std::deque<int> containing palindrome lengths (\"abbba\" ->\
@@ -47,7 +47,7 @@ data:
   isVerificationFile: false
   path: include/string/manachers_algorithm.hpp
   requiredBy: []
-  timestamp: '2021-08-11 13:32:54+09:00'
+  timestamp: '2022-03-23 16:30:51+00:00'
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/manachers_algorithm/1.test.cpp
