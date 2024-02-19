@@ -73,8 +73,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/search/binary_search/1.test.cpp
-  - test/search/binary_search/2.test.cpp
   - test/search/binary_search/3.test.cpp
+  - test/search/binary_search/2.test.cpp
 documentation_of: include/search/binary_search.hpp
 layout: document
 title: Binary search

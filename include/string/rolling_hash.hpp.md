@@ -552,8 +552,8 @@ data:
   verificationStatus: LIBRARY_ALL_AC
   verifiedWith:
   - test/string/rolling_hash/1.test.cpp
-  - test/string/rolling_hash/2.test.cpp
   - test/string/rolling_hash/3.test.cpp
+  - test/string/rolling_hash/2.test.cpp
 documentation_of: include/string/rolling_hash.hpp
 layout: document
 title: Rolling hash
